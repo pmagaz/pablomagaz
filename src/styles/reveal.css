@@ -1,19 +1,21 @@
 /* ============================================================
-   Scroll reveals — a short fade and rise as content enters view.
+   Scroll reveals — a slow fade and rise as content enters view.
 
    Everything is gated behind `html.pm-js`, which only exists when
    JavaScript ran. Without it the content is simply visible, so crawlers
    and no-JS visitors lose nothing.
+
+   Timing tokens live in tokens.css (--pm-reveal-*).
    ============================================================ */
 
 @media (prefers-reduced-motion: no-preference) {
   /* Single element */
   html.pm-js [data-reveal] {
     opacity: 0;
-    transform: translateY(14px);
+    transform: translateY(var(--pm-reveal-distance));
     transition:
-      opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
-      transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+      opacity var(--pm-reveal-duration) var(--pm-reveal-ease),
+      transform var(--pm-reveal-duration) var(--pm-reveal-ease);
     will-change: opacity, transform;
   }
 
@@ -25,10 +27,10 @@
   /* Group — children arrive one after another */
   html.pm-js [data-reveal-group] > * {
     opacity: 0;
-    transform: translateY(14px);
+    transform: translateY(var(--pm-reveal-distance));
     transition:
-      opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
-      transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+      opacity var(--pm-reveal-duration) var(--pm-reveal-ease),
+      transform var(--pm-reveal-duration) var(--pm-reveal-ease);
   }
 
   html.pm-js [data-reveal-group].is-visible > * {
@@ -37,22 +39,22 @@
   }
 
   html.pm-js [data-reveal-group].is-visible > *:nth-child(2) {
-    transition-delay: 0.07s;
+    transition-delay: var(--pm-reveal-stagger);
   }
   html.pm-js [data-reveal-group].is-visible > *:nth-child(3) {
-    transition-delay: 0.14s;
+    transition-delay: calc(var(--pm-reveal-stagger) * 2);
   }
   html.pm-js [data-reveal-group].is-visible > *:nth-child(4) {
-    transition-delay: 0.21s;
+    transition-delay: calc(var(--pm-reveal-stagger) * 3);
   }
   html.pm-js [data-reveal-group].is-visible > *:nth-child(5) {
-    transition-delay: 0.28s;
+    transition-delay: calc(var(--pm-reveal-stagger) * 4);
   }
   html.pm-js [data-reveal-group].is-visible > *:nth-child(6) {
-    transition-delay: 0.35s;
+    transition-delay: calc(var(--pm-reveal-stagger) * 5);
   }
   html.pm-js [data-reveal-group].is-visible > *:nth-child(n + 7) {
-    transition-delay: 0.42s;
+    transition-delay: calc(var(--pm-reveal-stagger) * 6);
   }
 
   /* Direction variant — slides in from the left instead of rising, so not
@@ -60,7 +62,7 @@
      attribute so they outrank the group rules above. */
   html.pm-js [data-reveal-from='left'],
   html.pm-js [data-reveal-group] > [data-reveal-from='left'] {
-    transform: translateX(-36px);
+    transform: translateX(calc(var(--pm-reveal-distance) * -2));
   }
 
   html.pm-js [data-reveal-from='left'].is-visible,
@@ -71,15 +73,15 @@
   /* The hero is above the fold — it plays on load rather than on scroll */
   html.pm-js [data-reveal-hero] > * {
     opacity: 0;
-    transform: translateY(18px);
-    animation: pm-rise 1.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    transform: translateY(calc(var(--pm-reveal-distance) * 1.2));
+    animation: pm-rise 1.15s var(--pm-reveal-ease) forwards;
   }
 
   html.pm-js [data-reveal-hero] > *:nth-child(2) {
-    animation-delay: 0.1s;
+    animation-delay: calc(var(--pm-reveal-stagger) * 1.5);
   }
   html.pm-js [data-reveal-hero] > *:nth-child(3) {
-    animation-delay: 0.2s;
+    animation-delay: calc(var(--pm-reveal-stagger) * 3);
   }
 
   @keyframes pm-rise {

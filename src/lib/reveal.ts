@@ -54,15 +54,25 @@ function setup(): void {
     },
   );
 
+  const onScreen: HTMLElement[] = [];
+
   for (const element of elements) {
-    // Anything already on screen at load reveals immediately.
     const box = element.getBoundingClientRect();
     if (box.top < window.innerHeight * 0.9) {
-      element.classList.add('is-visible');
+      onScreen.push(element);
       continue;
     }
     observer.observe(element);
   }
+
+  // Anything already visible at load still animates, but the hidden state has
+  // to be painted first — adding the class in this same task would make the
+  // browser skip straight to the end and show no transition at all.
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      for (const element of onScreen) element.classList.add('is-visible');
+    });
+  });
 }
 
 try {

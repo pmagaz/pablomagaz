@@ -59,6 +59,14 @@
 
   /* ---------- Motion ---------- */
   --pm-transition: 150ms ease;
+
+  /* Scroll reveals. The curve matters more than the duration here: an
+     expo-out curve finishes visually in a quarter of its time, so this uses
+     an even curve that actually reads as slow. */
+  --pm-reveal-duration: 1s;
+  --pm-reveal-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --pm-reveal-distance: 24px;
+  --pm-reveal-stagger: 0.1s;
 }
 
 /* Tablet — interpolated, there is no tablet mock */
