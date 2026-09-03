@@ -1,0 +1,19 @@
+/* Contact split — copy stacked above the form panel on mobile,
+   two equal columns inside the 1280px grid on desktop. */
+
+.pm-contact-split {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  width: 100%;
+  max-width: var(--pm-page-max);
+  margin-inline: auto;
+  min-height: 0;
+}
+
+@media (min-width: 769px) {
+  .pm-contact-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+}

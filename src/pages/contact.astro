@@ -1,0 +1,15 @@
+---
+import ContactForm from '~/components/contact/ContactForm/ContactForm';
+import ContactInfo from '~/components/contact/ContactInfo/ContactInfo';
+import ContactSplit from '~/components/contact/ContactSplit/ContactSplit.astro';
+import { contact } from '~/data/contact';
+import BaseLayout from '~/layouts/BaseLayout/BaseLayout.astro';
+---
+
+<BaseLayout title="Contact" description={contact.intro}>
+  <ContactSplit>
+    <ContactInfo slot="info" />
+    {/* The only page needing client JS: validation and the in-place success state */}
+    <ContactForm slot="form" client:load />
+  </ContactSplit>
+</BaseLayout>

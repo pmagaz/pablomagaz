@@ -1,0 +1,91 @@
+/* Contact left column — copy top, contact block pinned to the bottom. */
+
+.pm-contact-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--pm-space-8);
+  padding: var(--pm-space-8) var(--pm-page-pad) var(--pm-space-7);
+}
+
+.pm-contact-info__copy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pm-space-4);
+}
+
+.pm-contact-info__title {
+  /* 40px on mobile → 58px at 1280px */
+  font-size: clamp(2.5rem, 1.99rem + 2.02vw, 3.625rem);
+  line-height: 1;
+  letter-spacing: -0.035em;
+}
+
+.pm-contact-info__intro {
+  max-width: 420px;
+  color: var(--pm-body);
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+/* The design's mobile screen has no email/social block */
+.pm-contact-info__block {
+  display: none;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.pm-contact-info__details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--pm-space-10);
+  font-size: 14px;
+}
+
+.pm-contact-info__detail {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pm-contact-info__detail-label {
+  color: var(--pm-muted);
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.pm-contact-info__detail-value {
+  color: var(--pm-ink);
+}
+
+.pm-contact-info__detail-value a {
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--pm-transition);
+}
+
+.pm-contact-info__detail-value a:hover,
+a.pm-contact-info__detail-value:hover {
+  border-bottom-color: var(--pm-red);
+}
+
+@media (min-width: 769px) {
+  .pm-contact-info {
+    gap: var(--pm-space-10);
+    padding: var(--pm-space-16) var(--pm-space-14) var(--pm-space-14) var(--pm-page-pad);
+    border-right: 1px solid var(--pm-hairline);
+  }
+
+  .pm-contact-info__copy {
+    gap: 26px;
+  }
+
+  .pm-contact-info__intro {
+    font-size: 17px;
+    line-height: 1.7;
+  }
+
+  .pm-contact-info__block {
+    display: flex;
+  }
+}

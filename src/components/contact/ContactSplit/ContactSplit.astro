@@ -1,0 +1,13 @@
+---
+import './ContactSplit.css';
+
+/**
+ * The contact page's two-column split. An .astro component because the form
+ * it receives carries a client directive from the page.
+ */
+---
+
+<section class="pm-contact-split">
+  <slot name="info" />
+  <slot name="form" />
+</section>

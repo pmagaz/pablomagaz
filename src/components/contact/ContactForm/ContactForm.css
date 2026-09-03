@@ -1,0 +1,127 @@
+/* Contact form on the surface panel — 44px inputs, white fill, hairline
+   border, radius 6. Error state turns the border red with a 12px message. */
+
+.pm-contact-form {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--pm-space-4);
+  min-height: 0;
+  padding: var(--pm-space-6) var(--pm-page-pad) var(--pm-space-7);
+  border-top: 1px solid var(--pm-hairline);
+  background: var(--pm-surface);
+}
+
+.pm-contact-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.pm-contact-form__field--grow {
+  flex: 1;
+  min-height: 0;
+}
+
+.pm-contact-form__label {
+  color: var(--pm-ink);
+  font-size: 13px;
+  font-weight: var(--pm-fw-medium);
+}
+
+.pm-contact-form__input {
+  height: 46px;
+  padding: 0 14px;
+  border: 1px solid var(--pm-hairline);
+  border-radius: var(--pm-radius-sm);
+  background: var(--pm-bg);
+  color: var(--pm-ink);
+  font-size: 15px;
+  transition: border-color var(--pm-transition);
+}
+
+.pm-contact-form__input::placeholder {
+  color: var(--pm-muted);
+}
+
+.pm-contact-form__input:focus {
+  border-color: var(--pm-ink);
+  outline: none;
+}
+
+.pm-contact-form__input.is-invalid {
+  border-color: var(--pm-red);
+}
+
+.pm-contact-form__textarea {
+  flex: 1;
+  min-height: 120px;
+  height: auto;
+  padding: 12px 14px;
+  line-height: 1.6;
+  resize: none;
+}
+
+.pm-contact-form__error {
+  color: var(--pm-red-dark);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.pm-contact-form__note {
+  color: var(--pm-muted);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+/* Honeypot — hidden from people, visible to bots */
+.pm-contact-form__honeypot {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ---------- Success state ---------- */
+
+.pm-contact-form--done {
+  justify-content: center;
+  gap: var(--pm-space-3);
+}
+
+.pm-contact-form__success-title {
+  color: var(--pm-ink);
+  font-size: 21px;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+}
+
+.pm-contact-form__success-body {
+  color: var(--pm-body);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+@media (min-width: 769px) {
+  .pm-contact-form {
+    gap: 18px;
+    padding: var(--pm-space-14) var(--pm-space-12);
+    border-top: 0;
+  }
+
+  .pm-contact-form__input {
+    height: 44px;
+    font-size: 14px;
+  }
+
+  .pm-contact-form__textarea {
+    min-height: 150px;
+  }
+
+  .pm-contact-form__success-title {
+    font-size: 24px;
+  }
+}
