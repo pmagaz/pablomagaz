@@ -1,0 +1,21 @@
+---
+import type { GetStaticPaths } from 'astro';
+import BlogList from '~/components/blog/BlogList/BlogList';
+import BaseLayout from '~/layouts/BaseLayout/BaseLayout.astro';
+import { buildBlogPage, extraPageNumbers } from '~/lib/blogPage';
+
+export const getStaticPaths = (async () => {
+  const pages = await extraPageNumbers();
+  return pages.map((page) => ({ params: { page: String(page) } }));
+}) satisfies GetStaticPaths;
+
+const page = Number(Astro.params.page);
+const listProps = await buildBlogPage(page);
+---
+
+<BaseLayout
+  title={`Blog — page ${page}`}
+  description="Notes on platform strategy, applied AI and engineering organisation design."
+>
+  <BlogList {...listProps} />
+</BaseLayout>

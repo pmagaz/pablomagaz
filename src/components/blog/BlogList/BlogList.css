@@ -1,0 +1,54 @@
+/* Blog index layout — h1 with pills to the right, then the archive. */
+
+.pm-blog-list__inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pm-space-4);
+  padding-block: var(--pm-space-8) var(--pm-space-8);
+}
+
+.pm-blog-list__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pm-space-4);
+}
+
+.pm-blog-list__title {
+  /* 40px on mobile → 56px at 1280px */
+  font-size: clamp(2.5rem, 2.06rem + 1.78vw, 3.5rem);
+  font-weight: var(--pm-fw-regular);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--pm-ink);
+}
+
+.pm-blog-list__archive {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--pm-hairline);
+}
+
+/* The featured block already draws a top rule */
+.pm-featured + .pm-blog-list__archive {
+  border-top: 0;
+}
+
+.pm-blog-list__empty {
+  padding-block: var(--pm-space-8);
+  border-top: 1px solid var(--pm-hairline);
+  color: var(--pm-muted);
+}
+
+@media (min-width: 769px) {
+  .pm-blog-list__inner {
+    gap: var(--pm-space-9);
+    padding-block: var(--pm-space-14) var(--pm-space-10);
+  }
+
+  .pm-blog-list__head {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--pm-space-10);
+  }
+}

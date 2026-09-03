@@ -1,0 +1,14 @@
+---
+import BlogList from '~/components/blog/BlogList/BlogList';
+import BaseLayout from '~/layouts/BaseLayout/BaseLayout.astro';
+import { buildBlogPage } from '~/lib/blogPage';
+
+const listProps = await buildBlogPage(1);
+---
+
+<BaseLayout
+  title="Blog"
+  description="Notes on platform strategy, applied AI and engineering organisation design."
+>
+  <BlogList {...listProps} />
+</BaseLayout>

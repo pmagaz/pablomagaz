@@ -1,0 +1,31 @@
+---
+import type { GetStaticPaths } from 'astro';
+import BlogList from '~/components/blog/BlogList/BlogList';
+import { topicLabel } from '~/data/topics';
+import BaseLayout from '~/layouts/BaseLayout/BaseLayout.astro';
+import { buildBlogPage, extraPageNumbers } from '~/lib/blogPage';
+import { getSortedPosts } from '~/lib/posts';
+
+export const getStaticPaths = (async () => {
+  const posts = await getSortedPosts();
+  const used = [...new Set(posts.map((post) => post.data.topic))];
+
+  const paths = await Promise.all(
+    used.map(async (topic) => {
+      const pages = await extraPageNumbers(topic);
+      return pages.map((page) => ({ params: { topic, page: String(page) } }));
+    }),
+  );
+
+  return paths.flat();
+}) satisfies GetStaticPaths;
+
+const { topic } = Astro.params;
+const page = Number(Astro.params.page);
+const listProps = await buildBlogPage(page, topic);
+const label = topicLabel(topic);
+---
+
+<BaseLayout title={`${label} — Blog, page ${page}`} description={`Posts on ${label.toLowerCase()}.`}>
+  <BlogList {...listProps} />
+</BaseLayout>

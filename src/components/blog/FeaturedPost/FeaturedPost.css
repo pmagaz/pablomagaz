@@ -1,0 +1,77 @@
+/* Featured lead post — 1px ink top rule, hairline bottom rule.
+   Desktop is a 1fr / 300px grid with the meta column right-aligned. */
+
+.pm-featured {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pm-space-4);
+  padding-block: var(--pm-space-7) var(--pm-space-8);
+  border-top: 1px solid var(--pm-ink);
+  border-bottom: 1px solid var(--pm-hairline);
+}
+
+.pm-featured__main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pm-space-4);
+  min-width: 0;
+}
+
+.pm-featured__title {
+  /* 30px on mobile → 44px at 1280px */
+  font-size: clamp(1.875rem, 1.44rem + 1.78vw, 2.75rem);
+  font-weight: var(--pm-fw-regular);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  color: var(--pm-ink);
+  max-width: 760px;
+  text-wrap: pretty;
+}
+
+.pm-featured__excerpt {
+  max-width: 640px;
+  color: var(--pm-body);
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.pm-featured__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--pm-space-3) var(--pm-space-4);
+  color: var(--pm-muted);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.pm-featured__cta {
+  color: var(--pm-ink);
+  font-weight: var(--pm-fw-medium);
+  transition: color var(--pm-transition);
+}
+
+.pm-featured:hover .pm-featured__cta {
+  color: var(--pm-red-dark);
+}
+
+@media (min-width: 769px) {
+  .pm-featured {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    align-items: end;
+    gap: var(--pm-space-12);
+    padding-block: var(--pm-space-8) var(--pm-space-9);
+  }
+
+  .pm-featured__main {
+    gap: 18px;
+  }
+
+  .pm-featured__meta {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+    text-align: right;
+  }
+}
