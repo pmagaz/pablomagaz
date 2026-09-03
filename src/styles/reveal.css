@@ -74,7 +74,7 @@
   html.pm-js [data-reveal-hero] > * {
     opacity: 0;
     transform: translateY(calc(var(--pm-reveal-distance) * 1.2));
-    animation: pm-rise 1.15s var(--pm-reveal-ease) forwards;
+    animation: pm-rise var(--pm-reveal-hero-duration) var(--pm-reveal-ease) forwards;
   }
 
   html.pm-js [data-reveal-hero] > *:nth-child(2) {
