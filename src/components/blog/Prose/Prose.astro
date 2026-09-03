@@ -1,0 +1,14 @@
+---
+import './Prose.css';
+
+/**
+ * Wraps rendered markdown. This is an .astro component because it receives
+ * Astro's <Content /> output as slot content, which a React component cannot.
+ */
+---
+
+<div class="pm-container">
+  <div class="pm-prose">
+    <slot />
+  </div>
+</div>

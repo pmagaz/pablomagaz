@@ -1,0 +1,32 @@
+/* "Keep reading" — surface-tinted band with a 3-up card grid. */
+
+.pm-keep-reading__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding-block: var(--pm-space-7) var(--pm-space-8);
+}
+
+.pm-keep-reading__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--pm-space-4);
+}
+
+@media (min-width: 641px) {
+  .pm-keep-reading__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--pm-space-5);
+  }
+}
+
+@media (min-width: 769px) {
+  .pm-keep-reading__inner {
+    gap: 22px;
+    padding-block: var(--pm-space-10) var(--pm-space-12);
+  }
+
+  .pm-keep-reading__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

@@ -1,0 +1,67 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { render } from 'astro:content';
+import KeepReading from '~/components/blog/KeepReading/KeepReading';
+import PostHeader from '~/components/blog/PostHeader/PostHeader';
+import Prose from '~/components/blog/Prose/Prose.astro';
+import AuthorStrip from '~/components/common/AuthorStrip/AuthorStrip';
+import portraitSource from '~/assets/images/pablo-hero.png';
+import BaseLayout from '~/layouts/BaseLayout/BaseLayout.astro';
+import { responsiveImage } from '~/lib/images';
+import { getSortedPosts, relatedPosts, toSummary, type PostEntry } from '~/lib/posts';
+import { articleSchema } from '~/lib/seo';
+
+export const getStaticPaths = (async () => {
+  const posts = await getSortedPosts();
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}) satisfies GetStaticPaths;
+
+interface Props {
+  post: PostEntry;
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const summary = toSummary(post);
+const all = await getSortedPosts();
+const related = relatedPosts(all, post).map(toSummary);
+
+const avatar = await responsiveImage(portraitSource, {
+  alt: '',
+  widths: [88, 132],
+});
+
+const schema = articleSchema(
+  {
+    title: summary.title,
+    description: summary.description,
+    publishedAt: post.data.publishedAt,
+    url: new URL(summary.href, Astro.site ?? Astro.url).href,
+  },
+  Astro.site,
+);
+---
+
+<BaseLayout
+  title={summary.title}
+  description={summary.description}
+  type="article"
+  publishedAt={post.data.publishedAt}
+  schema={schema}
+>
+  <article>
+    <PostHeader post={summary} />
+
+    <Prose>
+      <Content />
+    </Prose>
+
+    <AuthorStrip avatar={avatar} />
+  </article>
+
+  <KeepReading posts={related} />
+</BaseLayout>

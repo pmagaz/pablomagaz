@@ -1,0 +1,137 @@
+/* Article column — single column, max 780px, 28px rhythm.
+   The first paragraph is the lede. Blockquotes are the red pull quote. */
+
+.pm-prose {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pm-space-5);
+  max-width: 780px;
+  padding-block: var(--pm-space-7) var(--pm-space-8);
+  color: var(--pm-body);
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+/* Lede — the opening paragraph sits larger and in ink */
+.pm-prose > p:first-of-type {
+  color: var(--pm-ink);
+  font-size: 19px;
+  line-height: 1.55;
+}
+
+.pm-prose h2 {
+  margin-top: var(--pm-space-2);
+  font-size: 22px;
+  font-weight: var(--pm-fw-medium);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--pm-ink);
+}
+
+.pm-prose h3 {
+  font-size: 18px;
+  font-weight: var(--pm-fw-medium);
+  line-height: 1.3;
+  letter-spacing: -0.015em;
+  color: var(--pm-ink);
+}
+
+/* Pull quote — 2px red rule, no quotation marks */
+.pm-prose blockquote {
+  margin: 0;
+  padding: var(--pm-space-1) 0 var(--pm-space-1) 18px;
+  border-left: 2px solid var(--pm-red);
+}
+
+.pm-prose blockquote p {
+  color: var(--pm-ink);
+  font-size: 19px;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+}
+
+.pm-prose a {
+  border-bottom: 1px solid var(--pm-hairline);
+  color: var(--pm-ink);
+  transition: border-color var(--pm-transition);
+}
+
+.pm-prose a:hover {
+  border-bottom-color: var(--pm-red);
+}
+
+.pm-prose ul,
+.pm-prose ol {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pm-space-2);
+  margin: 0;
+  padding-left: var(--pm-space-5);
+}
+
+.pm-prose strong {
+  font-weight: var(--pm-fw-medium);
+  color: var(--pm-ink);
+}
+
+.pm-prose hr {
+  width: 100%;
+  height: 1px;
+  border: 0;
+  margin: var(--pm-space-2) 0;
+  background: var(--pm-hairline);
+}
+
+.pm-prose code {
+  padding: 2px 6px;
+  border-radius: var(--pm-radius-sm);
+  background: var(--pm-surface);
+  font-family: var(--pm-font-mono, ui-monospace, monospace);
+  font-size: 0.9em;
+}
+
+.pm-prose pre {
+  overflow-x: auto;
+  margin: 0;
+  padding: var(--pm-space-5);
+  border: 1px solid var(--pm-hairline);
+  border-radius: var(--pm-radius-lg);
+  background: var(--pm-surface);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.pm-prose pre code {
+  padding: 0;
+  background: none;
+}
+
+.pm-prose img {
+  border-radius: var(--pm-radius-lg);
+}
+
+@media (min-width: 769px) {
+  .pm-prose {
+    gap: 28px;
+    padding-block: var(--pm-space-14) var(--pm-space-16);
+    font-size: 17px;
+  }
+
+  .pm-prose > p:first-of-type {
+    font-size: 21px;
+  }
+
+  .pm-prose h2 {
+    margin-top: var(--pm-space-6);
+    font-size: 26px;
+  }
+
+  .pm-prose blockquote {
+    padding: 6px 0 6px var(--pm-space-6);
+    margin-block: var(--pm-space-3);
+  }
+
+  .pm-prose blockquote p {
+    font-size: 22px;
+  }
+}

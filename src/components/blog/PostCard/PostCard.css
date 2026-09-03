@@ -1,0 +1,39 @@
+/* Post card — white on the grey band, hairline border, radius 10, no shadow. */
+
+.pm-post-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pm-space-3);
+  min-height: 150px;
+  padding: 22px;
+  border: 1px solid var(--pm-hairline);
+  border-radius: var(--pm-radius-lg);
+  background: var(--pm-bg);
+  transition: border-color var(--pm-transition);
+}
+
+.pm-post-card:hover {
+  border-color: var(--pm-ink);
+}
+
+.pm-post-card__topic {
+  color: var(--pm-red-dark);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.pm-post-card__title {
+  font-size: 18px;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  color: var(--pm-ink);
+  text-wrap: pretty;
+}
+
+.pm-post-card__meta {
+  margin-top: auto;
+  color: var(--pm-muted);
+  font-size: 12px;
+}
