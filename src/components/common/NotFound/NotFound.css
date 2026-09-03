@@ -1,0 +1,45 @@
+/* 404 — centred in the space between the header and the page bottom. */
+
+.pm-not-found {
+  display: flex;
+  flex: 1;
+}
+
+.pm-not-found__inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pm-space-5);
+  align-items: flex-start;
+  justify-content: center;
+  padding-block: var(--pm-space-14);
+}
+
+.pm-not-found__title {
+  max-width: 620px;
+  /* 38px on mobile → 58px at 1280px */
+  font-size: clamp(2.375rem, 1.79rem + 2.36vw, 3.625rem);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+}
+
+.pm-not-found__body {
+  max-width: 460px;
+  color: var(--pm-body);
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+.pm-not-found__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pm-space-3);
+  align-self: stretch;
+  margin-top: var(--pm-space-2);
+}
+
+@media (min-width: 641px) {
+  .pm-not-found__actions {
+    flex-direction: row;
+    align-self: auto;
+  }
+}
