@@ -41,8 +41,7 @@
   flex-direction: row;
   flex-wrap: wrap;
   gap: var(--pm-space-3);
-  /* Sits at the bottom of the section on mobile */
-  padding-bottom: var(--pm-space-6);
+  margin-top: var(--pm-space-6);
 }
 
 /* The "About me" CTA is redundant on mobile — the section is a scroll away */
@@ -52,11 +51,14 @@
 
 /* ---------- Portrait ---------- */
 
+/* The CTAs come before the portrait in the DOM order the layout needs, so
+   the portrait is ordered last and fills the rest of the section. */
 .pm-hero__photo {
+  order: 1;
   position: relative;
   flex: 1;
   min-height: 240px;
-  margin-block: var(--pm-space-3) var(--pm-space-4);
+  margin-top: var(--pm-space-5);
   overflow: hidden;
 }
 
@@ -93,7 +95,7 @@
   }
 
   .pm-hero__actions {
-    padding-bottom: 0;
+    margin-top: 0;
   }
 
   .pm-hero__action--desktop {
@@ -101,6 +103,7 @@
   }
 
   .pm-hero__photo {
+    order: 0;
     position: absolute;
     right: -40px;
     bottom: 0;
