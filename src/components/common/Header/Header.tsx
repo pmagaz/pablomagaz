@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react';
-import Eyebrow from '~/components/common/Eyebrow/Eyebrow';
 import { site } from '~/data/site';
 import './Header.css';
 
@@ -20,9 +19,10 @@ export default function Header({ pathname, children }: HeaderProps) {
   return (
     <header className="pm-header">
       <div className="pm-container pm-header__inner">
-        {/* Same treatment as the hero byline */}
-        <a className="pm-header__brand" href="/">
-          <Eyebrow dot text={site.name} />
+        {/* No visible wordmark, but keep a home link for keyboard and
+            screen-reader users — the nav has no other route back to /. */}
+        <a className="pm-sr-only" href="/">
+          {site.name} &mdash; home
         </a>
 
         <nav className="pm-header__nav" aria-label="Main">

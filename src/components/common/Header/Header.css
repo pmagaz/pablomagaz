@@ -11,18 +11,13 @@
   background: var(--pm-bg);
 }
 
+/* No wordmark, so the nav sits to the right on its own */
 .pm-header__inner {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: var(--pm-space-6);
   padding-block: var(--pm-header-pad-y);
-}
-
-/* Brand, top left. Typography comes from the Eyebrow component, exactly as
-   the hero byline: uppercase, 12px, 0.22em tracking. */
-.pm-header__brand {
-  min-width: 0;
 }
 
 .pm-header__nav {
