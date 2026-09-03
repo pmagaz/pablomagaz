@@ -1,0 +1,39 @@
+import type { HeadlineLines } from '~/lib/headline';
+import './Headline.css';
+
+export interface HeadlineProps {
+  lines: HeadlineLines;
+  /** Only one h1 per page — sections use h2. */
+  as?: 'h1' | 'h2';
+  /** Size and measure come from the owning section's css. */
+  className?: string;
+  /** Lets the browser even out ragged lines when no explicit breaks are set. */
+  balance?: boolean;
+}
+
+/**
+ * Renders a headline with its accent word in MIO red. Explicit line breaks
+ * come from the content, matching the breaks drawn in the design.
+ */
+export default function Headline({ lines, as = 'h1', className, balance = false }: HeadlineProps) {
+  const Tag = as;
+  const cls = ['pm-headline', balance && 'pm-headline--balance', className].filter(Boolean).join(' ');
+
+  return (
+    <Tag className={cls}>
+      {lines.map((line, lineIndex) => (
+        <span className="pm-headline__line" key={lineIndex}>
+          {line.map((token, tokenIndex) =>
+            token.accent ? (
+              <em className="pm-headline__accent" key={tokenIndex}>
+                {token.text}
+              </em>
+            ) : (
+              <span key={tokenIndex}>{token.text}</span>
+            ),
+          )}
+        </span>
+      ))}
+    </Tag>
+  );
+}

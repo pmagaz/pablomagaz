@@ -1,0 +1,105 @@
+/* Home hero.
+   Mobile: headline → byline → buttons → portrait filling the remaining height.
+   Desktop: single left column, portrait bleeding off the right edge behind
+   the text (z-index 1 vs 2). */
+
+.pm-hero {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.pm-hero__inner {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.pm-hero__content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: var(--pm-space-6);
+  max-width: 720px;
+  padding-top: var(--pm-space-10);
+}
+
+.pm-hero__title {
+  /* 52px at 390px → 88px at 1280px */
+  font-size: clamp(3.25rem, 2.26rem + 4.04vw, 5.5rem);
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+}
+
+.pm-hero__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pm-space-3);
+}
+
+/* ---------- Portrait ---------- */
+
+.pm-hero__photo {
+  position: relative;
+  flex: 1;
+  min-height: 300px;
+  margin-top: var(--pm-space-6);
+  overflow: hidden;
+}
+
+.pm-hero__photo > img {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  height: 100%;
+  width: auto;
+  transform: translateX(-44%);
+  object-fit: contain;
+}
+
+@media (min-width: 641px) {
+  .pm-hero__actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+
+@media (min-width: 769px) {
+  .pm-hero__inner {
+    justify-content: center;
+    padding-block: var(--pm-space-10) 60px;
+  }
+
+  .pm-hero__content {
+    gap: var(--pm-space-8);
+    padding-top: 0;
+    /* Keeps the headline clear of the portrait */
+    padding-right: var(--pm-space-14);
+  }
+
+  .pm-hero__title {
+    line-height: 0.96;
+  }
+
+  .pm-hero__photo {
+    position: absolute;
+    right: -40px;
+    bottom: 0;
+    z-index: 1;
+    flex: none;
+    width: auto;
+    height: 82%;
+    min-height: 0;
+    margin-top: 0;
+    overflow: visible;
+  }
+
+  .pm-hero__photo > img {
+    position: static;
+    height: 100%;
+    transform: none;
+  }
+}

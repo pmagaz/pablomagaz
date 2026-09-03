@@ -1,0 +1,31 @@
+/* Headline — weight 400 with tight negative tracking. The owning section sets
+   font-size and max-width; this file owns structure and the accent colour. */
+
+.pm-headline {
+  margin: 0;
+  font-weight: var(--pm-fw-regular);
+  color: var(--pm-ink);
+  text-wrap: pretty;
+}
+
+.pm-headline--balance {
+  text-wrap: balance;
+}
+
+/* Each content line is its own block, reproducing the breaks in the design.
+   On narrow viewports they collapse back to normal wrapping. */
+.pm-headline__line {
+  display: block;
+}
+
+/* Red is text-only — never a fill */
+.pm-headline__accent {
+  font-style: normal;
+  color: var(--pm-red-dark);
+}
+
+@media (max-width: 640px) {
+  .pm-headline--wrap-mobile .pm-headline__line {
+    display: inline;
+  }
+}

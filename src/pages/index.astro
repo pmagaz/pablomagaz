@@ -1,9 +1,17 @@
 ---
+import Hero from '~/components/home/Hero/Hero';
+import portraitSource from '~/assets/images/pablo-hero.png';
+import { home } from '~/data/home';
 import BaseLayout from '~/layouts/BaseLayout/BaseLayout.astro';
+import { responsiveImage } from '~/lib/images';
+
+// Optimized here because React components cannot use Astro's <Image />.
+const portrait = await responsiveImage(portraitSource, {
+  alt: home.portraitAlt,
+  widths: [420, 640, 840, 1000],
+});
 ---
 
 <BaseLayout>
-  <div class="pm-container">
-    <h1>Pablo Magaz</h1>
-  </div>
+  <Hero portrait={portrait} />
 </BaseLayout>

@@ -110,12 +110,6 @@ time,
   background: var(--pm-hairline);
 }
 
-/* An accented word inside a headline — red is text-only, never a fill */
-.pm-accent {
-  font-style: normal;
-  color: var(--pm-red-dark);
-}
-
 /* Visually hidden but available to assistive tech */
 .pm-sr-only {
   position: absolute;
