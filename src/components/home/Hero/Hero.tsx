@@ -13,8 +13,11 @@ export interface HeroProps {
 
 /**
  * Home hero — headline with a red accent word, byline with the brand dot,
- * two CTAs, and the cutout portrait bleeding off the right edge behind the
- * text on desktop. On mobile the portrait drops below the buttons.
+ * two CTAs, and the cutout portrait.
+ *
+ * The CTAs are a sibling of the copy rather than nested in it, so mobile can
+ * stack copy → portrait → CTAs (buttons pinned to the bottom of the section)
+ * while desktop keeps them directly under the byline in the left column.
  */
 export default function Hero({ portrait }: HeroProps) {
   return (
@@ -24,14 +27,6 @@ export default function Hero({ portrait }: HeroProps) {
           <Headline lines={home.headline} className="pm-hero__title" />
 
           <Eyebrow dot text={`${site.name} — ${site.role}`} />
-
-          <div className="pm-hero__actions">
-            {home.actions.map((action) => (
-              <Button key={action.href} href={action.href} variant={action.variant}>
-                {action.label}
-              </Button>
-            ))}
-          </div>
         </div>
 
         <div className="pm-hero__photo" data-reveal>
@@ -45,6 +40,19 @@ export default function Hero({ portrait }: HeroProps) {
             fetchPriority="high"
             decoding="async"
           />
+        </div>
+
+        <div className="pm-hero__actions" data-reveal-hero>
+          {home.actions.map((action) => (
+            <Button
+              key={action.href}
+              href={action.href}
+              variant={action.variant}
+              className={action.desktopOnly ? 'pm-hero__action--desktop' : undefined}
+            >
+              {action.label}
+            </Button>
+          ))}
         </div>
       </div>
     </section>

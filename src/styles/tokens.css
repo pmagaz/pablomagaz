@@ -30,9 +30,10 @@
   /* ---------- Layout ---------- */
   --pm-page-max: 1280px;
   --pm-page-pad: 20px; /* mobile */
-  --pm-header-pad-y: 18px;
-  /* Height of the sticky header — used for scroll offsets and the hero */
-  --pm-header-h: 80px;
+  --pm-header-pad-y: 14px;
+  /* Height of the sticky header — used for scroll offsets and the hero.
+     Measured at runtime by scrollSpy.ts; these are per-breakpoint fallbacks. */
+  --pm-header-h: 72px;
 
   /* ---------- Spacing (4px base) ---------- */
   --pm-space-1: 4px;
@@ -74,8 +75,8 @@
 @media (min-width: 641px) {
   :root {
     --pm-page-pad: 32px;
-    --pm-header-pad-y: 22px;
-    --pm-header-h: 88px;
+    --pm-header-pad-y: 18px;
+    --pm-header-h: 80px;
     --pm-block: 40px;
   }
 }
@@ -83,7 +84,7 @@
 /* The hamburger is gone from here up, so the bar is shorter */
 @media (min-width: 769px) {
   :root {
-    --pm-header-h: 62px;
+    --pm-header-h: 54px;
   }
 }
 

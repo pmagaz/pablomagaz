@@ -1,10 +1,8 @@
 /* Home hero.
-   Mobile: headline → byline → buttons → portrait filling the remaining height.
-   Desktop: single left column, portrait bleeding off the right edge behind
-   the text (z-index 1 vs 2). */
+   Mobile: headline → byline → portrait → CTAs pinned to the section bottom.
+   Desktop: single left column with the CTAs under the byline, portrait
+   bleeding off the right edge behind the text (z-index 1 vs 2). */
 
-/* Fills the viewport below the sticky header, so the sections below it
-   are a deliberate scroll away. */
 .pm-hero {
   display: flex;
   flex: 1;
@@ -37,10 +35,19 @@
 }
 
 .pm-hero__actions {
+  position: relative;
+  z-index: 2;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   gap: var(--pm-space-3);
+  /* Sits at the bottom of the section on mobile */
+  padding-bottom: var(--pm-space-6);
+}
+
+/* The "About me" CTA is redundant on mobile — the section is a scroll away */
+.pm-hero__action--desktop {
+  display: none;
 }
 
 /* ---------- Portrait ---------- */
@@ -48,8 +55,8 @@
 .pm-hero__photo {
   position: relative;
   flex: 1;
-  min-height: 300px;
-  margin-top: var(--pm-space-6);
+  min-height: 200px;
+  margin-block: var(--pm-space-5);
   overflow: hidden;
 }
 
@@ -63,16 +70,11 @@
   object-fit: contain;
 }
 
-@media (min-width: 641px) {
-  .pm-hero__actions {
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-}
-
 @media (min-width: 769px) {
   .pm-hero__inner {
+    align-items: flex-start;
     justify-content: center;
+    gap: var(--pm-space-8);
     padding-block: var(--pm-space-10) 60px;
   }
 
@@ -87,6 +89,14 @@
     line-height: 0.96;
   }
 
+  .pm-hero__actions {
+    padding-bottom: 0;
+  }
+
+  .pm-hero__action--desktop {
+    display: inline-flex;
+  }
+
   .pm-hero__photo {
     position: absolute;
     right: -40px;
@@ -96,7 +106,7 @@
     width: auto;
     height: 82%;
     min-height: 0;
-    margin-top: 0;
+    margin-block: 0;
     overflow: visible;
   }
 
