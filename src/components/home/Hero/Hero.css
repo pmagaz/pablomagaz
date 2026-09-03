@@ -55,16 +55,19 @@
 .pm-hero__photo {
   position: relative;
   flex: 1;
-  min-height: 200px;
-  margin-block: var(--pm-space-5);
+  min-height: 240px;
+  margin-block: var(--pm-space-3) var(--pm-space-4);
   overflow: hidden;
 }
 
+/* Scaled past the height of its box and anchored so the overflow falls
+   below the frame — the portrait reads larger and the crop takes the legs
+   rather than the head. */
 .pm-hero__photo > img {
   position: absolute;
-  bottom: 0;
+  bottom: -32%;
   left: 50%;
-  height: 100%;
+  height: 132%;
   width: auto;
   transform: translateX(-44%);
   object-fit: contain;
