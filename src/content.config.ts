@@ -4,8 +4,9 @@ import { z } from 'astro/zod';
 import { categorySlugs } from '~/data/categories';
 
 /**
- * Blog posts are markdown files in src/content/blog, read at build time.
- * Every post gets a static detail page — no CMS, no runtime fetching.
+ * Blog posts are markdown files in content/blog at the repo root — content
+ * lives outside src/ because it is not code. Read at build time, one static
+ * detail page per post. No CMS, no runtime fetching.
  *
  * Frontmatter follows the house format:
  *   title, date, slug, author, excerpt, category, keywords
@@ -13,7 +14,7 @@ import { categorySlugs } from '~/data/categories';
 const blog = defineCollection({
   loader: glob({
     pattern: '**/*.md',
-    base: './src/content/blog',
+    base: './content/blog',
     // The URL comes from the frontmatter slug, falling back to the filename.
     generateId: ({ entry, data }) =>
       typeof data.slug === 'string' && data.slug.length > 0
