@@ -7,7 +7,6 @@ import ContactInfo from '~/components/contact/ContactInfo/ContactInfo';
 import ContactSplit from '~/components/contact/ContactSplit/ContactSplit.astro';
 import Hero from '~/components/home/Hero/Hero';
 import portraitSource from '~/assets/images/pablo-hero.png';
-import { about } from '~/data/about';
 import { home } from '~/data/home';
 import BaseLayout from '~/layouts/BaseLayout/BaseLayout.astro';
 import { responsiveImage } from '~/lib/images';
@@ -18,10 +17,6 @@ const heroPortrait = await responsiveImage(portraitSource, {
   widths: [420, 640, 840, 1000],
 });
 
-const aboutPortrait = await responsiveImage(portraitSource, {
-  alt: about.portraitAlt,
-  widths: [460, 700, 920],
-});
 ---
 
 <BaseLayout>
@@ -31,7 +26,7 @@ const aboutPortrait = await responsiveImage(portraitSource, {
   </div>
 
   <div id="about" data-section>
-    <AboutIntro portrait={aboutPortrait} headingLevel="h2" />
+    <AboutIntro headingLevel="h2" />
     <Career />
     <Highlights />
   </div>

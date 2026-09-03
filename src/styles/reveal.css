@@ -12,8 +12,8 @@
     opacity: 0;
     transform: translateY(14px);
     transition:
-      opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-      transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     will-change: opacity, transform;
   }
 
@@ -27,8 +27,8 @@
     opacity: 0;
     transform: translateY(14px);
     transition:
-      opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-      transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   html.pm-js [data-reveal-group].is-visible > * {
@@ -55,11 +55,24 @@
     transition-delay: 0.42s;
   }
 
+  /* Direction variant — slides in from the left instead of rising, so not
+     every block on the page moves the same way. Selectors carry an extra
+     attribute so they outrank the group rules above. */
+  html.pm-js [data-reveal-from='left'],
+  html.pm-js [data-reveal-group] > [data-reveal-from='left'] {
+    transform: translateX(-36px);
+  }
+
+  html.pm-js [data-reveal-from='left'].is-visible,
+  html.pm-js [data-reveal-group].is-visible > [data-reveal-from='left'] {
+    transform: none;
+  }
+
   /* The hero is above the fold — it plays on load rather than on scroll */
   html.pm-js [data-reveal-hero] > * {
     opacity: 0;
     transform: translateY(18px);
-    animation: pm-rise 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: pm-rise 0.95s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
 
   html.pm-js [data-reveal-hero] > *:nth-child(2) {
@@ -79,6 +92,7 @@
 
 /* Failsafe — if the observer never runs, show everything anyway */
 html.pm-reveal-all [data-reveal],
+html.pm-reveal-all [data-reveal-from],
 html.pm-reveal-all [data-reveal-group] > *,
 html.pm-reveal-all [data-reveal-hero] > * {
   opacity: 1 !important;

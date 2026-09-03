@@ -71,11 +71,17 @@
   }
 }
 
+/* The hamburger is gone from here up, so the bar is shorter */
+@media (min-width: 769px) {
+  :root {
+    --pm-header-h: 62px;
+  }
+}
+
 @media (min-width: 1024px) {
   :root {
     --pm-page-pad: 48px;
     --pm-header-pad-y: 26px;
-    /* The hamburger is gone above this width, so the bar is shorter */
     --pm-header-h: 70px;
     --pm-block: 56px;
   }

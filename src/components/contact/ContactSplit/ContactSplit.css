@@ -1,6 +1,8 @@
 /* Contact split — copy stacked above the form panel on mobile,
    two equal columns inside the 1280px grid on desktop. */
 
+/* Fills the viewport below the sticky header so that, once scrolled to the
+   bottom of the one-page route, contact is the only section on screen. */
 .pm-contact-split {
   display: flex;
   flex: 1;
@@ -8,7 +10,8 @@
   width: 100%;
   max-width: var(--pm-page-max);
   margin-inline: auto;
-  min-height: 0;
+  min-height: calc(100dvh - var(--pm-header-h));
+  padding-bottom: var(--pm-space-10);
 }
 
 @media (min-width: 769px) {

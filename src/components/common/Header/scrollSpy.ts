@@ -9,7 +9,36 @@
 
 type Link = HTMLAnchorElement;
 
+/**
+ * Keeps --pm-header-h equal to the real header height. The css tokens are a
+ * reasonable guess per breakpoint, but the bar also changes height when the
+ * hamburger appears or the visitor scales up text — and this value drives
+ * both the anchor scroll offset and the hero's height.
+ */
+function trackHeaderHeight(): void {
+  const header = document.querySelector<HTMLElement>('.pm-header');
+  if (!header) return;
+
+  function measureHeader(): void {
+    const height = Math.round(header!.getBoundingClientRect().height);
+    if (height > 0) {
+      document.documentElement.style.setProperty('--pm-header-h', `${height}px`);
+    }
+  }
+
+  measureHeader();
+
+  // `typeof` rather than `'x' in window`, which narrows window to never here.
+  if (typeof ResizeObserver !== 'undefined') {
+    new ResizeObserver(measureHeader).observe(header);
+  } else {
+    window.addEventListener('resize', measureHeader, { passive: true });
+  }
+}
+
 function setup(): void {
+  trackHeaderHeight();
+
   const links = Array.from(document.querySelectorAll<Link>('[data-nav-section]'));
   if (links.length === 0) return;
 

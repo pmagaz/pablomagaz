@@ -9,18 +9,26 @@ export interface HeadlineProps {
   className?: string;
   /** Lets the browser even out ragged lines when no explicit breaks are set. */
   balance?: boolean;
+  /** Passes through reveal hooks such as data-reveal-from. */
+  [key: `data-${string}`]: unknown;
 }
 
 /**
  * Renders a headline with its accent word in MIO red. Explicit line breaks
  * come from the content, matching the breaks drawn in the design.
  */
-export default function Headline({ lines, as = 'h1', className, balance = false }: HeadlineProps) {
+export default function Headline({
+  lines,
+  as = 'h1',
+  className,
+  balance = false,
+  ...rest
+}: HeadlineProps) {
   const Tag = as;
   const cls = ['pm-headline', balance && 'pm-headline--balance', className].filter(Boolean).join(' ');
 
   return (
-    <Tag className={cls}>
+    <Tag className={cls} {...rest}>
       {lines.map((line, lineIndex) => (
         <span className="pm-headline__line" key={lineIndex}>
           {line.map((token, tokenIndex) =>
