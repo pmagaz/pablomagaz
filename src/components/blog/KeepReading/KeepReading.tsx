@@ -16,7 +16,7 @@ export default function KeepReading({ posts }: KeepReadingProps) {
       <div className="pm-container pm-keep-reading__inner">
         <Eyebrow text="Keep reading" />
 
-        <div className="pm-keep-reading__grid">
+        <div className="pm-keep-reading__grid" data-reveal-group>
           {posts.map((post) => (
             <PostCard key={post.slug} post={post} />
           ))}

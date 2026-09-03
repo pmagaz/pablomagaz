@@ -8,12 +8,27 @@
 export interface NavItem {
   readonly label: string;
   readonly href: string;
+  /**
+   * Set when the item points at a section of the one-page home route.
+   * Scroll position drives the active state for these; path drives the rest.
+   */
+  readonly sectionId?: string;
 }
 
 export interface SocialLink {
   readonly label: string;
   readonly href: string;
 }
+
+/**
+ * Explicitly typed rather than `as const`, so `sectionId` is readable on
+ * every item instead of only the ones that declare it.
+ */
+const nav: readonly NavItem[] = [
+  { label: 'About', href: '/#about', sectionId: 'about' },
+  { label: 'Contact', href: '/#contact', sectionId: 'contact' },
+  { label: 'Blog', href: '/blog' },
+];
 
 export const site = {
   name: 'Pablo Magaz',
@@ -26,11 +41,7 @@ export const site = {
   authorBio: 'Chief Technical Officer — platforms, AI, org design',
   /** GA4 measurement id. Only loaded in production builds. */
   analyticsId: 'G-1WMZ9FNRR3',
-  nav: [
-    { label: 'About', href: '/about' },
-    { label: 'Blog', href: '/blog' },
-    { label: 'Contact', href: '/contact' },
-  ] as const satisfies readonly NavItem[],
+  nav,
   social: [
     { label: 'LinkedIn', href: 'https://www.linkedin.com/in/pablomagaz/' },
     { label: 'X', href: 'https://x.com/pablomagaz' },

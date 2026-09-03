@@ -12,7 +12,7 @@ export default function Career() {
       <div className="pm-container pm-career__inner">
         <Eyebrow text="Career" />
 
-        <ol className="pm-career__rows">
+        <ol className="pm-career__rows" data-reveal-group>
           {about.career.map((row, index) => (
             <li className="pm-career__row" key={row.stage}>
               <span

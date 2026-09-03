@@ -20,19 +20,21 @@ export default function Header({ pathname, children }: HeaderProps) {
   return (
     <header className="pm-header">
       <div className="pm-container pm-header__inner">
-        {/* Same component as the hero byline, so the style is identical */}
+        {/* Same treatment as the hero byline */}
         <a className="pm-header__brand" href="/">
           <Eyebrow dot text={site.name} />
         </a>
 
         <nav className="pm-header__nav" aria-label="Main">
           {site.nav.map((item) => {
-            const current = isCurrent(pathname, item.href);
+            // Section links get their active state from scroll position.
+            const current = item.sectionId ? false : isCurrent(pathname, item.href);
             return (
               <a
                 key={item.href}
                 className={`pm-header__link${current ? ' is-current' : ''}`}
                 href={item.href}
+                data-nav-section={item.sectionId}
                 aria-current={current ? 'page' : undefined}
               >
                 {item.label}

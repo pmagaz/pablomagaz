@@ -5,6 +5,20 @@
 [build.environment]
   NODE_VERSION = "22"
 
+# About and Contact are now sections of the one-page home route.
+# Keep the old URLs working and pass their ranking to the new anchors.
+[[redirects]]
+  from = "/about"
+  to = "/#about"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/contact"
+  to = "/#contact"
+  status = 301
+  force = true
+
 # Long-lived cache for Astro's content-hashed assets.
 [[headers]]
   for = "/_astro/*"

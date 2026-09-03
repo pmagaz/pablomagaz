@@ -1,7 +1,12 @@
 /* Header — full-width bar with a 1px bottom hairline, contents on the
    1280px grid. Current page is underlined in ink; hover underlines in red. */
 
+/* Sticky so the nav stays available while scrolling the one-page route,
+   which is also what makes the active-section highlight useful. */
 .pm-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
   border-bottom: 1px solid var(--pm-hairline);
   background: var(--pm-bg);
 }

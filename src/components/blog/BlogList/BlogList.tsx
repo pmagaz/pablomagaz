@@ -43,7 +43,7 @@ export default function BlogList({
         {featured && <FeaturedPost post={featured} />}
 
         {rows.length > 0 && (
-          <div className="pm-blog-list__archive">
+          <div className="pm-blog-list__archive" data-reveal-group>
             {rows.map((post) => (
               <PostRow key={post.slug} post={post} />
             ))}

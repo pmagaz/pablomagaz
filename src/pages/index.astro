@@ -1,17 +1,46 @@
 ---
+import AboutIntro from '~/components/about/AboutIntro/AboutIntro';
+import Career from '~/components/about/Career/Career';
+import Highlights from '~/components/about/Highlights/Highlights';
+import ContactForm from '~/components/contact/ContactForm/ContactForm';
+import ContactInfo from '~/components/contact/ContactInfo/ContactInfo';
+import ContactSplit from '~/components/contact/ContactSplit/ContactSplit.astro';
 import Hero from '~/components/home/Hero/Hero';
 import portraitSource from '~/assets/images/pablo-hero.png';
+import { about } from '~/data/about';
 import { home } from '~/data/home';
 import BaseLayout from '~/layouts/BaseLayout/BaseLayout.astro';
 import { responsiveImage } from '~/lib/images';
 
 // Optimized here because React components cannot use Astro's <Image />.
-const portrait = await responsiveImage(portraitSource, {
+const heroPortrait = await responsiveImage(portraitSource, {
   alt: home.portraitAlt,
   widths: [420, 640, 840, 1000],
+});
+
+const aboutPortrait = await responsiveImage(portraitSource, {
+  alt: about.portraitAlt,
+  widths: [460, 700, 920],
 });
 ---
 
 <BaseLayout>
-  <Hero portrait={portrait} />
+  {/* One page, three sections. The nav highlights whichever is in view. */}
+  <div id="home" data-section>
+    <Hero portrait={heroPortrait} />
+  </div>
+
+  <div id="about" data-section>
+    <AboutIntro portrait={aboutPortrait} headingLevel="h2" />
+    <Career />
+    <Highlights />
+  </div>
+
+  <div id="contact" data-section>
+    <ContactSplit>
+      <ContactInfo slot="info" />
+      {/* The only component needing client JS: validation and success state */}
+      <ContactForm slot="form" client:load />
+    </ContactSplit>
+  </div>
 </BaseLayout>

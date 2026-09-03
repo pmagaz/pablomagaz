@@ -3,10 +3,12 @@
    Desktop: single left column, portrait bleeding off the right edge behind
    the text (z-index 1 vs 2). */
 
+/* Fills the viewport below the sticky header, so the sections below it
+   are a deliberate scroll away. */
 .pm-hero {
   display: flex;
   flex: 1;
-  min-height: 0;
+  min-height: calc(100dvh - var(--pm-header-h));
 }
 
 .pm-hero__inner {

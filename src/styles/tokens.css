@@ -31,6 +31,8 @@
   --pm-page-max: 1280px;
   --pm-page-pad: 20px; /* mobile */
   --pm-header-pad-y: 18px;
+  /* Height of the sticky header — used for scroll offsets and the hero */
+  --pm-header-h: 80px;
 
   /* ---------- Spacing (4px base) ---------- */
   --pm-space-1: 4px;
@@ -64,6 +66,7 @@
   :root {
     --pm-page-pad: 32px;
     --pm-header-pad-y: 22px;
+    --pm-header-h: 88px;
     --pm-block: 40px;
   }
 }
@@ -72,6 +75,8 @@
   :root {
     --pm-page-pad: 48px;
     --pm-header-pad-y: 26px;
+    /* The hamburger is gone above this width, so the bar is shorter */
+    --pm-header-h: 70px;
     --pm-block: 56px;
   }
 }

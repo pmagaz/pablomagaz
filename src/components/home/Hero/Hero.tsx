@@ -20,7 +20,7 @@ export default function Hero({ portrait }: HeroProps) {
   return (
     <section className="pm-hero">
       <div className="pm-container pm-hero__inner">
-        <div className="pm-hero__content">
+        <div className="pm-hero__content" data-reveal-hero>
           <Headline lines={home.headline} className="pm-hero__title" />
 
           <Eyebrow dot text={`${site.name} — ${site.role}`} />
@@ -34,7 +34,7 @@ export default function Hero({ portrait }: HeroProps) {
           </div>
         </div>
 
-        <div className="pm-hero__photo">
+        <div className="pm-hero__photo" data-reveal>
           <img
             src={portrait.src}
             srcSet={portrait.srcSet}

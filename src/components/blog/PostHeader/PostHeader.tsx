@@ -10,7 +10,7 @@ export interface PostHeaderProps {
 export default function PostHeader({ post }: PostHeaderProps) {
   return (
     <header className="pm-post-header">
-      <div className="pm-container pm-post-header__inner">
+      <div className="pm-container pm-post-header__inner" data-reveal-group>
         <a className="pm-post-header__back" href="/blog">
           &larr; Back to all posts
         </a>

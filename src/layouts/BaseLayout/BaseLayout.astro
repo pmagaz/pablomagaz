@@ -7,6 +7,7 @@ import { site } from '~/data/site';
 import { personSchema, resolveSeo, type SeoInput } from '~/lib/seo';
 import '~/styles/tokens.css';
 import '~/styles/global.css';
+import '~/styles/reveal.css';
 import './BaseLayout.css';
 
 interface Props extends SeoInput {
@@ -50,6 +51,16 @@ const pathname = Astro.url.pathname;
 
     <Font cssVariable="--font-outfit" preload />
 
+    {/* Set before first paint so revealed content never flashes.
+        The timer is a failsafe that unhides everything if the reveal module
+        never loads; reveal.ts clears it as soon as it is running. */}
+    <script is:inline>
+      document.documentElement.classList.add('pm-js');
+      window.__pmRevealFailsafe = setTimeout(function () {
+        document.documentElement.classList.add('pm-reveal-all');
+      }, 2500);
+    </script>
+
     <script type="application/ld+json" is:inline set:html={personSchema(Astro.site)} />
     {schema && <script type="application/ld+json" is:inline set:html={schema} />}
 
@@ -83,5 +94,10 @@ const pathname = Astro.url.pathname;
       {/* Footer is not in the design handoff yet — kept out until it is. */}
       {/* <Footer year={new Date().getFullYear()} /> */}
     </div>
+
+    <script>
+      import '~/lib/reveal';
+      import '~/components/common/Header/scrollSpy';
+    </script>
   </body>
 </html>

@@ -1,0 +1,86 @@
+/* ============================================================
+   Scroll reveals — a short fade and rise as content enters view.
+
+   Everything is gated behind `html.pm-js`, which only exists when
+   JavaScript ran. Without it the content is simply visible, so crawlers
+   and no-JS visitors lose nothing.
+   ============================================================ */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Single element */
+  html.pm-js [data-reveal] {
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+      opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+  }
+
+  html.pm-js [data-reveal].is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Group — children arrive one after another */
+  html.pm-js [data-reveal-group] > * {
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+      opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  html.pm-js [data-reveal-group].is-visible > * {
+    opacity: 1;
+    transform: none;
+  }
+
+  html.pm-js [data-reveal-group].is-visible > *:nth-child(2) {
+    transition-delay: 0.07s;
+  }
+  html.pm-js [data-reveal-group].is-visible > *:nth-child(3) {
+    transition-delay: 0.14s;
+  }
+  html.pm-js [data-reveal-group].is-visible > *:nth-child(4) {
+    transition-delay: 0.21s;
+  }
+  html.pm-js [data-reveal-group].is-visible > *:nth-child(5) {
+    transition-delay: 0.28s;
+  }
+  html.pm-js [data-reveal-group].is-visible > *:nth-child(6) {
+    transition-delay: 0.35s;
+  }
+  html.pm-js [data-reveal-group].is-visible > *:nth-child(n + 7) {
+    transition-delay: 0.42s;
+  }
+
+  /* The hero is above the fold — it plays on load rather than on scroll */
+  html.pm-js [data-reveal-hero] > * {
+    opacity: 0;
+    transform: translateY(18px);
+    animation: pm-rise 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  html.pm-js [data-reveal-hero] > *:nth-child(2) {
+    animation-delay: 0.1s;
+  }
+  html.pm-js [data-reveal-hero] > *:nth-child(3) {
+    animation-delay: 0.2s;
+  }
+
+  @keyframes pm-rise {
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+/* Failsafe — if the observer never runs, show everything anyway */
+html.pm-reveal-all [data-reveal],
+html.pm-reveal-all [data-reveal-group] > *,
+html.pm-reveal-all [data-reveal-hero] > * {
+  opacity: 1 !important;
+  transform: none !important;
+}

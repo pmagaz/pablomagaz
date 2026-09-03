@@ -7,19 +7,25 @@ import './AboutIntro.css';
 
 export interface AboutIntroProps {
   portrait: ResponsiveImage;
+  /** h2 on the one-page home route, where the hero already owns the h1. */
+  headingLevel?: 'h1' | 'h2';
 }
 
 /**
  * Narrative bio beside a surface-tinted photo panel.
  * Prose comes first in the DOM; css moves the panel above it on mobile.
  */
-export default function AboutIntro({ portrait }: AboutIntroProps) {
+export default function AboutIntro({ portrait, headingLevel = 'h2' }: AboutIntroProps) {
   return (
     <section className="pm-about-intro">
-      <div className="pm-about-intro__prose">
+      <div className="pm-about-intro__prose" data-reveal-group>
         <Eyebrow dot text={about.eyebrow} />
 
-        <Headline lines={about.headline} className="pm-about-intro__title" />
+        <Headline
+          as={headingLevel}
+          lines={about.headline}
+          className="pm-about-intro__title"
+        />
 
         <p className="pm-about-intro__lede">{about.lede}</p>
 
@@ -37,7 +43,7 @@ export default function AboutIntro({ portrait }: AboutIntroProps) {
         </Button>
       </div>
 
-      <div className="pm-about-intro__panel">
+      <div className="pm-about-intro__panel" data-reveal>
         <img
           src={portrait.src}
           srcSet={portrait.srcSet}
