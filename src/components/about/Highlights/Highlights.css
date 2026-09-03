@@ -1,0 +1,42 @@
+/* Closing band on the about page — three columns on the surface tint. */
+
+.pm-highlights__inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--pm-space-6);
+  padding-block: var(--pm-space-7);
+}
+
+.pm-highlights__item {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pm-highlights__label {
+  color: var(--pm-muted);
+  font-size: 11px;
+  font-weight: var(--pm-fw-regular);
+  letter-spacing: 0.2em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.pm-highlights__text {
+  color: var(--pm-ink);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+@media (min-width: 769px) {
+  .pm-highlights__inner {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--pm-space-6);
+    padding-block: var(--pm-space-12);
+  }
+
+  .pm-highlights__label {
+    font-size: 12px;
+    letter-spacing: 0.22em;
+  }
+}

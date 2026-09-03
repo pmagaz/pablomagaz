@@ -46,13 +46,7 @@
 .pm-mobile-menu__panel-head {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-}
-
-.pm-mobile-menu__panel-brand {
-  font-size: 15px;
-  font-weight: var(--pm-fw-medium);
-  letter-spacing: -0.01em;
+  justify-content: flex-end;
 }
 
 .pm-mobile-menu__close {

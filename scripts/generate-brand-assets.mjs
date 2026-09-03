@@ -48,7 +48,7 @@ async function main() {
   <rect width="1200" height="630" fill="${INK}"/>
   <circle cx="82" cy="188" r="11" fill="${RED}"/>
   <text class="name" x="78" y="330">Pablo Magaz</text>
-  <text class="role" x="82" y="400">SENIOR EXECUTIVE CTO</text>
+  <text class="role" x="82" y="400">CHIEF TECHNICAL OFFICER</text>
 </svg>`;
 
   const portrait = await sharp(resolve(root, 'src/assets/images/pablo-hero.png'))

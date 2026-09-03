@@ -105,7 +105,6 @@ export default function MobileMenu({ pathname }: MobileMenuProps) {
         hidden={!open}
       >
         <div className="pm-mobile-menu__panel-head">
-          <span className="pm-mobile-menu__panel-brand">{site.name}</span>
           <button
             className="pm-mobile-menu__close"
             type="button"

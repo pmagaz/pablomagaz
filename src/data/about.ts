@@ -31,7 +31,7 @@ export const about = {
       { text: ' software.' },
     ],
   ] as const satisfies HeadlineLines,
-  lede: 'I am a Senior Executive CTO. I lead engineering organisations through the moments where the technology decision and the business decision are the same decision.',
+  lede: 'I am a Chief Technical Officer. I lead engineering organisations through the moments where the technology decision and the business decision are the same decision.',
   paragraphs: [
     'My work sits in three places: the platform a company builds on, the AI it puts in front of customers, and the organisation that has to maintain both once the launch is over. I have done this as a founder, as a consultancy CTO and inside companies mid-transformation — which is mostly a lesson in how differently the same problem looks from each chair.',
     'I speak regularly at industry conferences, mentor technical leaders, and write here about the parts of the job nobody puts in the job description.',

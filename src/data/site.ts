@@ -17,13 +17,13 @@ export interface SocialLink {
 
 export const site = {
   name: 'Pablo Magaz',
-  role: 'Senior Executive CTO',
+  role: 'Chief Technical Officer',
   /** Used in <title> on the home page and as the OG site name. */
-  title: 'Pablo Magaz — Senior Executive CTO',
+  title: 'Pablo Magaz — Chief Technical Officer',
   description:
-    'Pablo Magaz is a Senior Executive CTO working on platform strategy, AI in production and engineering organisation design.',
+    'Pablo Magaz is a Chief Technical Officer working on platform strategy, AI in production and engineering organisation design.',
   email: 'hola@pablomagaz.com',
-  authorBio: 'Senior Executive CTO — platforms, AI, org design',
+  authorBio: 'Chief Technical Officer — platforms, AI, org design',
   nav: [
     { label: 'About', href: '/about' },
     { label: 'Blog', href: '/blog' },

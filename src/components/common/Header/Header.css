@@ -14,11 +14,10 @@
   padding-block: var(--pm-header-pad-y);
 }
 
+/* Brand, top left. Typography comes from the Eyebrow component, exactly as
+   the hero byline: uppercase, 12px, 0.22em tracking. */
 .pm-header__brand {
-  font-size: 15px;
-  font-weight: var(--pm-fw-medium);
-  letter-spacing: -0.01em;
-  color: var(--pm-ink);
+  min-width: 0;
 }
 
 .pm-header__nav {

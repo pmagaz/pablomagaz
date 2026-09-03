@@ -1,0 +1,21 @@
+---
+import AboutIntro from '~/components/about/AboutIntro/AboutIntro';
+import Career from '~/components/about/Career/Career';
+import Highlights from '~/components/about/Highlights/Highlights';
+import portraitSource from '~/assets/images/pablo-hero.png';
+import { about } from '~/data/about';
+import BaseLayout from '~/layouts/BaseLayout/BaseLayout.astro';
+import { headlineToText } from '~/lib/headline';
+import { responsiveImage } from '~/lib/images';
+
+const portrait = await responsiveImage(portraitSource, {
+  alt: about.portraitAlt,
+  widths: [460, 700, 920],
+});
+---
+
+<BaseLayout title="About" description={headlineToText(about.headline)}>
+  <AboutIntro portrait={portrait} />
+  <Career />
+  <Highlights />
+</BaseLayout>
