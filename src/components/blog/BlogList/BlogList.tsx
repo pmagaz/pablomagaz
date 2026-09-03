@@ -1,28 +1,28 @@
+import CategoryPills from '~/components/blog/CategoryPills/CategoryPills';
 import FeaturedPost from '~/components/blog/FeaturedPost/FeaturedPost';
 import Pagination from '~/components/blog/Pagination/Pagination';
 import PostRow from '~/components/blog/PostRow/PostRow';
-import TopicPills from '~/components/blog/TopicPills/TopicPills';
 import type { PageInfo, PostSummary } from '~/lib/posts';
 import './BlogList.css';
 
 export interface BlogListProps {
   posts: PostSummary[];
   pageInfo: PageInfo;
-  activeTopic?: string;
-  availableTopics: string[];
+  activeCategory?: string;
+  availableCategories: string[];
   /** Only the first page of the unfiltered list leads with a featured post. */
   showFeatured: boolean;
 }
 
 /**
- * Blog index: title with topic pills, an optional featured lead post, then
+ * Blog index: title with category pills, an optional featured lead post, then
  * the archive as hairline index rows, then the pagination footer.
  */
 export default function BlogList({
   posts,
   pageInfo,
-  activeTopic,
-  availableTopics,
+  activeCategory,
+  availableCategories,
   showFeatured,
 }: BlogListProps) {
   const [lead, ...rest] = posts;
@@ -34,7 +34,10 @@ export default function BlogList({
       <div className="pm-container pm-blog-list__inner">
         <div className="pm-blog-list__head">
           <h1 className="pm-blog-list__title">Blog</h1>
-          <TopicPills activeTopic={activeTopic} availableTopics={availableTopics} />
+          <CategoryPills
+            activeCategory={activeCategory}
+            availableCategories={availableCategories}
+          />
         </div>
 
         {featured && <FeaturedPost post={featured} />}
@@ -47,9 +50,7 @@ export default function BlogList({
           </div>
         )}
 
-        {posts.length === 0 && (
-          <p className="pm-blog-list__empty">No posts here yet.</p>
-        )}
+        {posts.length === 0 && <p className="pm-blog-list__empty">No posts here yet.</p>}
 
         {pageInfo.count > 0 && <Pagination pageInfo={pageInfo} />}
       </div>

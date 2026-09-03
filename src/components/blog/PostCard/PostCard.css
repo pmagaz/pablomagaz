@@ -16,7 +16,7 @@
   border-color: var(--pm-ink);
 }
 
-.pm-post-card__topic {
+.pm-post-card__category {
   color: var(--pm-red-dark);
   font-size: 11px;
   letter-spacing: 0.18em;

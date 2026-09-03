@@ -1,5 +1,4 @@
 import Eyebrow from '~/components/common/Eyebrow/Eyebrow';
-import { site } from '~/data/site';
 import type { PostSummary } from '~/lib/posts';
 import './PostHeader.css';
 
@@ -16,14 +15,14 @@ export default function PostHeader({ post }: PostHeaderProps) {
           &larr; Back to all posts
         </a>
 
-        <Eyebrow dot tone="red" text={post.category} />
+        <Eyebrow dot tone="red" text={post.categoryLabel} />
 
         <h1 className="pm-post-header__title">{post.title}</h1>
 
         <div className="pm-post-header__meta">
           <time dateTime={post.publishedAtISO}>{post.dateLong}</time>
           <span>{post.readingTime} min read</span>
-          <span className="pm-post-header__author">{site.name}</span>
+          <span className="pm-post-header__author">{post.author}</span>
         </div>
       </div>
     </header>

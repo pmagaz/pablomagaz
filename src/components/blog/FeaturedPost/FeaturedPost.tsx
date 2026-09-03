@@ -14,7 +14,7 @@ export default function FeaturedPost({ post }: FeaturedPostProps) {
   return (
     <a className="pm-featured" href={post.href}>
       <div className="pm-featured__main">
-        <Eyebrow dot tone="red" text={`Latest · ${post.topicLabel}`} />
+        <Eyebrow dot tone="red" text={`Latest · ${post.categoryLabel}`} />
 
         <h2 className="pm-featured__title">{post.title}</h2>
         <p className="pm-featured__excerpt">{post.excerpt}</p>

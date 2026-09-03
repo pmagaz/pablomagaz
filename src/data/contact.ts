@@ -13,7 +13,6 @@ export const contact = {
   ] as const satisfies HeadlineLines,
   intro:
     "Advisory, speaking, board work or a technology decision you want a second opinion on. Write a few lines and I'll come back to you personally.",
-  reassurance: 'I reply to everything within a couple of days.',
   success: {
     title: 'Thanks — message received.',
     body: "I'll come back to you personally.",

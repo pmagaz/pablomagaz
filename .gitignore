@@ -5,8 +5,10 @@ dist/
 # Netlify
 .netlify/
 
-# Design handoff bundle (reference only, not part of the build)
-design/
+# Reference-only bundles, not part of the build.
+# Leading slash anchors these to the repo root so src/content/ is NOT ignored.
+/design/
+/content/
 *.zip
 
 # Logs

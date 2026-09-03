@@ -159,12 +159,10 @@ export default function ContactForm() {
         {status === 'submitting' ? 'Sending…' : 'Send message'}
       </Button>
 
-      {status === 'error' ? (
+      {status === 'error' && (
         <p className="pm-contact-form__error" role="alert">
           That did not go through. Please try again, or email me directly.
         </p>
-      ) : (
-        <p className="pm-contact-form__note">{contact.reassurance}</p>
       )}
     </form>
   );

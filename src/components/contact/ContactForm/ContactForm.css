@@ -68,12 +68,6 @@
   line-height: 1.4;
 }
 
-.pm-contact-form__note {
-  color: var(--pm-muted);
-  font-size: 12px;
-  line-height: 1.4;
-}
-
 /* Honeypot — hidden from people, visible to bots */
 .pm-contact-form__honeypot {
   position: absolute;

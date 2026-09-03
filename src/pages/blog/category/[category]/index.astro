@@ -1,0 +1,20 @@
+---
+import type { GetStaticPaths } from 'astro';
+import BlogList from '~/components/blog/BlogList/BlogList';
+import { categoryLabel } from '~/data/categories';
+import BaseLayout from '~/layouts/BaseLayout/BaseLayout.astro';
+import { buildBlogPage, usedCategories } from '~/lib/blogPage';
+
+export const getStaticPaths = (async () => {
+  const used = await usedCategories();
+  return used.map((category) => ({ params: { category } }));
+}) satisfies GetStaticPaths;
+
+const category = Astro.params.category;
+const listProps = await buildBlogPage(1, category);
+const label = categoryLabel(category);
+---
+
+<BaseLayout title={`${label} — Blog`} description={`Posts filed under ${label}.`}>
+  <BlogList {...listProps} />
+</BaseLayout>

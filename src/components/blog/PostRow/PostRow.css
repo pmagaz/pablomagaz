@@ -5,9 +5,9 @@
   display: grid;
   grid-template-columns: auto auto 1fr;
   grid-template-areas:
-    'topic topic topic'
-    'main  main  main'
-    'date  read  .';
+    'cat  cat   cat'
+    'main main  main'
+    'date read  .';
   gap: 10px var(--pm-space-2);
   padding: 22px var(--pm-page-pad);
   /* Full-bleed hairlines on mobile, matching the design's edge-to-edge rows */
@@ -44,8 +44,8 @@
   line-height: 1.55;
 }
 
-.pm-post-row__topic {
-  grid-area: topic;
+.pm-post-row__category {
+  grid-area: cat;
   color: var(--pm-red-dark);
   font-size: 11px;
   letter-spacing: 0.16em;
@@ -75,7 +75,7 @@
 
 @media (min-width: 769px) {
   .pm-post-row {
-    grid-template-areas: 'date main topic read';
+    grid-template-areas: 'date main cat read';
     grid-template-columns: 110px 1fr 140px 80px;
     align-items: baseline;
     gap: var(--pm-space-8);
@@ -83,7 +83,7 @@
     padding: 26px 0;
   }
 
-  .pm-post-row__topic {
+  .pm-post-row__category {
     font-size: 12px;
   }
 

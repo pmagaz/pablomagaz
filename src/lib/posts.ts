@@ -1,5 +1,5 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
-import { POSTS_PER_PAGE, topicLabel } from '~/data/topics';
+import { POSTS_PER_PAGE, categoryLabel } from '~/data/categories';
 import { formatDateLong, formatDateShort, readingMinutes, toISODate } from './format';
 
 export type PostEntry = CollectionEntry<'blog'>;
@@ -10,10 +10,10 @@ export interface PostSummary {
   href: string;
   title: string;
   excerpt: string;
-  description: string;
-  topic: string;
-  topicLabel: string;
+  author: string;
   category: string;
+  categoryLabel: string;
+  keywords: string[];
   publishedAtISO: string;
   dateLong: string;
   dateShort: string;
@@ -23,7 +23,7 @@ export interface PostSummary {
 /** Newest first, drafts dropped from production builds. */
 export async function getSortedPosts(): Promise<PostEntry[]> {
   const posts = await getCollection('blog', ({ data }) => import.meta.env.DEV || !data.draft);
-  return posts.sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime());
+  return posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 }
 
 export function postHref(slug: string): string {
@@ -38,13 +38,13 @@ export function toSummary(entry: PostEntry): PostSummary {
     href: postHref(entry.id),
     title: data.title,
     excerpt: data.excerpt,
-    description: data.description ?? data.excerpt,
-    topic: data.topic,
-    topicLabel: topicLabel(data.topic),
-    category: data.category ?? topicLabel(data.topic),
-    publishedAtISO: toISODate(data.publishedAt),
-    dateLong: formatDateLong(data.publishedAt),
-    dateShort: formatDateShort(data.publishedAt),
+    author: data.author,
+    category: data.category,
+    categoryLabel: categoryLabel(data.category),
+    keywords: data.keywords,
+    publishedAtISO: toISODate(data.date),
+    dateLong: formatDateLong(data.date),
+    dateShort: formatDateShort(data.date),
     readingTime: data.readingTime ?? readingMinutes(entry.body),
   };
 }
@@ -64,9 +64,9 @@ export interface PageInfo {
   newerHref?: string;
 }
 
-/** `/blog`, `/blog/page/2`, `/blog/topic/ai`, `/blog/topic/ai/page/2`. */
-export function blogListHref(topic: string | undefined, page: number): string {
-  const base = topic ? `/blog/topic/${topic}` : '/blog';
+/** `/blog`, `/blog/page/2`, `/blog/category/ai`, `/blog/category/ai/page/2`. */
+export function blogListHref(category: string | undefined, page: number): string {
+  const base = category ? `/blog/category/${category}` : '/blog';
   return page <= 1 ? base : `${base}/page/${page}`;
 }
 
@@ -78,7 +78,7 @@ export function totalPages(count: number): number {
 export function paginate(
   posts: PostEntry[],
   page: number,
-  topic?: string,
+  category?: string,
 ): { posts: PostEntry[]; pageInfo: PageInfo } {
   const total = totalPages(posts.length);
   const current = Math.min(Math.max(1, page), total);
@@ -93,16 +93,16 @@ export function paginate(
       from: posts.length === 0 ? 0 : start + 1,
       to: start + slice.length,
       count: posts.length,
-      olderHref: current < total ? blogListHref(topic, current + 1) : undefined,
-      newerHref: current > 1 ? blogListHref(topic, current - 1) : undefined,
+      olderHref: current < total ? blogListHref(category, current + 1) : undefined,
+      newerHref: current > 1 ? blogListHref(category, current - 1) : undefined,
     },
   };
 }
 
-/** Up to three other posts for the "keep reading" band, same topic first. */
+/** Up to three other posts for the "keep reading" band, same category first. */
 export function relatedPosts(all: PostEntry[], current: PostEntry, limit = 3): PostEntry[] {
   const others = all.filter((post) => post.id !== current.id);
-  const sameTopic = others.filter((post) => post.data.topic === current.data.topic);
-  const rest = others.filter((post) => post.data.topic !== current.data.topic);
-  return [...sameTopic, ...rest].slice(0, limit);
+  const same = others.filter((post) => post.data.category === current.data.category);
+  const rest = others.filter((post) => post.data.category !== current.data.category);
+  return [...same, ...rest].slice(0, limit);
 }

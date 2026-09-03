@@ -8,6 +8,8 @@ export interface SeoInput {
   /** `article` for blog posts, `website` elsewhere. */
   type?: 'website' | 'article';
   publishedAt?: Date;
+  /** From a post's frontmatter. */
+  keywords?: string[];
   noindex?: boolean;
 }
 
@@ -18,6 +20,7 @@ export interface ResolvedSeo {
   image: string;
   type: 'website' | 'article';
   publishedAt?: string;
+  keywords?: string;
   noindex: boolean;
 }
 
@@ -33,6 +36,7 @@ export function resolveSeo(input: SeoInput, url: URL, siteUrl: URL | undefined):
     image: new URL(input.image ?? '/og-default.png', base).href,
     type: input.type ?? 'website',
     publishedAt: input.publishedAt?.toISOString(),
+    keywords: input.keywords?.length ? input.keywords.join(', ') : undefined,
     noindex: input.noindex ?? false,
   };
 }
@@ -56,7 +60,14 @@ export function personSchema(siteUrl: URL | undefined): string {
 
 /** JSON-LD for a single blog post. */
 export function articleSchema(
-  post: { title: string; description: string; publishedAt: Date; url: string },
+  post: {
+    title: string;
+    description: string;
+    publishedAt: Date;
+    url: string;
+    author?: string;
+    keywords?: string[];
+  },
   siteUrl: URL | undefined,
 ): string {
   return JSON.stringify({
@@ -66,9 +77,10 @@ export function articleSchema(
     description: post.description,
     datePublished: post.publishedAt.toISOString(),
     url: post.url,
+    keywords: post.keywords?.length ? post.keywords.join(', ') : undefined,
     author: {
       '@type': 'Person',
-      name: site.name,
+      name: post.author ?? site.name,
       url: siteUrl?.href,
     },
   });

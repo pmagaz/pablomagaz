@@ -11,6 +11,7 @@ import { responsiveImage } from '~/lib/images';
 import { getSortedPosts, relatedPosts, toSummary, type PostEntry } from '~/lib/posts';
 import { articleSchema } from '~/lib/seo';
 
+// One static page per post — every detail page is generated at build time.
 export const getStaticPaths = (async () => {
   const posts = await getSortedPosts();
   return posts.map((post) => ({
@@ -38,9 +39,11 @@ const avatar = await responsiveImage(portraitSource, {
 const schema = articleSchema(
   {
     title: summary.title,
-    description: summary.description,
-    publishedAt: post.data.publishedAt,
+    description: summary.excerpt,
+    publishedAt: post.data.date,
     url: new URL(summary.href, Astro.site ?? Astro.url).href,
+    author: summary.author,
+    keywords: summary.keywords,
   },
   Astro.site,
 );
@@ -48,9 +51,10 @@ const schema = articleSchema(
 
 <BaseLayout
   title={summary.title}
-  description={summary.description}
+  description={summary.excerpt}
+  keywords={summary.keywords}
   type="article"
-  publishedAt={post.data.publishedAt}
+  publishedAt={post.data.date}
   schema={schema}
 >
   <article>

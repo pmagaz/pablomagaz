@@ -22,7 +22,7 @@ export default function PostRow({ post }: PostRowProps) {
         <p className="pm-post-row__excerpt">{post.excerpt}</p>
       </div>
 
-      <span className="pm-post-row__topic">{post.topicLabel}</span>
+      <span className="pm-post-row__category">{post.categoryLabel}</span>
 
       <span className="pm-post-row__read">{post.readingTime} min</span>
     </a>

@@ -13,10 +13,11 @@ export const GET: APIRoute = async (context) => {
     site: context.site ?? context.url.origin,
     items: posts.map((post) => ({
       title: post.data.title,
-      description: post.data.description ?? post.data.excerpt,
-      pubDate: post.data.publishedAt,
+      description: post.data.excerpt,
+      pubDate: post.data.date,
       link: postHref(post.id),
-      categories: [post.data.topic],
+      categories: [post.data.category],
+      author: post.data.author,
     })),
     customData: '<language>en</language>',
   });

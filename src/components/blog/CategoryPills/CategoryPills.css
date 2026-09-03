@@ -1,7 +1,7 @@
 /* Topic pills — active is an ink fill, the rest are hairline outlines.
    On mobile they scroll horizontally rather than wrapping. */
 
-.pm-topic-pills {
+.pm-category-pills {
   display: flex;
   gap: var(--pm-space-2);
   overflow-x: auto;
@@ -11,11 +11,11 @@
   padding-inline: var(--pm-page-pad);
 }
 
-.pm-topic-pills::-webkit-scrollbar {
+.pm-category-pills::-webkit-scrollbar {
   display: none;
 }
 
-.pm-topic-pills__pill {
+.pm-category-pills__pill {
   flex: none;
   padding: 8px 14px;
   border: 1px solid var(--pm-hairline);
@@ -30,12 +30,12 @@
     background-color var(--pm-transition);
 }
 
-.pm-topic-pills__pill:hover {
+.pm-category-pills__pill:hover {
   border-color: var(--pm-ink);
   color: var(--pm-ink);
 }
 
-.pm-topic-pills__pill.is-active {
+.pm-category-pills__pill.is-active {
   border-color: var(--pm-ink);
   background: var(--pm-ink);
   color: var(--pm-on-ink);
@@ -43,7 +43,7 @@
 }
 
 @media (min-width: 769px) {
-  .pm-topic-pills {
+  .pm-category-pills {
     flex-wrap: wrap;
     justify-content: flex-end;
     overflow-x: visible;
@@ -51,7 +51,7 @@
     padding-inline: 0;
   }
 
-  .pm-topic-pills__pill {
+  .pm-category-pills__pill {
     padding: 8px 16px;
   }
 }
