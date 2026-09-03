@@ -33,7 +33,7 @@
   --pm-header-pad-y: 14px;
   /* Height of the sticky header — used for scroll offsets and the hero.
      Measured at runtime by scrollSpy.ts; these are per-breakpoint fallbacks. */
-  --pm-header-h: 72px;
+  --pm-header-h: 52px;
 
   /* ---------- Spacing (4px base) ---------- */
   --pm-space-1: 4px;
@@ -76,7 +76,7 @@
   :root {
     --pm-page-pad: 32px;
     --pm-header-pad-y: 18px;
-    --pm-header-h: 80px;
+    --pm-header-h: 60px;
     --pm-block: 40px;
   }
 }

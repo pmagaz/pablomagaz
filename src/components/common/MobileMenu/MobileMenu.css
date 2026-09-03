@@ -5,14 +5,17 @@
   display: flex;
 }
 
+/* The 44px touch area is kept, but negative block margins let it bleed past
+   the bar's padding so it no longer sets the header height. */
 .pm-mobile-menu__toggle {
   display: flex;
   align-items: center;
   justify-content: flex-end;
   min-width: 44px;
   min-height: 44px;
+  margin-block: -10px;
   margin-right: -4px;
-  padding: 12px 4px;
+  padding: 0 4px;
   border: 0;
   background: none;
 }
