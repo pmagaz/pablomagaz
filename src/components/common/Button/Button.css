@@ -48,10 +48,12 @@
   opacity: 0.55;
 }
 
-/* Mobile CTAs sit at 15px with a taller tap target */
+/* Mobile CTAs — a touch smaller, still above the 44px tap target */
 @media (max-width: 640px) {
   .pm-button {
-    padding: 14px 20px;
-    font-size: 15px;
+    /* min-height holds the 44px tap target the smaller padding would lose */
+    min-height: 44px;
+    padding: 12px 18px;
+    font-size: 14px;
   }
 }

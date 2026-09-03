@@ -26,12 +26,12 @@
   flex-direction: column;
   gap: var(--pm-space-6);
   max-width: 720px;
-  padding-top: var(--pm-space-10);
+  padding-top: 30px;
 }
 
 .pm-hero__title {
-  /* 52px at 390px → 88px at 1280px */
-  font-size: clamp(3.25rem, 2.26rem + 4.04vw, 5.5rem);
+  /* 48px at 390px → 88px at 1280px */
+  font-size: clamp(3rem, 1.9rem + 4.49vw, 5.5rem);
   line-height: 0.98;
   letter-spacing: -0.04em;
 }
