@@ -1,6 +1,6 @@
 ---
 import { Font } from 'astro:assets';
-import Footer from '~/components/common/Footer/Footer';
+// import Footer from '~/components/common/Footer/Footer';
 import Header from '~/components/common/Header/Header';
 import MobileMenu from '~/components/common/MobileMenu/MobileMenu';
 import { site } from '~/data/site';
@@ -47,7 +47,7 @@ const pathname = Astro.url.pathname;
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="alternate" type="application/rss+xml" title={`${site.name} — Blog`} href="/rss.xml" />
 
-    <Font cssVariable="--font-space-grotesk" preload />
+    <Font cssVariable="--font-outfit" preload />
 
     <script type="application/ld+json" is:inline set:html={personSchema(Astro.site)} />
     {schema && <script type="application/ld+json" is:inline set:html={schema} />}
@@ -62,7 +62,8 @@ const pathname = Astro.url.pathname;
       <main class="pm-shell__main" id="main">
         <slot />
       </main>
-      <Footer year={new Date().getFullYear()} />
+      {/* Footer is not in the design handoff yet — kept out until it is. */}
+      {/* <Footer year={new Date().getFullYear()} /> */}
     </div>
   </body>
 </html>

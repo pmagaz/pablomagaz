@@ -5,7 +5,7 @@
  * Run with `npm run brand:assets` after changing the portrait or tokens.
  * Output is committed, so this is not part of the Netlify build.
  */
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
@@ -35,22 +35,14 @@ async function main() {
     .toFile(resolve(out, 'apple-touch-icon.png'));
 
   // Social card — 1200x630 ink canvas, portrait bleeding off the right edge,
-  // brand dot and wordmark on the left. Text is drawn as paths-free SVG using
-  // the embedded font so it matches the site.
-  const fontData = await readFile(resolve(root, 'src/assets/fonts/SpaceGrotesk-Medium.woff2'));
-  const fontBase64 = fontData.toString('base64');
-
+  // brand dot and wordmark on the left. The SVG rasterizer only has system
+  // fonts available, so the card uses a generic sans rather than Outfit.
   const card = `
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
   <defs>
     <style>
-      @font-face {
-        font-family: 'Space Grotesk';
-        src: url(data:font/woff2;base64,${fontBase64}) format('woff2');
-        font-weight: 600;
-      }
-      .name { font-family: 'Space Grotesk'; font-size: 74px; font-weight: 600; letter-spacing: -3px; fill: ${ON_INK}; }
-      .role { font-family: 'Space Grotesk'; font-size: 25px; font-weight: 600; letter-spacing: 5px; fill: #9a9aa2; }
+      .name { font-family: sans-serif; font-size: 74px; font-weight: 600; letter-spacing: -3px; fill: ${ON_INK}; }
+      .role { font-family: sans-serif; font-size: 25px; font-weight: 600; letter-spacing: 5px; fill: #9a9aa2; }
     </style>
   </defs>
   <rect width="1200" height="630" fill="${INK}"/>

@@ -17,25 +17,15 @@ export default defineConfig({
   },
   fonts: [
     {
-      provider: fontProviders.local(),
-      name: 'Space Grotesk',
-      cssVariable: '--font-space-grotesk',
-      // Space Grotesk only, per the design system. 400 = body, 600 = medium.
+      provider: fontProviders.google(),
+      name: 'Outfit',
+      cssVariable: '--font-outfit',
+      // 400 = body, 600 = medium. Font files are downloaded and self-hosted
+      // at build time, so no request ever leaves the visitor's browser.
+      weights: [400, 600],
+      styles: ['normal'],
+      subsets: ['latin', 'latin-ext'],
       fallbacks: ['ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
-      options: {
-        variants: [
-          {
-            weight: 400,
-            style: 'normal',
-            src: ['./src/assets/fonts/SpaceGrotesk-Regular.woff2'],
-          },
-          {
-            weight: 600,
-            style: 'normal',
-            src: ['./src/assets/fonts/SpaceGrotesk-Medium.woff2'],
-          },
-        ],
-      },
     },
   ],
 });

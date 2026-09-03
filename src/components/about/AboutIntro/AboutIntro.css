@@ -1,0 +1,115 @@
+/* About intro band.
+   Mobile: photo panel first, then the prose.
+   Desktop: 1fr / 460px with the panel flush to the right edge of the grid. */
+
+.pm-about-intro {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: var(--pm-page-max);
+  margin-inline: auto;
+  border-bottom: 1px solid var(--pm-hairline);
+}
+
+.pm-about-intro__prose {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pm-space-5);
+  padding: var(--pm-space-7) var(--pm-page-pad) var(--pm-space-8);
+}
+
+.pm-about-intro__title {
+  max-width: 600px;
+  /* 38px on mobile → 60px at 1280px */
+  font-size: clamp(2.375rem, 1.7rem + 2.75vw, 3.75rem);
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+}
+
+.pm-about-intro__lede {
+  max-width: 560px;
+  color: var(--pm-ink);
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.pm-about-intro__body {
+  max-width: 560px;
+  color: var(--pm-body);
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.pm-about-intro__cta {
+  width: 100%;
+  margin-top: var(--pm-space-1);
+}
+
+/* ---------- Photo panel ---------- */
+
+.pm-about-intro__panel {
+  position: relative;
+  order: -1;
+  height: 300px;
+  overflow: hidden;
+  border-bottom: 1px solid var(--pm-hairline);
+  background: var(--pm-surface);
+}
+
+.pm-about-intro__panel > img {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: auto;
+  height: 100%;
+  transform: translateX(-45%);
+  object-fit: contain;
+}
+
+@media (min-width: 641px) {
+  .pm-about-intro__cta {
+    width: fit-content;
+  }
+}
+
+@media (min-width: 769px) {
+  .pm-about-intro {
+    display: grid;
+    grid-template-columns: 1fr 460px;
+  }
+
+  .pm-about-intro__prose {
+    gap: var(--pm-space-7);
+    padding: var(--pm-space-14) var(--pm-space-12) var(--pm-space-14) var(--pm-page-pad);
+  }
+
+  .pm-about-intro__title {
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+
+  .pm-about-intro__lede {
+    font-size: 19px;
+  }
+
+  .pm-about-intro__body {
+    font-size: 17px;
+  }
+
+  .pm-about-intro__cta {
+    margin-top: var(--pm-space-2);
+  }
+
+  .pm-about-intro__panel {
+    order: 0;
+    height: auto;
+    min-height: 520px;
+    border-bottom: 0;
+    border-left: 1px solid var(--pm-hairline);
+  }
+
+  .pm-about-intro__panel > img {
+    height: 96%;
+    transform: translateX(-47%);
+  }
+}
