@@ -43,6 +43,12 @@
   color: var(--pm-on-ink);
 }
 
+/* `display: flex` above would otherwise beat the `hidden` attribute, leaving
+   the ink overlay covering the page before the menu is ever opened. */
+.pm-mobile-menu__panel[hidden] {
+  display: none;
+}
+
 .pm-mobile-menu__panel-head {
   display: flex;
   align-items: center;
@@ -83,17 +89,6 @@
 
 .pm-mobile-menu__link.is-current {
   border-bottom-color: var(--pm-red);
-}
-
-.pm-mobile-menu__email {
-  padding-top: var(--pm-space-5);
-  border-top: 1px solid rgb(255 255 255 / 0.16);
-  color: rgb(250 250 250 / 0.7);
-  font-size: 14px;
-}
-
-.pm-mobile-menu__email:hover {
-  color: var(--pm-on-ink);
 }
 
 /* Set on <html> while the overlay is open */

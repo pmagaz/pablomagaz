@@ -78,6 +78,11 @@ time,
   outline-offset: 2px;
 }
 
+/* Safety net — the attribute must win over any component's display rule */
+[hidden] {
+  display: none !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

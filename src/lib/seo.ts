@@ -52,7 +52,7 @@ export function personSchema(siteUrl: URL | undefined): string {
     name: site.name,
     jobTitle: site.role,
     description: site.description,
-    email: `mailto:${site.email}`,
+    // No email until a real address is confirmed — structured data is public.
     url: siteUrl?.href,
     sameAs: site.social.map((link) => link.href),
   });

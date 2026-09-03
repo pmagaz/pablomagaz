@@ -1,11 +1,17 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { site } from '~/data/site';
 import { isCurrent } from '~/components/common/Header/Header';
+import type { NavItem } from '~/data/site';
 import './MobileMenu.css';
 
 export interface MobileMenuProps {
   /** Current pathname, used to mark the active link. */
   pathname: string;
+  /**
+   * Nav links, passed in rather than imported. This is a hydrated island, so
+   * anything it imports ends up in the client bundle — props keep the rest of
+   * the site data (email, description, socials) out of it.
+   */
+  nav: readonly NavItem[];
 }
 
 const FOCUSABLE = 'a[href], button:not([disabled])';
@@ -20,7 +26,7 @@ const FOCUSABLE = 'a[href], button:not([disabled])';
  * This is the only interactive part of the header, so it is the only piece
  * hydrated on the client — the nav links themselves are static HTML.
  */
-export default function MobileMenu({ pathname }: MobileMenuProps) {
+export default function MobileMenu({ pathname, nav }: MobileMenuProps) {
   const [open, setOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
@@ -119,7 +125,7 @@ export default function MobileMenu({ pathname }: MobileMenuProps) {
         </div>
 
         <nav className="pm-mobile-menu__nav" aria-label="Main">
-          {site.nav.map((item) => (
+          {nav.map((item) => (
             <a
               key={item.href}
               className={`pm-mobile-menu__link${isCurrent(pathname, item.href) ? ' is-current' : ''}`}
@@ -130,10 +136,6 @@ export default function MobileMenu({ pathname }: MobileMenuProps) {
             </a>
           ))}
         </nav>
-
-        <a className="pm-mobile-menu__email" href={`mailto:${site.email}`}>
-          {site.email}
-        </a>
       </div>
     </div>
   );
