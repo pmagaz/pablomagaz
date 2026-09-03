@@ -5,8 +5,6 @@ export interface HeroAction {
   readonly label: string;
   readonly href: string;
   readonly variant: ButtonVariant;
-  /** Hidden on mobile, where scrolling reaches the section anyway. */
-  readonly desktopOnly?: boolean;
 }
 
 /**
@@ -16,7 +14,7 @@ export interface HeroAction {
  * placeholder. Replace with Pablo's real headline and strapline.
  */
 const actions: readonly HeroAction[] = [
-  { label: 'About me', href: '/#about', variant: 'primary', desktopOnly: true },
+  { label: 'About me', href: '/#about', variant: 'primary' },
   { label: 'Read the blog', href: '/blog', variant: 'secondary' },
 ];
 

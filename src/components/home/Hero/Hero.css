@@ -44,11 +44,6 @@
   margin-top: var(--pm-space-6);
 }
 
-/* The "About me" CTA is redundant on mobile — the section is a scroll away */
-.pm-hero__action--desktop {
-  display: none;
-}
-
 /* ---------- Portrait ---------- */
 
 /* The CTAs come before the portrait in the DOM order the layout needs, so
@@ -96,10 +91,6 @@
 
   .pm-hero__actions {
     margin-top: 0;
-  }
-
-  .pm-hero__action--desktop {
-    display: inline-flex;
   }
 
   .pm-hero__photo {

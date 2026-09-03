@@ -1,6 +1,7 @@
 import Button from '~/components/common/Button/Button';
 import Eyebrow from '~/components/common/Eyebrow/Eyebrow';
 import Headline from '~/components/common/Headline/Headline';
+import ScrollCue from '~/components/home/ScrollCue/ScrollCue';
 import { home } from '~/data/home';
 import { site } from '~/data/site';
 import type { ResponsiveImage } from '~/lib/images';
@@ -44,16 +45,13 @@ export default function Hero({ portrait }: HeroProps) {
 
         <div className="pm-hero__actions" data-reveal-hero>
           {home.actions.map((action) => (
-            <Button
-              key={action.href}
-              href={action.href}
-              variant={action.variant}
-              className={action.desktopOnly ? 'pm-hero__action--desktop' : undefined}
-            >
+            <Button key={action.href} href={action.href} variant={action.variant}>
               {action.label}
             </Button>
           ))}
         </div>
+
+        <ScrollCue />
       </div>
     </section>
   );

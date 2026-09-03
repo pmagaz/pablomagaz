@@ -1,0 +1,60 @@
+/* Scroll hint — a thin arrow centred at the bottom of the hero.
+   White on mobile, where it sits over the portrait; ink on desktop, where
+   the space below the copy is clear. Fades out on scroll. */
+
+.pm-scroll-cue {
+  position: absolute;
+  bottom: var(--pm-space-5);
+  left: 50%;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Tap target, without making the mark itself large */
+  width: 44px;
+  height: 44px;
+  /* Centres the 44px box on the section's midpoint */
+  transform: translateX(-50%);
+  color: var(--pm-on-ink);
+  transition:
+    opacity 0.4s ease,
+    visibility 0.4s ease,
+    color var(--pm-transition);
+}
+
+.pm-scroll-cue__icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* Set by hideOnScroll.ts once the page has moved */
+.pm-scroll-cue.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pm-scroll-cue__icon {
+    animation: pm-scroll-cue-bob 2.4s ease-in-out infinite;
+  }
+
+  @keyframes pm-scroll-cue-bob {
+    0%,
+    100% {
+      transform: translateY(-3px);
+    }
+    50% {
+      transform: translateY(3px);
+    }
+  }
+}
+
+@media (min-width: 769px) {
+  .pm-scroll-cue {
+    color: var(--pm-ink);
+  }
+
+  .pm-scroll-cue:hover {
+    color: var(--pm-red);
+  }
+}
