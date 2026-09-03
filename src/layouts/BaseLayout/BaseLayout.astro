@@ -52,6 +52,23 @@ const pathname = Astro.url.pathname;
 
     <script type="application/ld+json" is:inline set:html={personSchema(Astro.site)} />
     {schema && <script type="application/ld+json" is:inline set:html={schema} />}
+
+    {
+      /* Google Analytics — production only, so local runs stay out of the data */
+      import.meta.env.PROD && site.analyticsId && (
+        <>
+          <script
+            is:inline
+            async
+            src={`https://www.googletagmanager.com/gtag/js?id=${site.analyticsId}`}
+          />
+          <script
+            is:inline
+            set:html={`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${site.analyticsId}');`}
+          />
+        </>
+      )
+    }
   </head>
 
   <body>

@@ -47,12 +47,11 @@
 
 /* ---------- Photo panel ---------- */
 
+/* Not shown on mobile — the bio reads better without it on a narrow screen */
 .pm-about-intro__panel {
+  display: none;
   position: relative;
-  order: -1;
-  height: 300px;
   overflow: hidden;
-  border-bottom: 1px solid var(--pm-hairline);
   background: var(--pm-surface);
 }
 
@@ -101,10 +100,8 @@
   }
 
   .pm-about-intro__panel {
-    order: 0;
-    height: auto;
+    display: block;
     min-height: 520px;
-    border-bottom: 0;
     border-left: 1px solid var(--pm-hairline);
   }
 

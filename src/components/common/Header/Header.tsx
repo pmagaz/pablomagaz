@@ -22,7 +22,7 @@ export default function Header({ pathname, children }: HeaderProps) {
       <div className="pm-container pm-header__inner">
         {/* Same component as the hero byline, so the style is identical */}
         <a className="pm-header__brand" href="/">
-          <Eyebrow dot text={`${site.name} — ${site.role}`} />
+          <Eyebrow dot text={site.name} />
         </a>
 
         <nav className="pm-header__nav" aria-label="Main">

@@ -24,6 +24,8 @@ export const site = {
     'Pablo Magaz is a Chief Technical Officer working on platform strategy, AI in production and engineering organisation design.',
   email: 'hola@pablomagaz.com',
   authorBio: 'Chief Technical Officer — platforms, AI, org design',
+  /** GA4 measurement id. Only loaded in production builds. */
+  analyticsId: 'G-1WMZ9FNRR3',
   nav: [
     { label: 'About', href: '/about' },
     { label: 'Blog', href: '/blog' },

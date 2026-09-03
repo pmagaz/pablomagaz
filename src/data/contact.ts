@@ -9,7 +9,7 @@ export const contact = {
   eyebrow: 'Contact',
   headline: [
     [{ text: "Let's talk about" }],
-    [{ text: 'the ' }, { text: 'hard', accent: true }, { text: ' part.' }],
+    [{ text: "what you're " }, { text: 'building', accent: true }, { text: '.' }],
   ] as const satisfies HeadlineLines,
   intro:
     "Advisory, speaking, board work or a technology decision you want a second opinion on. Write a few lines and I'll come back to you personally.",
