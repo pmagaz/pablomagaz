@@ -1,20 +1,9 @@
 ---
-import { Font } from 'astro:assets';
-import '~/styles/tokens.css';
-import '~/styles/global.css';
+import BaseLayout from '~/layouts/BaseLayout/BaseLayout.astro';
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Pablo Magaz — Senior Executive CTO</title>
-    <Font cssVariable="--font-space-grotesk" preload />
-  </head>
-  <body>
-    <main class="pm-container">
-      <h1>Pablo Magaz</h1>
-    </main>
-  </body>
-</html>
+<BaseLayout>
+  <div class="pm-container">
+    <h1>Pablo Magaz</h1>
+  </div>
+</BaseLayout>

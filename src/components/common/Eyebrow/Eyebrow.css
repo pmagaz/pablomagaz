@@ -1,0 +1,42 @@
+/* Eyebrow / section label — 12px uppercase, 0.22em tracking,
+   optionally preceded by the 7px MIO red dot. */
+
+.pm-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: var(--pm-space-3);
+}
+
+.pm-eyebrow__dot {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: var(--pm-radius-pill);
+  background: var(--pm-red);
+}
+
+.pm-eyebrow__text {
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.pm-eyebrow--muted .pm-eyebrow__text {
+  color: var(--pm-muted);
+}
+
+.pm-eyebrow--red .pm-eyebrow__text {
+  color: var(--pm-red-dark);
+}
+
+@media (max-width: 640px) {
+  .pm-eyebrow {
+    gap: var(--pm-space-2);
+  }
+
+  .pm-eyebrow__text {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+  }
+}

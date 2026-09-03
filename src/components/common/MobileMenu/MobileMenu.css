@@ -1,0 +1,115 @@
+/* Mobile menu — two-line hamburger (2 × 20×1px ink, 5px gap) in a 44px
+   tap target, opening a full-screen ink overlay. */
+
+.pm-mobile-menu {
+  display: flex;
+}
+
+.pm-mobile-menu__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 44px;
+  min-height: 44px;
+  margin-right: -4px;
+  padding: 12px 4px;
+  border: 0;
+  background: none;
+}
+
+.pm-mobile-menu__bars {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.pm-mobile-menu__bars > span {
+  display: block;
+  width: 20px;
+  height: 1px;
+  background: var(--pm-ink);
+}
+
+/* ---------- Overlay ---------- */
+
+.pm-mobile-menu__panel {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  padding: var(--pm-header-pad-y) var(--pm-page-pad) var(--pm-space-10);
+  background: var(--pm-ink);
+  color: var(--pm-on-ink);
+}
+
+.pm-mobile-menu__panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pm-mobile-menu__panel-brand {
+  font-size: 15px;
+  font-weight: var(--pm-fw-medium);
+  letter-spacing: -0.01em;
+}
+
+.pm-mobile-menu__close {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 44px;
+  min-height: 44px;
+  margin-right: -4px;
+  padding: 0 4px;
+  border: 0;
+  background: none;
+  color: var(--pm-on-ink);
+  font-size: 30px;
+  line-height: 1;
+}
+
+.pm-mobile-menu__nav {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--pm-space-5);
+  justify-content: center;
+}
+
+.pm-mobile-menu__link {
+  width: fit-content;
+  padding-bottom: var(--pm-space-1);
+  border-bottom: 1px solid transparent;
+  font-size: 30px;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.pm-mobile-menu__link.is-current {
+  border-bottom-color: var(--pm-red);
+}
+
+.pm-mobile-menu__email {
+  padding-top: var(--pm-space-5);
+  border-top: 1px solid rgb(255 255 255 / 0.16);
+  color: rgb(250 250 250 / 0.7);
+  font-size: 14px;
+}
+
+.pm-mobile-menu__email:hover {
+  color: var(--pm-on-ink);
+}
+
+/* Set on <html> while the overlay is open */
+.pm-scroll-locked,
+.pm-scroll-locked body {
+  overflow: hidden;
+}
+
+@media (min-width: 769px) {
+  .pm-mobile-menu {
+    display: none;
+  }
+}

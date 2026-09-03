@@ -1,0 +1,57 @@
+/* Buttons — height ~46px, radius 6, 14px/600.
+   Primary = ink fill. Secondary = hairline border on white.
+   Red is never a CTA fill. */
+
+.pm-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--pm-space-2);
+  padding: 12px 22px;
+  border: 1px solid transparent;
+  border-radius: var(--pm-radius-sm);
+  font-size: 14px;
+  font-weight: var(--pm-fw-medium);
+  line-height: 1.4;
+  text-align: center;
+  transition:
+    background-color var(--pm-transition),
+    border-color var(--pm-transition),
+    color var(--pm-transition);
+}
+
+.pm-button--primary {
+  background: var(--pm-ink);
+  color: var(--pm-on-ink);
+}
+
+.pm-button--primary:hover {
+  background: var(--pm-ink-hover);
+}
+
+.pm-button--secondary {
+  border-color: var(--pm-hairline);
+  background: var(--pm-bg);
+  color: var(--pm-ink);
+}
+
+.pm-button--secondary:hover {
+  border-color: var(--pm-ink);
+}
+
+.pm-button--block {
+  width: 100%;
+}
+
+.pm-button[disabled] {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+/* Mobile CTAs sit at 15px with a taller tap target */
+@media (max-width: 640px) {
+  .pm-button {
+    padding: 14px 20px;
+    font-size: 15px;
+  }
+}

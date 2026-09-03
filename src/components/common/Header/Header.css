@@ -1,0 +1,54 @@
+/* Header — full-width bar with a 1px bottom hairline, contents on the
+   1280px grid. Current page is underlined in ink; hover underlines in red. */
+
+.pm-header {
+  border-bottom: 1px solid var(--pm-hairline);
+  background: var(--pm-bg);
+}
+
+.pm-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--pm-space-6);
+  padding-block: var(--pm-header-pad-y);
+}
+
+.pm-header__brand {
+  font-size: 15px;
+  font-weight: var(--pm-fw-medium);
+  letter-spacing: -0.01em;
+  color: var(--pm-ink);
+}
+
+.pm-header__nav {
+  display: none;
+  gap: 34px;
+  font-size: 14px;
+}
+
+.pm-header__link {
+  padding-bottom: 2px;
+  border-bottom: 1px solid transparent;
+  color: var(--pm-body);
+  transition:
+    color var(--pm-transition),
+    border-color var(--pm-transition);
+}
+
+.pm-header__link:hover {
+  border-bottom-color: var(--pm-red);
+  color: var(--pm-ink);
+}
+
+.pm-header__link.is-current {
+  border-bottom-color: var(--pm-ink);
+  color: var(--pm-ink);
+  font-weight: var(--pm-fw-medium);
+}
+
+@media (min-width: 769px) {
+  .pm-header__nav {
+    display: flex;
+  }
+}

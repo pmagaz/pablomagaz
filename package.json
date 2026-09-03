@@ -10,15 +10,21 @@
     "build": "astro check && astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "astro": "astro"
+    "astro": "astro",
+    "brand:assets": "node scripts/generate-brand-assets.mjs"
   },
   "dependencies": {
+    "@astrojs/react": "^6.0.5",
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.4",
-    "astro": "^7.3.1"
+    "astro": "^7.3.1",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
     "typescript": "^5.9.3"
   }
 }
