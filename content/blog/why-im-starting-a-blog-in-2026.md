@@ -12,7 +12,7 @@ Starting a blog in 2026 is a little bit old school, and I know it. The writing h
 
 ## Table of Contents
 - [The old-school part](#the-old-school-part)
-- [Zurich, Madrid, and the years in between](#zurich-madrid-and-the-years-in-between)
+- [What the international journey taught me](#what-the-international-journey-taught-me)
 - [What I'll be writing](#what-ill-be-writing)
 
 ## The old-school part
@@ -23,9 +23,9 @@ There is also a selfish reason. Writing something down properly is the fastest w
 
 > If I cannot explain a decision in writing, I have not finished making it.
 
-## Zurich, Madrid, and the years in between
+## What the international journey taught me
 
-I have built and led engineering teams in a few different countries, across regulated finance, identity, media and now AI. Different languages, different working cultures, different ideas of what "done" means and how directly you are supposed to say things.
+I have built and led engineering teams in a few different countries — Zurich, Madrid and a fair amount of time in between — across regulated finance, identity, media and now AI. Different languages, different working cultures, different ideas of what "done" means and how directly you are supposed to say things.
 
 That turned out to be the real education. The same technical problem looks genuinely different depending on which chair you are sitting in and which country you are sitting in it — and almost nobody writes about that part, because it does not fit in a diagram.
 
