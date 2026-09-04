@@ -46,7 +46,7 @@ export const about = {
     {
       stage: 'Earlier',
       role: 'Chief Technology Officer',
-      summary: 'OneLog — SaaS identity management',
+      summary: 'One Log — SaaS identity management',
       location: 'Zurich',
     },
   ] as const satisfies readonly CareerRow[],
