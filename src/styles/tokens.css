@@ -21,9 +21,11 @@
   --pm-surface: #f7f7f7; /* form panel, bands, photo panel */
   --pm-bg: #ffffff;
 
-  /* Brand accent only: byline dot, accented word, eyebrows, pull-quote, nav hover */
-  --pm-red: #e61f42;
-  --pm-red-dark: #ba002f; /* AA on white — use for red text */
+  /* Brand accent only: byline dot, accented word, eyebrows, pull-quote, nav hover.
+     One red for everything — warmer than the original #ba002f, still deeper
+     than a pure #d30000. 6.06:1 on white, so it stays AA for label-size text. */
+  --pm-red: #c80015;
+  --pm-red-dark: #c80015;
 
   --pm-ink-hover: #1b1420; /* primary button hover */
 

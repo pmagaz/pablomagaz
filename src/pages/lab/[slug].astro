@@ -1,0 +1,43 @@
+---
+import type { GetStaticPaths } from 'astro';
+import ExperimentHeader from '~/components/lab/ExperimentHeader/ExperimentHeader';
+import FluidStage from '~/components/lab/experiments/Fluid/FluidStage';
+import { liveExperiments, type Experiment } from '~/data/experiments';
+import BaseLayout from '~/layouts/BaseLayout/BaseLayout.astro';
+
+// One static page per live experiment.
+export const getStaticPaths = (async () => {
+  return liveExperiments().map((experiment) => ({
+    params: { slug: experiment.slug },
+    props: { experiment },
+  }));
+}) satisfies GetStaticPaths;
+
+interface Props {
+  experiment: Experiment;
+}
+
+const { experiment } = Astro.props;
+---
+
+<BaseLayout title={experiment.title} description={experiment.excerpt}>
+  <article class="pm-experiment">
+    <ExperimentHeader experiment={experiment} />
+
+    <div class="pm-container pm-experiment__stage">
+      {
+        /* client:only — none of the WebGL code should be evaluated during the
+           static build, and the canvas has nothing meaningful to server-render.
+           The title and prose above are static HTML, so crawlers still get the
+           page's content. */
+        experiment.slug === 'fluid' && <FluidStage client:only="react" />
+      }
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .pm-experiment__stage {
+    padding-bottom: var(--pm-space-14);
+  }
+</style>

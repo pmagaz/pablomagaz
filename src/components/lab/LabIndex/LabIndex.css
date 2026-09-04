@@ -1,0 +1,61 @@
+/* Lab index layout — title block, featured lead, then the card grid. */
+
+.pm-lab__inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pm-space-6);
+  padding-block: var(--pm-space-8);
+}
+
+/* Title with the intro stacked directly beneath it, not opposite it */
+.pm-lab__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pm-space-4);
+}
+
+.pm-lab__intro {
+  max-width: 520px;
+  color: var(--pm-body);
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.pm-lab__title {
+  max-width: 620px;
+  /* 40px on mobile → 56px at 1280px */
+  font-size: clamp(2.5rem, 2.06rem + 1.78vw, 3.5rem);
+  font-weight: var(--pm-fw-regular);
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  color: var(--pm-ink);
+  text-wrap: balance;
+}
+
+.pm-lab__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--pm-space-5);
+}
+
+@media (min-width: 641px) {
+  .pm-lab__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 769px) {
+  .pm-lab__inner {
+    gap: var(--pm-space-9);
+    padding-block: var(--pm-space-14) var(--pm-space-10);
+  }
+
+  .pm-lab__intro {
+    font-size: 17px;
+  }
+
+  .pm-lab__grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--pm-space-6);
+  }
+}

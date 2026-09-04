@@ -31,10 +31,10 @@ export const about = {
       { text: ' software.' },
     ],
   ] as const satisfies HeadlineLines,
-  lede: 'I am a Chief Technical Officer. I lead engineering organisations through the moments where the technology decision and the business decision are the same decision.',
+  lede: 'Chief Technology & AI Officer with a strong technical background and 10+ years in senior leadership roles spanning fast-paced startups and large organizations across multiple countries and international environments, with deep experience delivering platforms in regulated financial and critical-infrastructure environments.',
   paragraphs: [
-    'My work sits in three places: the platform a company builds on, the AI it puts in front of customers, and the organisation that has to maintain both once the launch is over. I have done this as a founder, as a consultancy CTO and inside companies mid-transformation — which is mostly a lesson in how differently the same problem looks from each chair.',
-    'I speak regularly at industry conferences, mentor technical leaders, and write here about the parts of the job nobody puts in the job description.',
+    'Specializes in building engineering teams that deliver and guiding organizations through the transition to the Agentic AI era to unlock efficiency and growth.',
+    'Draws on experience leading distributed, cross-cultural teams, balancing long-term technology vision with delivery through efficient resource management.',
   ],
   career: [
     {

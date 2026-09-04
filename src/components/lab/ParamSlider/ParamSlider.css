@@ -1,0 +1,147 @@
+/* Animation parameter — eyebrow label, tabular readout, hairline track. */
+
+.pm-param {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.pm-param__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--pm-space-3);
+}
+
+.pm-param__label {
+  color: var(--pm-muted);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.pm-param__value {
+  color: var(--pm-ink);
+  font-size: 13px;
+  font-weight: var(--pm-fw-medium);
+}
+
+.pm-param__hint {
+  color: var(--pm-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* ---------- The range input ---------- */
+
+.pm-param__input {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 16px;
+  margin: 0;
+  background: none;
+  cursor: ew-resize;
+}
+
+/* The filled portion is a gradient stop driven by --pm-param-fill, set
+   inline by the component. Painting it any other way is not portable. */
+.pm-param__input::-webkit-slider-runnable-track {
+  height: 1px;
+  border-radius: 1px;
+  background: linear-gradient(
+    to right,
+    var(--pm-ink) 0 var(--pm-param-fill),
+    var(--pm-hairline) var(--pm-param-fill) 100%
+  );
+}
+
+.pm-param__input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 13px;
+  height: 13px;
+  /* Centres the thumb on the 1px track */
+  margin-top: -6px;
+  border: 0;
+  border-radius: var(--pm-radius-pill);
+  background: var(--pm-ink);
+  transition: background-color var(--pm-transition);
+}
+
+.pm-param__input:hover::-webkit-slider-thumb,
+.pm-param__input:active::-webkit-slider-thumb {
+  background: var(--pm-red);
+}
+
+.pm-param__input::-moz-range-track {
+  height: 1px;
+  border-radius: 1px;
+  background: var(--pm-hairline);
+}
+
+.pm-param__input::-moz-range-progress {
+  height: 1px;
+  border-radius: 1px;
+  background: var(--pm-ink);
+}
+
+.pm-param__input::-moz-range-thumb {
+  width: 13px;
+  height: 13px;
+  border: 0;
+  border-radius: var(--pm-radius-pill);
+  background: var(--pm-ink);
+  transition: background-color var(--pm-transition);
+}
+
+.pm-param__input:hover::-moz-range-thumb,
+.pm-param__input:active::-moz-range-thumb {
+  background: var(--pm-red);
+}
+
+.pm-param__input:focus-visible {
+  outline: 2px solid var(--pm-red);
+  outline-offset: 6px;
+  border-radius: 2px;
+}
+
+/* ---------- On the ink stage ---------- */
+
+.pm-stage__controls .pm-param__label {
+  color: rgb(250 250 250 / 0.55);
+}
+
+.pm-stage__controls .pm-param__value {
+  color: var(--pm-on-ink);
+}
+
+.pm-stage__controls .pm-param__hint {
+  color: rgb(250 250 250 / 0.45);
+}
+
+.pm-stage__controls .pm-param__input::-webkit-slider-runnable-track {
+  background: linear-gradient(
+    to right,
+    var(--pm-on-ink) 0 var(--pm-param-fill),
+    rgb(250 250 250 / 0.22) var(--pm-param-fill) 100%
+  );
+}
+
+.pm-stage__controls .pm-param__input::-webkit-slider-thumb {
+  background: var(--pm-on-ink);
+}
+
+.pm-stage__controls .pm-param__input::-moz-range-track {
+  background: rgb(250 250 250 / 0.22);
+}
+
+.pm-stage__controls .pm-param__input::-moz-range-progress {
+  background: var(--pm-on-ink);
+}
+
+.pm-stage__controls .pm-param__input::-moz-range-thumb {
+  background: var(--pm-on-ink);
+}

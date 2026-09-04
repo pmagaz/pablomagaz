@@ -1,0 +1,72 @@
+/* Experiment title block — same furniture as a blog post header. */
+
+.pm-experiment-header__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding-block: var(--pm-space-7) var(--pm-space-6);
+}
+
+.pm-experiment-header__back {
+  color: var(--pm-muted);
+  font-size: 13px;
+  transition: color var(--pm-transition);
+}
+
+.pm-experiment-header__back:hover {
+  color: var(--pm-ink);
+}
+
+.pm-experiment-header__title {
+  max-width: 900px;
+  /* 36px on mobile → 56px at 1280px */
+  font-size: clamp(2.25rem, 1.7rem + 2.25vw, 3.5rem);
+  font-weight: var(--pm-fw-regular);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  color: var(--pm-ink);
+  text-wrap: balance;
+}
+
+.pm-experiment-header__description {
+  max-width: 720px;
+  color: var(--pm-body);
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.pm-experiment-header__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  color: var(--pm-muted);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.pm-experiment-header__meta > * + *::before {
+  content: '';
+  display: inline-block;
+  width: 1px;
+  height: 12px;
+  margin-right: 14px;
+  vertical-align: -1px;
+  background: var(--pm-hairline);
+}
+
+@media (min-width: 769px) {
+  .pm-experiment-header__inner {
+    gap: var(--pm-space-6);
+    padding-block: var(--pm-space-14) var(--pm-space-8);
+  }
+
+  .pm-experiment-header__title {
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+  }
+
+  .pm-experiment-header__description {
+    font-size: 17px;
+  }
+}

@@ -22,8 +22,27 @@
 
 .pm-header__nav {
   display: none;
-  gap: 34px;
+  align-items: center;
+  gap: 28px;
   font-size: 14px;
+}
+
+/* Separates the routes from the social glyphs */
+.pm-header__divider {
+  width: 1px;
+  height: 14px;
+  background: var(--pm-hairline);
+}
+
+.pm-header__social {
+  display: flex;
+  align-items: center;
+  color: var(--pm-body);
+  transition: color var(--pm-transition);
+}
+
+.pm-header__social:hover {
+  color: var(--pm-red);
 }
 
 .pm-header__link {

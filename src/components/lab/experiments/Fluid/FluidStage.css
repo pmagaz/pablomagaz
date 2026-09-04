@@ -1,0 +1,102 @@
+/* Experiment stage — ink canvas with the controls in a rail beneath it. */
+
+.pm-stage {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--pm-hairline);
+  border-radius: var(--pm-radius-lg);
+  overflow: hidden;
+  background: var(--pm-ink);
+}
+
+.pm-stage__canvas {
+  position: relative;
+  /* Squarer on mobile, cinematic on desktop */
+  aspect-ratio: 4 / 5;
+  width: 100%;
+}
+
+.pm-stage__canvas > canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  cursor: crosshair;
+}
+
+.pm-stage__hint {
+  position: absolute;
+  bottom: var(--pm-space-4);
+  left: var(--pm-space-5);
+  color: rgb(250 250 250 / 0.4);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.pm-stage__controls {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--pm-space-6);
+  padding: var(--pm-space-6) var(--pm-space-5);
+  border-top: 1px solid rgb(250 250 250 / 0.14);
+  background: var(--pm-ink);
+}
+
+.pm-stage__reset {
+  justify-self: start;
+  padding: 8px 16px;
+  border: 1px solid rgb(250 250 250 / 0.24);
+  border-radius: var(--pm-radius-sm);
+  background: none;
+  color: var(--pm-on-ink);
+  font-size: 13px;
+  font-weight: var(--pm-fw-medium);
+  transition:
+    border-color var(--pm-transition),
+    color var(--pm-transition);
+}
+
+.pm-stage__reset:hover {
+  border-color: var(--pm-on-ink);
+}
+
+/* ---------- No WebGL2 ---------- */
+
+.pm-stage--unsupported {
+  padding: var(--pm-space-10) var(--pm-space-5);
+}
+
+.pm-stage__fallback {
+  max-width: 46ch;
+  margin-inline: auto;
+  color: rgb(250 250 250 / 0.7);
+  font-size: 15px;
+  line-height: 1.7;
+  text-align: center;
+}
+
+@media (min-width: 641px) {
+  .pm-stage__canvas {
+    aspect-ratio: 3 / 2;
+  }
+
+  .pm-stage__controls {
+    grid-template-columns: repeat(3, 1fr);
+    align-items: start;
+    gap: var(--pm-space-8);
+    padding: var(--pm-space-7) var(--pm-space-8);
+  }
+
+  /* The reset button sits under the middle column on its own row */
+  .pm-stage__reset {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 1024px) {
+  .pm-stage__canvas {
+    aspect-ratio: 16 / 9;
+  }
+}

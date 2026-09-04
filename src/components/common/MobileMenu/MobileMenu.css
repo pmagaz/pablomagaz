@@ -94,6 +94,28 @@
   border-bottom-color: var(--pm-red);
 }
 
+.pm-mobile-menu__social {
+  display: flex;
+  gap: var(--pm-space-6);
+  padding-top: var(--pm-space-5);
+  border-top: 1px solid rgb(255 255 255 / 0.16);
+}
+
+.pm-mobile-menu__social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  margin: -10px 0;
+  color: rgb(250 250 250 / 0.7);
+  transition: color var(--pm-transition);
+}
+
+.pm-mobile-menu__social-link:hover {
+  color: var(--pm-red);
+}
+
 /* Set on <html> while the overlay is open */
 .pm-scroll-locked,
 .pm-scroll-locked body {

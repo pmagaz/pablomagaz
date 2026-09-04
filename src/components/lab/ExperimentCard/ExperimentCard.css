@@ -1,0 +1,62 @@
+/* Experiment card — hairline border, radius 10, 26px padding, meta pinned
+   to the bottom. Matches screen 8b of the handoff. */
+
+.pm-experiment-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 210px;
+  padding: 26px;
+  border: 1px solid var(--pm-hairline);
+  border-radius: var(--pm-radius-lg);
+  background: var(--pm-bg);
+  transition: border-color var(--pm-transition);
+}
+
+.pm-experiment-card:hover {
+  border-color: var(--pm-ink);
+}
+
+.pm-experiment-card__category {
+  color: var(--pm-red-dark);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.pm-experiment-card__title {
+  font-size: 22px;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--pm-ink);
+  text-wrap: pretty;
+}
+
+.pm-experiment-card__excerpt {
+  color: var(--pm-muted);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.pm-experiment-card__meta {
+  margin-top: auto;
+  color: var(--pm-muted);
+  font-size: 12px;
+}
+
+/* ---------- Not built yet ---------- */
+
+.pm-experiment-card.is-planned {
+  background: var(--pm-surface);
+  border-style: dashed;
+}
+
+.pm-experiment-card.is-planned:hover {
+  border-color: var(--pm-hairline);
+}
+
+.pm-experiment-card.is-planned .pm-experiment-card__category,
+.pm-experiment-card.is-planned .pm-experiment-card__title {
+  color: var(--pm-muted);
+}

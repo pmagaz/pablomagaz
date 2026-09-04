@@ -1,0 +1,12 @@
+---
+import LabIndex from '~/components/lab/LabIndex/LabIndex';
+import { experiments } from '~/data/experiments';
+import BaseLayout from '~/layouts/BaseLayout/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Lab"
+  description="Interactive generative experiments — fluid simulation, fractals and flow fields, each with its parameters exposed."
+>
+  <LabIndex experiments={experiments} />
+</BaseLayout>

@@ -15,9 +15,12 @@ export interface NavItem {
   readonly sectionId?: string;
 }
 
+export type SocialIconName = 'linkedin' | 'github';
+
 export interface SocialLink {
   readonly label: string;
   readonly href: string;
+  readonly icon: SocialIconName;
 }
 
 /**
@@ -28,24 +31,27 @@ const nav: readonly NavItem[] = [
   { label: 'About', href: '/#about', sectionId: 'about' },
   { label: 'Contact', href: '/#contact', sectionId: 'contact' },
   { label: 'Blog', href: '/blog' },
+  { label: 'Lab', href: '/lab' },
+];
+
+const social: readonly SocialLink[] = [
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/pablo-magaz', icon: 'linkedin' },
+  { label: 'GitHub', href: 'https://github.com/pmagaz', icon: 'github' },
 ];
 
 export const site = {
   name: 'Pablo Magaz',
-  role: 'Chief Technical Officer',
+  role: 'Chief Technology & AI Officer',
   /** Used in <title> on the home page and as the OG site name. */
-  title: 'Pablo Magaz — Chief Technical Officer',
+  title: 'Pablo Magaz — Chief Technology & AI Officer',
   description:
-    'Pablo Magaz is a Chief Technical Officer working on platform strategy, AI in production and engineering organisation design.',
+    'Pablo Magaz is a Chief Technology & AI Officer building engineering teams that deliver and guiding organizations through the transition to the Agentic AI era.',
   email: 'hola@pablomagaz.com',
-  authorBio: 'Chief Technical Officer — platforms, AI, org design',
+  authorBio: 'Chief Technology & AI Officer',
   /** GA4 measurement id. Only loaded in production builds. */
   analyticsId: 'G-1WMZ9FNRR3',
   nav,
-  social: [
-    { label: 'LinkedIn', href: 'https://www.linkedin.com/in/pablomagaz/' },
-    { label: 'X', href: 'https://x.com/pablomagaz' },
-  ] as const satisfies readonly SocialLink[],
+  social,
 } as const;
 
 export type Site = typeof site;

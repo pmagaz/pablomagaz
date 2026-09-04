@@ -86,7 +86,7 @@ const pathname = Astro.url.pathname;
     <a class="pm-skip-link" href="#main">Skip to content</a>
     <div class="pm-shell">
       <Header pathname={pathname}>
-        <MobileMenu pathname={pathname} nav={site.nav} client:load />
+        <MobileMenu pathname={pathname} nav={site.nav} social={site.social} client:load />
       </Header>
       <main class="pm-shell__main" id="main">
         <slot />

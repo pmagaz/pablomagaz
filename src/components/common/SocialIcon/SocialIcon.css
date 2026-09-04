@@ -1,0 +1,7 @@
+/* Brand glyph — inherits colour from the link that wraps it. */
+
+.pm-social-icon {
+  display: block;
+  flex: none;
+  fill: currentColor;
+}

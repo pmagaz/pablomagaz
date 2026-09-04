@@ -1,17 +1,19 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { isCurrent } from '~/components/common/Header/Header';
-import type { NavItem } from '~/data/site';
+import SocialIcon from '~/components/common/SocialIcon/SocialIcon';
+import type { NavItem, SocialLink } from '~/data/site';
 import './MobileMenu.css';
 
 export interface MobileMenuProps {
   /** Current pathname, used to mark the active link. */
   pathname: string;
   /**
-   * Nav links, passed in rather than imported. This is a hydrated island, so
-   * anything it imports ends up in the client bundle — props keep the rest of
-   * the site data (email, description, socials) out of it.
+   * Nav and social links, passed in rather than imported. This is a hydrated
+   * island, so anything it imports ends up in the client bundle — props keep
+   * the rest of the site data (email, description) out of it.
    */
   nav: readonly NavItem[];
+  social: readonly SocialLink[];
 }
 
 const FOCUSABLE = 'a[href], button:not([disabled])';
@@ -26,7 +28,7 @@ const FOCUSABLE = 'a[href], button:not([disabled])';
  * This is the only interactive part of the header, so it is the only piece
  * hydrated on the client — the nav links themselves are static HTML.
  */
-export default function MobileMenu({ pathname, nav }: MobileMenuProps) {
+export default function MobileMenu({ pathname, nav, social }: MobileMenuProps) {
   const [open, setOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
@@ -136,6 +138,21 @@ export default function MobileMenu({ pathname, nav }: MobileMenuProps) {
             </a>
           ))}
         </nav>
+
+        <div className="pm-mobile-menu__social">
+          {social.map((link) => (
+            <a
+              key={link.href}
+              className="pm-mobile-menu__social-link"
+              href={link.href}
+              rel="me noopener"
+              target="_blank"
+              aria-label={link.label}
+            >
+              <SocialIcon name={link.icon} size={20} />
+            </a>
+          ))}
+        </div>
       </div>
     </div>
   );

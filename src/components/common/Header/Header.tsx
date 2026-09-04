@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import SocialIcon from '~/components/common/SocialIcon/SocialIcon';
 import { site } from '~/data/site';
 import './Header.css';
 
@@ -41,6 +42,22 @@ export default function Header({ pathname, children }: HeaderProps) {
               </a>
             );
           })}
+
+          <span className="pm-header__divider" aria-hidden="true" />
+
+          {site.social.map((link) => (
+            <a
+              key={link.href}
+              className="pm-header__social"
+              href={link.href}
+              rel="me noopener"
+              target="_blank"
+              aria-label={link.label}
+              title={link.label}
+            >
+              <SocialIcon name={link.icon} />
+            </a>
+          ))}
         </nav>
 
         {children}
