@@ -13,10 +13,6 @@ export interface HeadlineProps {
   [key: `data-${string}`]: unknown;
 }
 
-/**
- * Renders a headline with its accent word in MIO red. Explicit line breaks
- * come from the content, matching the breaks drawn in the design.
- */
 export default function Headline({
   lines,
   as = 'h1',

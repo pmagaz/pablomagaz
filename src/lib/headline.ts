@@ -5,7 +5,6 @@
 
 export interface HeadlineToken {
   readonly text: string;
-  /** Renders in MIO red dark — one word per headline, per the design. */
   readonly accent?: boolean;
 }
 

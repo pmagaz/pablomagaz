@@ -55,6 +55,9 @@
   min-height: 220px;
   margin-top: var(--pm-space-7);
   overflow: hidden;
+  background: var(--pm-surface);
+  /* Bleeds to the viewport edges rather than sitting inside the page padding */
+  margin-inline: calc(var(--pm-page-pad) * -1);
 }
 
 /* Scaled past the height of its box and anchored so the overflow falls
@@ -95,23 +98,30 @@
     margin-top: 0;
   }
 
+  /* A full-height grey panel on the right that the figure stands in, flush
+     to the container edge — the same treatment as the about photo panel. */
   .pm-hero__photo {
     order: 0;
     position: absolute;
-    right: -40px;
+    top: 0;
     bottom: 0;
+    right: calc(var(--pm-page-pad) * -1);
     z-index: 1;
     flex: none;
-    width: auto;
-    height: 82%;
+    width: 40%;
+    height: auto;
     min-height: 0;
-    margin-block: 0;
-    overflow: visible;
+    margin: 0;
+    overflow: hidden;
+    border-left: 1px solid var(--pm-hairline);
   }
 
   .pm-hero__photo > img {
-    position: static;
-    height: 100%;
-    transform: none;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: auto;
+    height: 92%;
+    transform: translateX(-50%);
   }
 }
