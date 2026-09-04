@@ -11,13 +11,40 @@
   background: var(--pm-bg);
 }
 
-/* No wordmark, so the nav sits to the right on its own */
 .pm-header__inner {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   gap: var(--pm-space-6);
   padding-block: var(--pm-header-pad-y);
+}
+
+/* Typography comes from the Eyebrow component, so it matches the hero byline
+   exactly. Hidden with opacity rather than display, so revealing it never
+   shifts the nav. */
+.pm-header__brand {
+  min-width: 0;
+  /* A step up from the 12px eyebrow default, matching the hero byline */
+  --pm-header-brand-size: 15px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease,
+    visibility 0.35s ease;
+}
+
+.pm-header__brand.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+.pm-header__brand .pm-eyebrow__text {
+  font-size: var(--pm-header-brand-size);
+  letter-spacing: 0.18em;
+  color: var(--pm-ink);
 }
 
 .pm-header__nav {

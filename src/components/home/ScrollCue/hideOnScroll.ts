@@ -5,7 +5,7 @@
  * still correct — it links to the next section.
  */
 
-const THRESHOLD = 48;
+import { SCROLL_REVEAL_AT } from '~/lib/scroll';
 
 function setup(): void {
   const cue = document.querySelector<HTMLElement>('[data-scroll-cue]');
@@ -14,7 +14,7 @@ function setup(): void {
   let frame = 0;
 
   function measure(): void {
-    cue!.classList.toggle('is-hidden', window.scrollY > THRESHOLD);
+    cue!.classList.toggle('is-hidden', window.scrollY > SCROLL_REVEAL_AT);
   }
 
   function onScroll(): void {

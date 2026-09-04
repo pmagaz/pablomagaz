@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import Eyebrow from '~/components/common/Eyebrow/Eyebrow';
 import SocialIcon from '~/components/common/SocialIcon/SocialIcon';
 import { site } from '~/data/site';
 import './Header.css';
@@ -6,6 +7,11 @@ import './Header.css';
 export interface HeaderProps {
   /** Current pathname — passed down because React components have no Astro.url. */
   pathname: string;
+  /**
+   * On the home route the wordmark starts hidden and fades in once the hero
+   * byline has scrolled away. Everywhere else it shows from the start.
+   */
+  revealBrandOnScroll?: boolean;
   /** The mobile menu island, hydrated by the layout. */
   children?: ReactNode;
 }
@@ -16,14 +22,23 @@ export function isCurrent(pathname: string, href: string): boolean {
   return path === href || path.startsWith(`${href}/`);
 }
 
-export default function Header({ pathname, children }: HeaderProps) {
+export default function Header({
+  pathname,
+  revealBrandOnScroll = false,
+  children,
+}: HeaderProps) {
   return (
     <header className="pm-header">
       <div className="pm-container pm-header__inner">
-        {/* No visible wordmark, but keep a home link for keyboard and
-            screen-reader users — the nav has no other route back to /. */}
-        <a className="pm-sr-only" href="/">
-          {site.name} &mdash; home
+        {/* Same eyebrow treatment as the hero byline it takes over from */}
+        <a
+          className={`pm-header__brand${revealBrandOnScroll ? '' : ' is-visible'}`}
+          href="/"
+          aria-label={`${site.name} — home`}
+          data-header-brand={revealBrandOnScroll ? 'reveal' : undefined}
+        >
+          {/* No dot here — that belongs to the hero byline */}
+          <Eyebrow text={site.name} />
         </a>
 
         <nav className="pm-header__nav" aria-label="Main">

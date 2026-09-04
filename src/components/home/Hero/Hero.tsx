@@ -27,7 +27,11 @@ export default function Hero({ portrait }: HeroProps) {
         <div className="pm-hero__content" data-reveal-hero>
           <Headline lines={home.headline} className="pm-hero__title" />
 
-          <Eyebrow dot text={`${site.name} — ${site.role}`} />
+          {/* Name, then the role stacked beneath it */}
+          <div className="pm-hero__byline">
+            <Eyebrow dot text={site.name} className="pm-hero__byline-name" />
+            <span className="pm-hero__byline-role">{site.role}</span>
+          </div>
         </div>
 
         <div className="pm-hero__photo" data-reveal>

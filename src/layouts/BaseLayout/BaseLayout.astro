@@ -18,6 +18,9 @@ interface Props extends SeoInput {
 const { schema, ...seoInput } = Astro.props;
 const seo = resolveSeo(seoInput, Astro.url, Astro.site);
 const pathname = Astro.url.pathname;
+// Only the home route has a hero byline for the header wordmark to take over
+// from, so only there does it start hidden.
+const isHome = (pathname.replace(/\/+$/, '') || '/') === '/';
 ---
 
 <!doctype html>
@@ -85,7 +88,7 @@ const pathname = Astro.url.pathname;
   <body>
     <a class="pm-skip-link" href="#main">Skip to content</a>
     <div class="pm-shell">
-      <Header pathname={pathname}>
+      <Header pathname={pathname} revealBrandOnScroll={isHome}>
         <MobileMenu pathname={pathname} nav={site.nav} social={site.social} client:load />
       </Header>
       <main class="pm-shell__main" id="main">
@@ -98,6 +101,7 @@ const pathname = Astro.url.pathname;
     <script>
       import '~/lib/reveal';
       import '~/components/common/Header/scrollSpy';
+      import '~/components/common/Header/revealBrand';
       import '~/components/home/ScrollCue/hideOnScroll';
     </script>
   </body>

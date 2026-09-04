@@ -37,6 +37,36 @@
   letter-spacing: -0.04em;
 }
 
+/* Byline — name on one line, role beneath it, both a step up from the
+   default 12px eyebrow so they hold their own under the headline. */
+.pm-hero__byline {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Pinned so the role's indent below still lines up at every breakpoint —
+   Eyebrow narrows its own gap on mobile. */
+.pm-hero__byline-name {
+  gap: 12px;
+}
+
+.pm-hero__byline-name .pm-eyebrow__text {
+  font-size: 15px;
+  letter-spacing: 0.18em;
+  color: var(--pm-ink);
+}
+
+.pm-hero__byline-role {
+  /* Aligns under the name, clearing the 7px dot and its gap */
+  padding-left: 19px;
+  color: var(--pm-muted);
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
 .pm-hero__actions {
   position: relative;
   z-index: 2;
