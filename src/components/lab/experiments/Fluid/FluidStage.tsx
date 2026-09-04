@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import ParamSlider from '~/components/lab/ParamSlider/ParamSlider';
+import Stage from '~/components/lab/Stage/Stage';
 import { createFluidSim, type FluidHandle, type FluidParams } from './fluidSim';
-import './FluidStage.css';
 
 const DEFAULTS: FluidParams = {
   curl: 22,
@@ -12,17 +12,15 @@ const DEFAULTS: FluidParams = {
 /**
  * Hosts the fluid solver.
  *
- * Rendered with `client:only` so none of the WebGL code is touched during the
- * static build. Slider values are written into a mutable ref that the solver
- * reads each frame — putting them in React state would re-render 60x a second
- * and remounting the canvas would throw the simulation away.
+ * Slider values are written into a mutable ref that the solver reads each
+ * frame — putting them in React state would re-render 60x a second, and
+ * remounting the canvas would throw the simulation away.
  */
 export default function FluidStage() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const paramsRef = useRef<FluidParams>({ ...DEFAULTS });
   const simRef = useRef<FluidHandle | null>(null);
 
-  // Mirrored in state purely so the readouts re-render.
   const [ui, setUi] = useState<FluidParams>({ ...DEFAULTS });
   const [supported, setSupported] = useState(true);
 
@@ -35,10 +33,8 @@ export default function FluidStage() {
       setSupported(false);
       return;
     }
-
     simRef.current = sim;
 
-    // Stop simulating while the canvas is scrolled out of view.
     const observer = new IntersectionObserver(
       ([entry]) => sim.setPaused(!entry?.isIntersecting),
       { threshold: 0 },
@@ -62,62 +58,48 @@ export default function FluidStage() {
     setUi({ ...DEFAULTS });
   }
 
-  if (!supported) {
-    return (
-      <div className="pm-stage pm-stage--unsupported">
-        <p className="pm-stage__fallback">
-          This experiment needs WebGL2 with floating-point render targets, which this
-          browser does not provide. Everything else on the page works as normal.
-        </p>
-      </div>
-    );
-  }
-
   return (
-    <div className="pm-stage">
-      <div className="pm-stage__canvas">
-        <canvas ref={canvasRef} aria-label="Fluid simulation. Drag to move the dye." />
-        <p className="pm-stage__hint" aria-hidden="true">
-          Drag anywhere
-        </p>
-      </div>
+    <Stage
+      canvasRef={canvasRef}
+      label="Fluid simulation. Drag to push dye through the velocity field."
+      hint="Drag anywhere"
+      unsupported={
+        supported
+          ? null
+          : 'This experiment needs WebGL2 with floating-point render targets, which this browser does not provide.'
+      }
+      onReset={reset}
+    >
+      <ParamSlider
+        label="Swirl"
+        min={0}
+        max={50}
+        step={1}
+        value={ui.curl}
+        onChange={(value) => update('curl', value)}
+        format={(value) => value.toFixed(0)}
+        hint="Vorticity confinement — how much rotation is pushed back into the field."
+      />
 
-      <div className="pm-stage__controls">
-        <ParamSlider
-          label="Swirl"
-          min={0}
-          max={50}
-          step={1}
-          value={ui.curl}
-          onChange={(value) => update('curl', value)}
-          format={(value) => value.toFixed(0)}
-          hint="Vorticity confinement — how much rotation is pushed back into the field."
-        />
+      <ParamSlider
+        label="Fade"
+        min={0.2}
+        max={4}
+        step={0.05}
+        value={ui.fade}
+        onChange={(value) => update('fade', value)}
+        hint="Dye dissipation. Higher clears the canvas faster."
+      />
 
-        <ParamSlider
-          label="Fade"
-          min={0.2}
-          max={4}
-          step={0.05}
-          value={ui.fade}
-          onChange={(value) => update('fade', value)}
-          hint="Dye dissipation. Higher clears the canvas faster."
-        />
-
-        <ParamSlider
-          label="Scale"
-          min={0.05}
-          max={0.6}
-          step={0.01}
-          value={ui.scale}
-          onChange={(value) => update('scale', value)}
-          hint="Radius of each splat of dye and force."
-        />
-
-        <button className="pm-stage__reset" type="button" onClick={reset}>
-          Reset
-        </button>
-      </div>
-    </div>
+      <ParamSlider
+        label="Scale"
+        min={0.05}
+        max={0.6}
+        step={0.01}
+        value={ui.scale}
+        onChange={(value) => update('scale', value)}
+        hint="Radius of each splat of dye and force."
+      />
+    </Stage>
   );
 }

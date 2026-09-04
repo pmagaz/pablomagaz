@@ -26,6 +26,17 @@ export interface Experiment {
 
 export const experiments: readonly Experiment[] = [
   {
+    slug: 'balls',
+    title: 'Two hundred balls and one cursor',
+    excerpt:
+      'Rigid-body circles under gravity. Sweep the cursor through the pile to shove them around.',
+    description:
+      'Semi-implicit Euler integration with pairwise collisions resolved against a uniform spatial grid, so the cost stays close to linear in the number of balls instead of quadratic. Impulses are exchanged only along the collision normal and shared by mass, which is what makes the big ones shoulder the small ones aside. The cursor is a moving obstacle: balls inside its radius are pushed out and pick up its velocity.',
+    category: 'Physics',
+    date: '2026-09-04',
+    status: 'live',
+  },
+  {
     slug: 'fluid',
     title: 'Stable fluid, solved every frame',
     excerpt:
@@ -37,29 +48,14 @@ export const experiments: readonly Experiment[] = [
     status: 'live',
   },
   {
-    slug: 'mandelbrot',
-    title: 'Perturbation orbits in the Mandelbrot set',
-    excerpt:
-      'Deep zooming past the limits of double precision using series approximation.',
+    slug: 'fractal',
+    title: 'The edge of the Mandelbrot set',
+    excerpt: 'Escape-time iteration in a single fragment shader. Drag to travel.',
+    description:
+      'Every pixel is a point on the complex plane, iterated under z → z² + c until it escapes a radius of sixteen. The iteration count becomes the colour, smoothed to a fractional value so the bands blend rather than step. One full-screen shader pass per frame, which is why panning stays fluid at two hundred iterations a pixel.',
     category: 'Fractals',
     date: '2026-09-04',
-    status: 'planned',
-  },
-  {
-    slug: 'curl-noise',
-    title: 'A million particles in a curl-noise field',
-    excerpt: 'Divergence-free flow from the curl of a noise field, integrated on the GPU.',
-    category: 'Flow',
-    date: '2026-09-04',
-    status: 'planned',
-  },
-  {
-    slug: 'reaction-diffusion',
-    title: 'Gray-Scott reaction diffusion',
-    excerpt: 'Two chemicals, four constants, and most of the patterns in nature.',
-    category: 'Systems',
-    date: '2026-09-04',
-    status: 'planned',
+    status: 'live',
   },
 ];
 

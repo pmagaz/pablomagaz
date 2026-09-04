@@ -1,7 +1,9 @@
 ---
 import type { GetStaticPaths } from 'astro';
 import ExperimentHeader from '~/components/lab/ExperimentHeader/ExperimentHeader';
+import BallsStage from '~/components/lab/experiments/Balls/BallsStage';
 import FluidStage from '~/components/lab/experiments/Fluid/FluidStage';
+import FractalStage from '~/components/lab/experiments/Fractal/FractalStage';
 import { liveExperiments, type Experiment } from '~/data/experiments';
 import BaseLayout from '~/layouts/BaseLayout/BaseLayout.astro';
 
@@ -26,12 +28,14 @@ const { experiment } = Astro.props;
 
     <div class="pm-container pm-experiment__stage">
       {
-        /* client:only — none of the WebGL code should be evaluated during the
-           static build, and the canvas has nothing meaningful to server-render.
-           The title and prose above are static HTML, so crawlers still get the
-           page's content. */
-        experiment.slug === 'fluid' && <FluidStage client:only="react" />
+        /* client:only — none of the canvas or WebGL code should be evaluated
+           during the static build, and there is nothing meaningful to
+           server-render for a canvas. The title and prose above are static
+           HTML, so crawlers still get the page's content. */
       }
+      {experiment.slug === 'balls' && <BallsStage client:only="react" />}
+      {experiment.slug === 'fluid' && <FluidStage client:only="react" />}
+      {experiment.slug === 'fractal' && <FractalStage client:only="react" />}
     </div>
   </article>
 </BaseLayout>
