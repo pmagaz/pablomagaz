@@ -48,11 +48,12 @@ export const experiments: readonly Experiment[] = [
     status: 'live',
   },
   {
-    slug: 'fractal',
-    title: 'The edge of the Mandelbrot set',
-    excerpt: 'Escape-time iteration in a single fragment shader. Drag to travel.',
+    slug: 'attractor',
+    title: 'A strange attractor that will not sit still',
+    excerpt:
+      'Two equations, four constants, and a shape with fractional dimension. Move the cursor to reshape it.',
     description:
-      'Every pixel is a point on the complex plane, iterated under z → z² + c until it escapes a radius of sixteen. The iteration count becomes the colour, smoothed to a fractional value so the bands blend rather than step. One full-screen shader pass per frame, which is why panning stays fluid at two hundred iterations a pixel.',
+      'A Clifford attractor: iterate a single point through a pair of trigonometric maps and it never escapes, never repeats, and never settles — it traces a set of fractional dimension. Nine hundred orbits run in parallel and their visits accumulate into a density field, so bright filaments are simply where the system spends most of its time. A strange attractor is a still figure for fixed constants, so two of them drift on slow incommensurate sines: the form folds and reopens without ever cycling. Set drift to zero and it freezes.',
     category: 'Fractals',
     date: '2026-09-04',
     status: 'live',
