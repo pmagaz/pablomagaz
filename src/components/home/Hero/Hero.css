@@ -127,19 +127,24 @@
     border-left: 1px solid var(--pm-hairline);
   }
 
-  /* Height drives the size, but max-width caps it so the figure always keeps
-     clear of the panel's left border — on a short, narrow window an 80%-tall
-     portrait would otherwise be wider than the panel. `contain` plus a bottom
-     object-position keeps it standing on the floor when the cap bites. */
+  /* Anchored bottom-right, as in the design where the portrait bled off the
+     right edge. Centring it instead leaves a dead gap on wide screens, since
+     the panel runs all the way to the viewport.
+
+     Height drives the size; max-width caps it so the figure still clears the
+     panel's left border on a short, narrow window, where an 88%-tall portrait
+     would be wider than the panel itself. `contain` with a bottom-right
+     object-position keeps it in the corner when that cap bites. */
   .pm-hero__photo > img {
     position: absolute;
     bottom: 0;
-    left: 50%;
+    right: 0;
+    left: auto;
     width: auto;
-    max-width: 76%;
-    height: 80%;
-    transform: translateX(-50%);
+    max-width: 88%;
+    height: 88%;
+    transform: none;
     object-fit: contain;
-    object-position: bottom center;
+    object-position: bottom right;
   }
 }
