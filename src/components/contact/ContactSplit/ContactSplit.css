@@ -10,7 +10,9 @@
   width: 100%;
   max-width: var(--pm-page-max);
   margin-inline: auto;
-  min-height: calc(100dvh - var(--pm-header-h));
+  /* svh so the panel does not resize as a mobile URL bar collapses */
+  min-height: calc(100vh - var(--pm-header-h));
+  min-height: calc(100svh - var(--pm-header-h));
   padding-bottom: var(--pm-space-10);
 }
 

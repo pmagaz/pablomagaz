@@ -6,7 +6,11 @@
 .pm-hero {
   display: flex;
   flex: 1;
-  min-height: calc(100dvh - var(--pm-header-h));
+  /* svh, not dvh: the dynamic unit grows as a mobile browser collapses its
+     URL bar, which resized the hero — and the portrait inside it — on every
+     scroll. The small unit is the one value that does not move. */
+  min-height: calc(100vh - var(--pm-header-h));
+  min-height: calc(100svh - var(--pm-header-h));
   /* The photo panel bleeds past the container using 100vw, which can exceed
      the available width by the scrollbar. Clip rather than scroll. */
   overflow-x: clip;
