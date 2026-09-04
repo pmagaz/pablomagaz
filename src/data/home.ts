@@ -19,11 +19,12 @@ const actions: readonly HeroAction[] = [
 ];
 
 export const home = {
-  // One line that wraps naturally. Hard breaks were safe for the old,
-  // shorter headline; this one is long enough that a forced break would
-  // wrap again inside itself on a narrower column.
+  // Hard breaks, as drawn in the design — short enough that no line wraps
+  // again inside itself.
   headline: [
-    [{ text: 'Technology that ' }, { text: 'moves', accent: true }, { text: ' the business.' }],
+    [{ text: 'Technology' }],
+    [{ text: 'that ' }, { text: 'earns', accent: true }],
+    [{ text: 'its place.' }],
   ] as const satisfies HeadlineLines,
   actions,
   portraitAlt: 'Pablo Magaz speaking at a conference',
