@@ -100,11 +100,13 @@
 /* Scaled past the height of its box and anchored so the overflow falls
    below the frame — the portrait reads larger and the crop takes the legs
    rather than the head. */
-/* height and bottom stay equal and opposite, which keeps the head pinned to
-   the top of the frame and puts the crop on the legs. */
+/* Height stays at 120% so the figure reads large, but the bottom offset is
+   6% deeper than that, which drops the whole image and leaves a margin
+   between the head and the top of the grey panel. The extra crop lands on
+   the legs, where it does not matter. */
 .pm-hero__photo > img {
   position: absolute;
-  bottom: -20%;
+  bottom: -26%;
   left: 50%;
   height: 120%;
   width: auto;
