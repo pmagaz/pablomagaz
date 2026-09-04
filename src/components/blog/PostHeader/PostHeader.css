@@ -11,10 +11,28 @@
   padding-block: var(--pm-space-7) var(--pm-space-6);
 }
 
+.pm-post-header__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--pm-space-4);
+}
+
 .pm-post-header__back {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+  flex: none;
   color: var(--pm-muted);
   font-size: 13px;
+  white-space: nowrap;
   transition: color var(--pm-transition);
+}
+
+/* Sized up a little, since a chevron reads lighter than an arrow */
+.pm-post-header__chevron {
+  font-size: 1.2em;
+  line-height: 1;
 }
 
 .pm-post-header__back:hover {

@@ -7,10 +7,28 @@
   padding-block: var(--pm-space-7) var(--pm-space-6);
 }
 
+.pm-experiment-header__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--pm-space-4);
+}
+
 .pm-experiment-header__back {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+  flex: none;
   color: var(--pm-muted);
   font-size: 13px;
+  white-space: nowrap;
   transition: color var(--pm-transition);
+}
+
+/* Sized up a little, since a chevron reads lighter than an arrow */
+.pm-experiment-header__chevron {
+  font-size: 1.2em;
+  line-height: 1;
 }
 
 .pm-experiment-header__back:hover {
@@ -33,26 +51,6 @@
   color: var(--pm-body);
   font-size: 16px;
   line-height: 1.7;
-}
-
-.pm-experiment-header__meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 14px;
-  color: var(--pm-muted);
-  font-size: 13px;
-  font-variant-numeric: tabular-nums;
-}
-
-.pm-experiment-header__meta > * + *::before {
-  content: '';
-  display: inline-block;
-  width: 1px;
-  height: 12px;
-  margin-right: 14px;
-  vertical-align: -1px;
-  background: var(--pm-hairline);
 }
 
 @media (min-width: 769px) {

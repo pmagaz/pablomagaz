@@ -1,6 +1,5 @@
 import Eyebrow from '~/components/common/Eyebrow/Eyebrow';
 import type { Experiment } from '~/data/experiments';
-import { formatDateLong, toISODate } from '~/lib/format';
 import './ExperimentHeader.css';
 
 export interface ExperimentHeaderProps {
@@ -13,27 +12,27 @@ export interface ExperimentHeaderProps {
  * a client-only island.
  */
 export default function ExperimentHeader({ experiment }: ExperimentHeaderProps) {
-  const date = new Date(experiment.date);
-
   return (
     <header className="pm-experiment-header">
       <div className="pm-container pm-experiment-header__inner" data-reveal-group>
-        <a className="pm-experiment-header__back" href="/lab">
-          &larr; Back to the lab
-        </a>
+        {/* Category and back link share one line, back link to the right */}
+        <div className="pm-experiment-header__top">
+          <Eyebrow dot tone="red" text={experiment.category} />
 
-        <Eyebrow dot tone="red" text={experiment.category} />
+          <a className="pm-experiment-header__back" href="/lab" aria-label="Back to the lab">
+            {/* Chevron rather than a full arrow — &larr; sets much wider */}
+            <span className="pm-experiment-header__chevron" aria-hidden="true">
+              &lsaquo;
+            </span>
+            Back
+          </a>
+        </div>
 
         <h1 className="pm-experiment-header__title">{experiment.title}</h1>
 
         {experiment.description && (
           <p className="pm-experiment-header__description">{experiment.description}</p>
         )}
-
-        <div className="pm-experiment-header__meta">
-          <time dateTime={toISODate(date)}>{formatDateLong(date)}</time>
-          <span>Drag the canvas · three parameters</span>
-        </div>
       </div>
     </header>
   );
