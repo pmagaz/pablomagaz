@@ -31,7 +31,7 @@ export const experiments: readonly Experiment[] = [
     excerpt:
       'Rigid-body circles under gravity. Sweep the cursor through the pile to shove them around.',
     description:
-      'Semi-implicit Euler integration with pairwise collisions resolved against a uniform spatial grid, so the cost stays close to linear in the number of balls instead of quadratic. Impulses are exchanged only along the collision normal and shared by mass, which is what makes the big ones shoulder the small ones aside. The cursor is a moving obstacle: balls inside its radius are pushed out and pick up its velocity.',
+      'Rigid bodies under gravity, with collisions resolved against a spatial grid so the count can climb. Impulses are shared by mass, which is why the big ones shoulder the small ones aside — and the cursor is just another moving obstacle.',
     category: 'Physics',
     date: '2026-09-04',
     status: 'live',
@@ -42,7 +42,7 @@ export const experiments: readonly Experiment[] = [
     excerpt:
       'An incompressible Navier-Stokes solver running on the GPU. Drag to push dye through the velocity field.',
     description:
-      'A semi-Lagrangian fluid solver: advect the velocity field through itself, compute its divergence, solve for the pressure that cancels it with twenty Jacobi iterations, then subtract the pressure gradient to make the field incompressible again. Dye is carried along for the ride. All of it runs in fragment shaders against ping-ponged floating-point framebuffers, which is why it holds sixty frames a second.',
+      'A semi-Lagrangian solver: advect the velocity field through itself, then solve for the pressure that keeps it incompressible. Dye is carried along for the ride, all of it in fragment shaders on the GPU.',
     category: 'Fluids',
     date: '2026-09-04',
     status: 'live',
@@ -53,7 +53,7 @@ export const experiments: readonly Experiment[] = [
     excerpt:
       'Two equations, four constants, and a shape with fractional dimension. Move the cursor to reshape it.',
     description:
-      'A Clifford attractor: iterate a single point through a pair of trigonometric maps and it never escapes, never repeats, and never settles — it traces a set of fractional dimension. Nine hundred orbits run in parallel and their visits accumulate into a density field, so bright filaments are simply where the system spends most of its time. A strange attractor is a still figure for fixed constants, so two of them drift on slow incommensurate sines: the form folds and reopens without ever cycling. Set drift to zero and it freezes.',
+      'Iterate a point through two trigonometric maps and it never escapes, never repeats, never settles. Nine hundred orbits accumulate into a density field, so the bright filaments are simply where the system spends its time.',
     category: 'Fractals',
     date: '2026-09-04',
     status: 'live',
