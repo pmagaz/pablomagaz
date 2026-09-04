@@ -40,13 +40,13 @@ export const about = {
     {
       stage: 'Previously',
       role: 'Chief Technology Officer',
-      summary: 'SaaS AI fintech',
+      summary: 'Stealth mode — AI fintech',
       location: 'Zurich',
     },
     {
       stage: 'Earlier',
       role: 'Chief Technology Officer',
-      summary: 'SaaS identity management',
+      summary: 'OneLog — SaaS identity management',
       location: 'Zurich',
     },
   ] as const satisfies readonly CareerRow[],
