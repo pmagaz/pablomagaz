@@ -26,7 +26,7 @@ export default function Career() {
                 <span className="pm-career__summary">{row.summary}</span>
               </div>
 
-              <span className="pm-career__fact">{row.fact}</span>
+              <span className="pm-career__location">{row.location}</span>
             </li>
           ))}
         </ol>

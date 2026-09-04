@@ -5,8 +5,8 @@ export interface CareerRow {
   readonly stage: string;
   readonly role: string;
   readonly summary: string;
-  /** A short supporting fact, right-aligned on desktop. */
-  readonly fact: string;
+  /** City, right-aligned on desktop. */
+  readonly location: string;
 }
 
 export interface Highlight {
@@ -14,13 +14,7 @@ export interface Highlight {
   readonly text: string;
 }
 
-/**
- * About page content.
- *
- * TODO(content): every string here is placeholder copy from the design
- * handoff — company names, headcounts, the "20+ years" and "40+ talks"
- * metrics. Replace with Pablo's real bio and career facts before launch.
- */
+/** About page content. */
 export const about = {
   eyebrow: 'About',
   // One line — it wraps naturally inside its measure, as drawn in the design.
@@ -39,35 +33,35 @@ export const about = {
   career: [
     {
       stage: 'Now',
-      role: 'Chief Technology Officer',
-      summary: 'Company name — platform, data and AI across five markets',
-      fact: '120 engineers · 4 countries',
+      role: 'Chief Technology & AI Officer',
+      summary: 'MIO Group — SaaS, AI, media and CX',
+      location: 'Madrid',
     },
     {
       stage: 'Previously',
-      role: 'VP of Engineering',
-      summary: 'Company name — rebuilt delivery from project to product',
-      fact: '40 engineers',
+      role: 'Chief Technology Officer',
+      summary: 'SaaS AI fintech',
+      location: 'Zurich',
     },
     {
       stage: 'Earlier',
-      role: 'Co-founder & CTO',
-      summary: 'Company name — from first commit to acquisition',
-      fact: 'Acquired',
+      role: 'Chief Technology Officer',
+      summary: 'SaaS identity management',
+      location: 'Zurich',
     },
   ] as const satisfies readonly CareerRow[],
   highlights: [
     {
       label: 'What I work on',
-      text: 'Platform strategy · AI in production · Engineering org design · Technical due diligence',
+      text: 'Agentic AI solutions for a new era of software — from strategy through to production, and the engineering organisation that sustains them',
     },
     {
       label: 'Speaking',
-      text: '40+ talks and keynotes on engineering leadership and applied AI, in Spanish and English',
+      text: 'Multiple talks at events across Europe, in Spanish and English',
     },
     {
       label: 'Also',
-      text: 'Advisor to two early-stage teams · Mentor for first-time CTOs',
+      text: 'Advisory work for companies of every size, from a first engineering hire to an established platform team',
     },
   ] as const satisfies readonly Highlight[],
 } as const;
