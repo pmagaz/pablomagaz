@@ -30,8 +30,8 @@ export const experiments: readonly Experiment[] = [
     title: 'Two hundred balls and one cursor',
     excerpt:
       'Rigid-body circles under gravity. Sweep the cursor through the pile to shove them around.',
-    description:
-      'Rigid bodies under gravity, with collisions resolved against a spatial grid so the count can climb. Impulses are shared by mass, which is why the big ones shoulder the small ones aside — and the cursor is just another moving obstacle.',
+    // Kept under ~76 characters so it holds one line inside the 720px measure.
+    description: 'Rigid bodies under gravity, with collisions resolved against a spatial grid.',
     category: 'Physics',
     date: '2026-09-04',
     status: 'live',
@@ -41,8 +41,7 @@ export const experiments: readonly Experiment[] = [
     title: 'Stable fluid, solved every frame',
     excerpt:
       'An incompressible Navier-Stokes solver running on the GPU. Drag to push dye through the velocity field.',
-    description:
-      'A semi-Lagrangian solver: advect the velocity field through itself, then solve for the pressure that keeps it incompressible. Dye is carried along for the ride, all of it in fragment shaders on the GPU.',
+    description: 'A semi-Lagrangian solver that keeps the velocity field incompressible.',
     category: 'Fluids',
     date: '2026-09-04',
     status: 'live',
@@ -52,8 +51,7 @@ export const experiments: readonly Experiment[] = [
     title: 'A strange attractor that will not sit still',
     excerpt:
       'Two equations, four constants, and a shape with fractional dimension. Move the cursor to reshape it.',
-    description:
-      'Iterate a point through two trigonometric maps and it never escapes, never repeats, never settles. Nine hundred orbits accumulate into a density field, so the bright filaments are simply where the system spends its time.',
+    description: 'Two trigonometric maps, iterated: it never escapes, repeats, or settles.',
     category: 'Fractals',
     date: '2026-09-04',
     status: 'live',
