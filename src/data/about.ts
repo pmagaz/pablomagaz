@@ -42,7 +42,7 @@ export const about = {
     {
       stage: 'Previously',
       role: 'Chief Technology Officer',
-      summary: 'Stealth mode — AI fintech',
+      summary: 'Stealth mode startup — AI fintech',
       location: 'Zurich',
     },
     {
