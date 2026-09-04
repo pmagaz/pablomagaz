@@ -7,6 +7,9 @@
   display: flex;
   flex: 1;
   min-height: calc(100dvh - var(--pm-header-h));
+  /* The photo panel bleeds past the container using 100vw, which can exceed
+     the available width by the scrollbar. Clip rather than scroll. */
+  overflow-x: clip;
 }
 
 .pm-hero__inner {
@@ -84,10 +87,12 @@
   }
 
   .pm-hero__content {
+    /* Proportional, not a fixed measure: a fixed one collides with the panel
+       at around 1024px, where the column is much narrower than at 1280px. */
+    max-width: min(640px, 50%);
     gap: var(--pm-space-8);
     padding-top: 0;
-    /* Keeps the headline clear of the portrait */
-    padding-right: var(--pm-space-14);
+    padding-right: 0;
   }
 
   .pm-hero__title {
@@ -98,17 +103,23 @@
     margin-top: 0;
   }
 
-  /* A full-height grey panel on the right that the figure stands in, flush
-     to the container edge — the same treatment as the about photo panel. */
+  /* A full-height grey panel that the figure stands in. It runs from its
+     left border all the way off the right of the viewport, so no white is
+     left beside it on wide screens: 100% is this element's containing block
+     (the capped container), so the offset covers the centring margin too. */
   .pm-hero__photo {
     order: 0;
     position: absolute;
     top: 0;
     bottom: 0;
-    right: calc(var(--pm-page-pad) * -1);
+    /* Left edge inside the container, right edge off the viewport, so
+       nothing white is left beside the panel on wide screens. Width is
+       implied by the two offsets rather than computed. */
+    left: 54%;
+    right: calc((100vw - 100%) / -2);
     z-index: 1;
     flex: none;
-    width: 40%;
+    width: auto;
     height: auto;
     min-height: 0;
     margin: 0;
@@ -116,12 +127,19 @@
     border-left: 1px solid var(--pm-hairline);
   }
 
+  /* Height drives the size, but max-width caps it so the figure always keeps
+     clear of the panel's left border — on a short, narrow window an 80%-tall
+     portrait would otherwise be wider than the panel. `contain` plus a bottom
+     object-position keeps it standing on the floor when the cap bites. */
   .pm-hero__photo > img {
     position: absolute;
     bottom: 0;
     left: 50%;
     width: auto;
-    height: 92%;
+    max-width: 76%;
+    height: 80%;
     transform: translateX(-50%);
+    object-fit: contain;
+    object-position: bottom center;
   }
 }
