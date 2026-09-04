@@ -30,6 +30,8 @@ export const about = {
     'Specializes in building engineering teams that deliver and guiding organizations through the transition to the Agentic AI era to unlock efficiency and growth.',
     'Draws on experience leading distributed, cross-cultural teams, balancing long-term technology vision with delivery through efficient resource management.',
   ],
+  /** Only the three most recent roles are listed, hence "recent". */
+  careerEyebrow: 'Recent career',
   career: [
     {
       stage: 'Now',

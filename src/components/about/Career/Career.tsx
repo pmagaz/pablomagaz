@@ -10,7 +10,7 @@ export default function Career() {
   return (
     <section className="pm-career">
       <div className="pm-container pm-career__inner">
-        <Eyebrow text="Career" />
+        <Eyebrow text={about.careerEyebrow} />
 
         <ol className="pm-career__rows" data-reveal-group>
           {about.career.map((row, index) => (
