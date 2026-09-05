@@ -37,6 +37,16 @@ export const experiments: readonly Experiment[] = [
     status: 'live',
   },
   {
+    slug: 'galaxy',
+    title: 'A galaxy you can pull apart',
+    excerpt:
+      'Stars orbiting a massive core, with your cursor as a fourth mass. Sweep it through the disk and drag out a tidal tail.',
+    description: 'Thousands of stars falling through the field of three massive bodies.',
+    category: 'Space',
+    date: '2026-09-05',
+    status: 'live',
+  },
+  {
     slug: 'fluid',
     title: 'Stable fluid, solved every frame',
     excerpt:
