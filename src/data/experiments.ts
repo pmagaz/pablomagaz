@@ -38,10 +38,10 @@ export const experiments: readonly Experiment[] = [
   },
   {
     slug: 'galaxy',
-    title: 'A galaxy you can pull apart',
+    title: 'A flight through the galaxy',
     excerpt:
-      'Stars orbiting a massive core, with your cursor as a fourth mass. Sweep it through the disk and drag out a tidal tail.',
-    description: 'Thousands of stars falling through the field of three massive bodies.',
+      'Steer with the pointer, hold to accelerate, and pass suns with planets turning on their orbits.',
+    description: 'Stars projected in three dimensions, streaming past as you steer through them.',
     category: 'Space',
     date: '2026-09-05',
     status: 'live',

@@ -1,58 +1,49 @@
 /**
- * A galaxy as a restricted N-body problem.
+ * A flight through a galaxy.
  *
- * A supermassive core and two orbiting companions carry all the mass and pull
- * on each other; the stars are massless test particles that fall through the
- * field they create. The cursor is a fourth mass you steer.
+ * Stars are points in 3D that stream past the camera; the pointer steers,
+ * and because screen position is `(x - camera) * focal / z`, near stars swing
+ * further than far ones — that parallax is what sells the depth. Scattered
+ * through the field are star systems with planets on real circular orbits,
+ * which grow as you approach and are recycled once they pass behind you.
  *
- * The alternative — every star attracting every other — is O(n²), or O(n log n)
- * with a Barnes-Hut tree, and neither survives a phone. Here each star costs
- * four force evaluations regardless of how many stars there are, so the whole
- * step is linear and thousands of stars run at sixty frames a second. The
- * honest cost of that: arms are stirred up by the companions rather than
- * emerging from the disk's own self-gravity.
- *
- * Positions are held in flat typed arrays, structure-of-arrays, and nothing is
- * allocated inside the frame loop.
+ * Drawn with plain canvas fills rather than a per-pixel buffer: the previous
+ * version paid for a full-canvas read-modify-write every frame, which is the
+ * expensive part on a phone. Trails come from compositing a translucent ink
+ * rectangle instead, which the compositor does for free.
  */
 
 import { EMBER, INK, RED, TINT, type Rgb } from '~/lib/palette';
 
 export interface GalaxyParams {
-  /** Scales the mass of every body. Low unwinds the disk, high collapses it. */
-  gravity: number;
-  /** Number of test stars. */
+  /** How fast the camera travels forward. */
+  speed: number;
+  /** Number of background stars. */
   stars: number;
-  /** Mass of the cursor, as a fraction of the core. */
-  pull: number;
+  /** How many planetary systems are seeded through the field. */
+  systems: number;
 }
 
 export interface GalaxyHandle {
   destroy(): void;
   setPaused(paused: boolean): void;
   reseed(): void;
-  /** Sensible star count for this device — the component seeds the slider. */
+  /** Sensible star count for this device. */
   readonly suggestedStars: number;
 }
 
-/** Orbital speed at REFERENCE_RADIUS, which sets the core's mass. */
-const REFERENCE_SPEED = 62;
-const REFERENCE_RADIUS = 190;
-const CORE_GM = REFERENCE_SPEED * REFERENCE_SPEED * REFERENCE_RADIUS;
+const FOCAL = 640;
+const NEAR = 24;
+const FAR = 1400;
+/** Half-width of the volume stars are seeded into, in world units. */
+const SPREAD = 900;
+const MAX_STARS = 4000;
+const MAX_SYSTEMS = 8;
 
-/** Softening lengths: gravity is capped inside these, so nothing blows up. */
-const CORE_SOFTENING = 26;
-const CURSOR_SOFTENING = 34;
-
-const COMPANION_MASS = 0.055;
-const DISK_RADIUS = 300;
-/** Stars beyond this are recycled back into the disk to keep it populated. */
-const ESCAPE_RADIUS = 1180;
-
-const TRAIL_DECAY = 0.88;
-const GAIN = 20;
-
-const MAX_STARS = 6000;
+/** World units the camera can slide laterally at full pointer deflection. */
+const STEER_RANGE = 300;
+const STEER_DAMPING = 2.4;
+const BASE_SPEED = 190;
 
 export function createGalaxySim(
   canvas: HTMLCanvasElement,
@@ -62,14 +53,15 @@ export function createGalaxySim(
   if (!ctx) return null;
 
   const small = window.matchMedia('(max-width: 768px)').matches;
-  // Phones get a smaller accumulation buffer and fewer stars; both passes are
-  // per-pixel, so buffer size dominates the frame more than star count does.
-  const maxPixels = small ? 360_000 : 820_000;
-  const suggestedStars = small ? 1400 : 3200;
+  const suggestedStars = small ? 900 : 2200;
+  const maxDpr = small ? 1.5 : 2;
 
-  /* ---------------------------------------------------- colour lookup */
+  /* ------------------------------------------------- precomputed colours */
 
-  const LUT = new Uint8ClampedArray(256 * 3);
+  // Brightness is quantised into buckets so no colour strings are built
+  // inside the frame loop.
+  const BUCKETS = 12;
+  const starColors: string[] = [];
 
   function ramp(t: number): Rgb {
     const lerp = (a: Rgb, b: Rgb, k: number): Rgb => [
@@ -77,135 +69,129 @@ export function createGalaxySim(
       a[1] + (b[1] - a[1]) * k,
       a[2] + (b[2] - a[2]) * k,
     ];
-    if (t < 0.36) return lerp(INK, RED, t / 0.36);
-    if (t < 0.7) return lerp(RED, EMBER, (t - 0.36) / 0.34);
-    return lerp(EMBER, TINT, (t - 0.7) / 0.3);
+    if (t < 0.45) return lerp(RED, EMBER, t / 0.45);
+    return lerp(EMBER, TINT, (t - 0.45) / 0.55);
   }
 
-  for (let i = 0; i < 256; i += 1) {
-    const [r, g, b] = ramp(i / 255);
-    LUT[i * 3] = r * 255;
-    LUT[i * 3 + 1] = g * 255;
-    LUT[i * 3 + 2] = b * 255;
+  for (let i = 0; i < BUCKETS; i += 1) {
+    const [r, g, b] = ramp(i / (BUCKETS - 1));
+    starColors.push(
+      `rgb(${Math.round(r * 255)} ${Math.round(g * 255)} ${Math.round(b * 255)})`,
+    );
   }
 
-  /* ------------------------------------------------------------ buffers */
+  const fadeFill = `rgb(${Math.round(INK[0] * 255)} ${Math.round(INK[1] * 255)} ${Math.round(
+    INK[2] * 255,
+  )} / 0.34)`;
+  const inkFill = `rgb(${Math.round(INK[0] * 255)} ${Math.round(INK[1] * 255)} ${Math.round(
+    INK[2] * 255,
+  )})`;
+
+  /* ------------------------------------------------------------- canvas */
 
   let width = 0;
   let height = 0;
-  let density = new Float32Array(0);
-  let image: ImageData | null = null;
 
   function resize(): boolean {
-    const cssWidth = Math.max(1, Math.floor(canvas.clientWidth));
-    const cssHeight = Math.max(1, Math.floor(canvas.clientHeight));
-
-    let nextWidth = cssWidth;
-    let nextHeight = cssHeight;
-    const pixels = cssWidth * cssHeight;
-    if (pixels > maxPixels) {
-      const scale = Math.sqrt(maxPixels / pixels);
-      nextWidth = Math.max(1, Math.floor(cssWidth * scale));
-      nextHeight = Math.max(1, Math.floor(cssHeight * scale));
-    }
-
+    const dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
+    const nextWidth = Math.max(1, Math.floor(canvas.clientWidth));
+    const nextHeight = Math.max(1, Math.floor(canvas.clientHeight));
     if (nextWidth === width && nextHeight === height) return false;
 
     width = nextWidth;
     height = nextHeight;
-    canvas.width = width;
-    canvas.height = height;
-    density = new Float32Array(width * height);
-    image = ctx!.createImageData(width, height);
+    canvas.width = Math.floor(width * dpr);
+    canvas.height = Math.floor(height * dpr);
+    ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx!.fillStyle = inkFill;
+    ctx!.fillRect(0, 0, width, height);
     return true;
   }
 
-  /* -------------------------------------------------------------- state */
+  /* -------------------------------------------------------------- stars */
 
-  // Structure of arrays: one contiguous read per component per star.
-  const sx = new Float32Array(MAX_STARS);
-  const sy = new Float32Array(MAX_STARS);
-  const svx = new Float32Array(MAX_STARS);
-  const svy = new Float32Array(MAX_STARS);
+  const px = new Float32Array(MAX_STARS);
+  const py = new Float32Array(MAX_STARS);
+  const pz = new Float32Array(MAX_STARS);
   let starCount = 0;
 
-  // The massive bodies: core plus two companions.
-  const bx = new Float64Array(3);
-  const by = new Float64Array(3);
-  const bvx = new Float64Array(3);
-  const bvy = new Float64Array(3);
-  const bm = new Float64Array(3);
-
-  function seedStar(i: number): void {
-    // sqrt gives a uniform areal density; the extra power pulls stars inward
-    // so the core reads bright and the disk thins out.
-    const t = Math.random();
-    const radius = DISK_RADIUS * Math.pow(t, 0.62) + 18;
-    const angle = Math.random() * Math.PI * 2;
-
-    const x = Math.cos(angle) * radius;
-    const y = Math.sin(angle) * radius;
-
-    // Circular orbit speed for the enclosed mass, perpendicular to the radius.
-    const speed = Math.sqrt(CORE_GM / radius) * (0.94 + Math.random() * 0.12);
-
-    sx[i] = x;
-    sy[i] = y;
-    svx[i] = (-y / radius) * speed;
-    svy[i] = (x / radius) * speed;
+  function seedStar(i: number, z?: number): void {
+    px[i] = (Math.random() * 2 - 1) * SPREAD;
+    py[i] = (Math.random() * 2 - 1) * SPREAD;
+    pz[i] = z ?? NEAR + Math.random() * (FAR - NEAR);
   }
 
-  function seedBodies(): void {
-    bx[0] = 0;
-    by[0] = 0;
-    bvx[0] = 0;
-    bvy[0] = 0;
-    bm[0] = CORE_GM;
+  /* ------------------------------------------------------------ systems */
 
-    for (let i = 1; i < 3; i += 1) {
-      const radius = 250 + i * 130;
-      const angle = Math.random() * Math.PI * 2;
-      const speed = Math.sqrt(CORE_GM / radius) * 0.98;
-      bx[i] = Math.cos(angle) * radius;
-      by[i] = Math.sin(angle) * radius;
-      bvx[i] = (-Math.sin(angle)) * speed;
-      bvy[i] = Math.cos(angle) * speed;
-      bm[i] = CORE_GM * COMPANION_MASS;
+  interface Planet {
+    orbit: number;
+    angle: number;
+    rate: number;
+    size: number;
+  }
+
+  interface System {
+    x: number;
+    y: number;
+    z: number;
+    sun: number;
+    planets: Planet[];
+  }
+
+  const systems: System[] = [];
+
+  function makeSystem(z?: number): System {
+    const planetCount = 2 + Math.floor(Math.random() * 3);
+    const planets: Planet[] = [];
+    for (let i = 0; i < planetCount; i += 1) {
+      const orbit = 34 + i * (20 + Math.random() * 18);
+      planets.push({
+        orbit,
+        angle: Math.random() * Math.PI * 2,
+        // Closer orbits sweep faster, as they should.
+        rate: (1.4 / Math.sqrt(orbit)) * (Math.random() * 0.4 + 0.8),
+        size: 1.6 + Math.random() * 2.2,
+      });
     }
+    return {
+      x: (Math.random() * 2 - 1) * SPREAD * 0.75,
+      y: (Math.random() * 2 - 1) * SPREAD * 0.75,
+      z: z ?? NEAR + Math.random() * (FAR - NEAR),
+      sun: 3.4 + Math.random() * 2.6,
+      planets,
+    };
+  }
+
+  function syncSystems(): void {
+    const target = Math.min(MAX_SYSTEMS, Math.round(params.systems));
+    while (systems.length < target) systems.push(makeSystem());
+    if (systems.length > target) systems.length = target;
   }
 
   function seedAll(): void {
-    seedBodies();
     starCount = Math.min(MAX_STARS, Math.round(params.stars));
     for (let i = 0; i < starCount; i += 1) seedStar(i);
-    density.fill(0);
+    systems.length = 0;
+    syncSystems();
   }
 
   function syncCount(): void {
     const target = Math.min(MAX_STARS, Math.round(params.stars));
     if (target === starCount) return;
-    // Growing seeds only the new stars, so the existing disk is undisturbed.
     for (let i = starCount; i < target; i += 1) seedStar(i);
     starCount = target;
   }
 
   /* ------------------------------------------------------------ pointer */
 
-  const pointer = { x: 0, y: 0, active: false, held: false };
-
-  function toWorld(event: PointerEvent): { x: number; y: number } {
-    const rect = canvas.getBoundingClientRect();
-    const scale = viewScale();
-    return {
-      x: (event.clientX - rect.left - rect.width / 2) / scale,
-      y: (event.clientY - rect.top - rect.height / 2) / scale,
-    };
-  }
+  const pointer = { nx: 0, ny: 0, active: false, held: false };
+  // Camera offset, eased toward the pointer rather than snapping to it.
+  const camera = { x: 0, y: 0 };
 
   function onPointerMove(event: PointerEvent): void {
-    const { x, y } = toWorld(event);
-    pointer.x = x;
-    pointer.y = y;
+    const rect = canvas.getBoundingClientRect();
+    pointer.nx = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+    pointer.ny = ((event.clientY - rect.top) / rect.height) * 2 - 1;
     pointer.active = true;
   }
 
@@ -231,135 +217,103 @@ export function createGalaxySim(
 
   /* --------------------------------------------------------------- step */
 
-  function viewScale(): number {
-    // Fit roughly two disk radii into the shorter axis.
-    return Math.min(width, height) / (DISK_RADIUS * 2.35);
-  }
+  function frameStep(dt: number): void {
+    // Hold to accelerate — the one control that is pure fun.
+    const speed = BASE_SPEED * params.speed * (pointer.held ? 2.6 : 1);
 
-  function step(dt: number): void {
-    const g = params.gravity;
-    const cursorMass = pointer.active ? CORE_GM * params.pull * (pointer.held ? 2.4 : 1) : 0;
-
-    // The massive bodies pull on each other first.
-    for (let i = 1; i < 3; i += 1) {
-      let ax = 0;
-      let ay = 0;
-      for (let j = 0; j < 3; j += 1) {
-        if (i === j) continue;
-        const dx = bx[j]! - bx[i]!;
-        const dy = by[j]! - by[i]!;
-        const d2 = dx * dx + dy * dy + CORE_SOFTENING * CORE_SOFTENING;
-        const inv = (bm[j]! * g) / (d2 * Math.sqrt(d2));
-        ax += dx * inv;
-        ay += dy * inv;
-      }
-      bvx[i] += ax * dt;
-      bvy[i] += ay * dt;
-    }
-    for (let i = 1; i < 3; i += 1) {
-      bx[i] += bvx[i]! * dt;
-      by[i] += bvy[i]! * dt;
-    }
-
-    const escape2 = ESCAPE_RADIUS * ESCAPE_RADIUS;
-    const soft2 = CORE_SOFTENING * CORE_SOFTENING;
-    const cursorSoft2 = CURSOR_SOFTENING * CURSOR_SOFTENING;
+    const targetX = pointer.active ? pointer.nx * STEER_RANGE : 0;
+    const targetY = pointer.active ? pointer.ny * STEER_RANGE : 0;
+    const ease = Math.min(1, STEER_DAMPING * dt);
+    camera.x += (targetX - camera.x) * ease;
+    camera.y += (targetY - camera.y) * ease;
 
     for (let i = 0; i < starCount; i += 1) {
-      const x = sx[i]!;
-      const y = sy[i]!;
-      let ax = 0;
-      let ay = 0;
-
-      // Three massive bodies — unrolled by the loop being length 3.
-      for (let b = 0; b < 3; b += 1) {
-        const dx = bx[b]! - x;
-        const dy = by[b]! - y;
-        const d2 = dx * dx + dy * dy + soft2;
-        const inv = (bm[b]! * g) / (d2 * Math.sqrt(d2));
-        ax += dx * inv;
-        ay += dy * inv;
-      }
-
-      // ...and the cursor.
-      if (cursorMass > 0) {
-        const dx = pointer.x - x;
-        const dy = pointer.y - y;
-        const d2 = dx * dx + dy * dy + cursorSoft2;
-        const inv = (cursorMass * g) / (d2 * Math.sqrt(d2));
-        ax += dx * inv;
-        ay += dy * inv;
-      }
-
-      const vx = svx[i]! + ax * dt;
-      const vy = svy[i]! + ay * dt;
-      const nx = x + vx * dt;
-      const ny = y + vy * dt;
-
-      if (nx * nx + ny * ny > escape2) {
-        // Thrown clear — recycle it rather than tracking a star nobody sees.
-        seedStar(i);
+      const z = pz[i]! - speed * dt;
+      if (z <= NEAR) {
+        seedStar(i, FAR);
       } else {
-        svx[i] = vx;
-        svy[i] = vy;
-        sx[i] = nx;
-        sy[i] = ny;
+        pz[i] = z;
+      }
+    }
+
+    for (const system of systems) {
+      system.z -= speed * dt;
+      if (system.z <= NEAR) {
+        Object.assign(system, makeSystem(FAR));
+      }
+      for (const planet of system.planets) {
+        planet.angle += planet.rate * dt;
       }
     }
   }
 
   /* ------------------------------------------------------------- render */
 
-  function accumulate(): void {
-    const scale = viewScale();
+  function render(): void {
+    // Translucent wash instead of a clear: leaves motion trails, and costs a
+    // single composited rectangle rather than a per-pixel pass.
+    ctx!.fillStyle = fadeFill;
+    ctx!.fillRect(0, 0, width, height);
+
     const cx = width / 2;
     const cy = height / 2;
 
     for (let i = 0; i < starCount; i += 1) {
-      const px = (cx + sx[i]! * scale) | 0;
-      const py = (cy + sy[i]! * scale) | 0;
-      if (px >= 0 && px < width && py >= 0 && py < height) {
-        density[py * width + px]! += 1;
-      }
+      const z = pz[i]!;
+      const scale = FOCAL / z;
+      const x = cx + (px[i]! - camera.x) * scale;
+      const y = cy + (py[i]! - camera.y) * scale;
+      if (x < 0 || x >= width || y < 0 || y >= height) continue;
+
+      // Depth drives both size and colour, which is the whole depth cue.
+      const near = 1 - z / FAR;
+      const size = near * near * 2.4 + 0.5;
+      const bucket = (near * (BUCKETS - 1)) | 0;
+      ctx!.fillStyle = starColors[bucket < 0 ? 0 : bucket]!;
+      ctx!.fillRect(x, y, size, size);
     }
 
-    // The bodies themselves, drawn heavy so the core burns bright.
-    for (let b = 0; b < 3; b += 1) {
-      const px = (cx + bx[b]! * scale) | 0;
-      const py = (cy + by[b]! * scale) | 0;
-      const weight = b === 0 ? 26 : 10;
-      for (let oy = -1; oy <= 1; oy += 1) {
-        for (let ox = -1; ox <= 1; ox += 1) {
-          const qx = px + ox;
-          const qy = py + oy;
-          if (qx >= 0 && qx < width && qy >= 0 && qy < height) {
-            density[qy * width + qx]! += weight;
-          }
+    for (const system of systems) {
+      const scale = FOCAL / system.z;
+      const x = cx + (system.x - camera.x) * scale;
+      const y = cy + (system.y - camera.y) * scale;
+      const sunRadius = system.sun * scale;
+      // Skip anything whose whole system is off screen.
+      if (x < -200 || x > width + 200 || y < -200 || y > height + 200) continue;
+
+      const near = 1 - system.z / FAR;
+
+      for (const planet of system.planets) {
+        const orbit = planet.orbit * scale;
+        if (orbit > 1.5) {
+          ctx!.strokeStyle = `rgb(250 250 250 / ${(near * 0.16).toFixed(3)})`;
+          ctx!.lineWidth = 1;
+          ctx!.beginPath();
+          // Tilted, so an orbit reads as a disc seen at an angle.
+          ctx!.ellipse(x, y, orbit, orbit * 0.42, 0, 0, Math.PI * 2);
+          ctx!.stroke();
         }
+
+        const planetX = x + Math.cos(planet.angle) * orbit;
+        const planetY = y + Math.sin(planet.angle) * orbit * 0.42;
+        const planetRadius = Math.max(0.6, planet.size * scale);
+        ctx!.fillStyle = starColors[Math.min(BUCKETS - 1, ((near * 8) | 0) + 2)]!;
+        ctx!.beginPath();
+        ctx!.arc(planetX, planetY, planetRadius, 0, Math.PI * 2);
+        ctx!.fill();
       }
+
+      // Sun: a soft halo under a bright core.
+      ctx!.fillStyle = `rgb(249 138 157 / ${(near * 0.22).toFixed(3)})`;
+      ctx!.beginPath();
+      ctx!.arc(x, y, Math.max(1, sunRadius * 2.6), 0, Math.PI * 2);
+      ctx!.fill();
+
+      ctx!.fillStyle = starColors[BUCKETS - 1]!;
+      ctx!.beginPath();
+      ctx!.arc(x, y, Math.max(0.8, sunRadius), 0, Math.PI * 2);
+      ctx!.fill();
     }
-  }
-
-  const logGain = Math.log(1 + GAIN);
-
-  function paint(): void {
-    if (!image) return;
-    const pixels = image.data;
-
-    for (let i = 0, p = 0; i < density.length; i += 1, p += 4) {
-      const value = density[i]!;
-      const t = value > 0 ? Math.log(1 + value * GAIN) / logGain : 0;
-      const index = (t > 1 ? 255 : (t * 255) | 0) * 3;
-      pixels[p] = LUT[index]!;
-      pixels[p + 1] = LUT[index + 1]!;
-      pixels[p + 2] = LUT[index + 2]!;
-      pixels[p + 3] = 255;
-
-      // Decay leaves orbital trails rather than bare points.
-      density[i] = value * TRAIL_DECAY;
-    }
-
-    ctx!.putImageData(image, 0, 0);
   }
 
   /* --------------------------------------------------------------- loop */
@@ -379,11 +333,11 @@ export function createGalaxySim(
     last = now;
 
     if (!paused) {
-      if (resize()) seedAll();
+      resize();
       syncCount();
-      step(dt);
-      accumulate();
-      paint();
+      syncSystems();
+      frameStep(dt);
+      render();
     }
 
     frame = window.requestAnimationFrame(tick);
