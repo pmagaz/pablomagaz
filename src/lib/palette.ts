@@ -15,7 +15,7 @@ export type Rgb = readonly [number, number, number];
  */
 export const INK: Rgb = [0.071, 0.071, 0.102]; // #12121a
 
-export const RED: Rgb = [0.902, 0.122, 0.259]; // #e61f42
+export const RED: Rgb = [0.886, 0.173, 0.286]; // #e22c49
 export const EMBER: Rgb = [0.89, 0.29, 0.1]; // warm shift off the brand red
 export const TINT: Rgb = [0.976, 0.475, 0.565]; // light crimson highlight
 

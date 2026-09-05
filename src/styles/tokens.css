@@ -19,10 +19,11 @@
   --pm-bg: #ffffff;
 
   /* Brand accent only: byline dot, accented word, eyebrows, pull-quote, nav
-     hover. 4.53:1 on white, so it just clears AA for the 11-12px category
-     labels and the form error text. */
-  --pm-red: #e61f42;
-  --pm-red-dark: #e61f42;
+     hover. NOTE: 4.48:1 on white — a hair under the 4.5:1 AA bar, which an
+     automated audit will flag for the 11-12px category labels and the form
+     error text. #e61f42 is the nearest value that passes. */
+  --pm-red: #e22c49;
+  --pm-red-dark: #e22c49;
 
   --pm-ink-hover: #1b1420; /* primary button hover */
 
