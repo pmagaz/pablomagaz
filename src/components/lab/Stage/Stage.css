@@ -7,7 +7,7 @@
   border: 1px solid var(--pm-hairline);
   border-radius: var(--pm-radius-lg);
   overflow: hidden;
-  background: var(--pm-ink);
+  background: var(--pm-stage);
 }
 
 .pm-stage__canvas {
@@ -42,7 +42,7 @@
   gap: var(--pm-space-6);
   padding: var(--pm-space-6) var(--pm-space-5);
   border-top: 1px solid rgb(250 250 250 / 0.14);
-  background: var(--pm-ink);
+  background: var(--pm-stage);
 }
 
 .pm-stage__reset {

@@ -7,10 +7,17 @@
 export type Rgb = readonly [number, number, number];
 
 /** 0-1 floats, for WebGL uniforms. */
-export const INK: Rgb = [0.043, 0.016, 0.078]; // #0b0414
-export const RED: Rgb = [0.784, 0.0, 0.082]; // #c80015
-export const EMBER: Rgb = [0.85, 0.18, 0.02]; // warm shift off the brand red
-export const TINT: Rgb = [0.976, 0.365, 0.475]; // light crimson highlight
+
+/**
+ * The canvas ground — --pm-stage, deliberately deeper than --pm-ink. The
+ * brand black is a mid grey, which would wash out every glowing animation,
+ * so the lab stages get their own near-black.
+ */
+export const INK: Rgb = [0.071, 0.071, 0.102]; // #12121a
+
+export const RED: Rgb = [0.902, 0.122, 0.259]; // #e61f42
+export const EMBER: Rgb = [0.89, 0.29, 0.1]; // warm shift off the brand red
+export const TINT: Rgb = [0.976, 0.475, 0.565]; // light crimson highlight
 
 /** The three dye/fill colours used across the experiments. */
 export const BRAND_RAMP: readonly Rgb[] = [RED, EMBER, TINT];

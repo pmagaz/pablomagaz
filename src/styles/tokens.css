@@ -7,7 +7,10 @@
   --pm-fw-medium: 600;
 
   /* ---------- Colour ---------- */
-  --pm-ink: #0b0414; /* primary text, CTA fill */
+  --pm-ink: #3a3a42; /* primary text, CTA fill — 11.3:1 on white */
+  /* Deliberately deeper than --pm-ink: the lab canvases need a dark ground
+     for the glowing animations to read against. */
+  --pm-stage: #12121a;
   --pm-on-ink: #fafafa; /* text on ink */
   --pm-body: #42424a; /* body copy */
   --pm-muted: #6b6b73; /* meta, captions */
@@ -15,11 +18,11 @@
   --pm-surface: #f7f7f7; /* form panel, bands, photo panel */
   --pm-bg: #ffffff;
 
-  /* Brand accent only: byline dot, accented word, eyebrows, pull-quote, nav hover.
-     One red for everything — warmer than the original #ba002f, still deeper
-     than a pure #d30000. 6.06:1 on white, so it stays AA for label-size text. */
-  --pm-red: #c80015;
-  --pm-red-dark: #c80015;
+  /* Brand accent only: byline dot, accented word, eyebrows, pull-quote, nav
+     hover. 4.53:1 on white, so it just clears AA for the 11-12px category
+     labels and the form error text. */
+  --pm-red: #e61f42;
+  --pm-red-dark: #e61f42;
 
   --pm-ink-hover: #1b1420; /* primary button hover */
 

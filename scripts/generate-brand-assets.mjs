@@ -13,8 +13,8 @@ import sharp from 'sharp';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const out = resolve(root, 'public');
 
-const INK = '#0b0414';
-const RED = '#c80015'; /* keep in sync with --pm-red in src/styles/tokens.css */
+const INK = '#3a3a42';
+const RED = '#e61f42'; /* keep in sync with --pm-red in src/styles/tokens.css */
 const ON_INK = '#fafafa';
 
 /** Ink tile with the brand dot — the mark used across favicons. */
