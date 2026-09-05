@@ -1,26 +1,74 @@
 /**
- * The site palette as numbers, for canvas and shader work.
- * Keep in sync with src/styles/tokens.css — the lab animations should always
- * read as the brand rather than as arbitrary colour.
+ * The palette, for canvas and shader work.
+ *
+ * Nothing here hardcodes a colour. The values are read from the design tokens
+ * on :root, so `src/styles/tokens.css` is the single place any colour in the
+ * project is declared — change it there and the canvases follow.
  */
 
 export type Rgb = readonly [number, number, number];
 
-/** 0-1 floats, for WebGL uniforms. */
+export interface Brand {
+  /** The canvas ground, --pm-stage: deeper than --pm-ink so glows read. */
+  stage: Rgb;
+  red: Rgb;
+  ember: Rgb;
+  tint: Rgb;
+  /** --pm-on-ink, for faint furniture drawn over a canvas. */
+  onInk: Rgb;
+  /** The three fill colours the experiments cycle through. */
+  ramp: readonly Rgb[];
+}
 
 /**
- * The canvas ground — --pm-stage, deliberately deeper than --pm-ink. The
- * brand black is a mid grey, which would wash out every glowing animation,
- * so the lab stages get their own near-black.
+ * Only used if a custom property is missing — which would mean tokens.css
+ * failed to load, and the canvas is the least of the problems.
  */
-export const INK: Rgb = [0.071, 0.071, 0.102]; // #12121a
+const FALLBACK = '#000000';
 
-export const RED: Rgb = [0.886, 0.173, 0.286]; // #e22c49
-export const EMBER: Rgb = [0.89, 0.29, 0.1]; // warm shift off the brand red
-export const TINT: Rgb = [0.976, 0.475, 0.565]; // light crimson highlight
+function hexToRgb(hex: string): Rgb {
+  const value = hex.trim().replace('#', '');
+  const full =
+    value.length === 3
+      ? value
+          .split('')
+          .map((c) => c + c)
+          .join('')
+      : value;
+  const int = Number.parseInt(full, 16);
+  if (Number.isNaN(int) || full.length !== 6) return [0, 0, 0];
+  return [((int >> 16) & 255) / 255, ((int >> 8) & 255) / 255, (int & 255) / 255];
+}
 
-/** The three dye/fill colours used across the experiments. */
-export const BRAND_RAMP: readonly Rgb[] = [RED, EMBER, TINT];
+/** Parses a `250 250 250` channel triple, the form used for alpha variants. */
+function rgbChannels(value: string): Rgb {
+  const parts = value.trim().split(/[\s,]+/).map(Number);
+  if (parts.length < 3 || parts.some(Number.isNaN)) return [1, 1, 1];
+  return [parts[0]! / 255, parts[1]! / 255, parts[2]! / 255];
+}
+
+/**
+ * Reads the tokens off :root. Call this inside a simulation, not at module
+ * scope — it needs a document.
+ */
+export function readBrand(): Brand {
+  const styles = getComputedStyle(document.documentElement);
+  const token = (name: string): Rgb =>
+    hexToRgb(styles.getPropertyValue(name) || FALLBACK);
+
+  const red = token('--pm-red');
+  const ember = token('--pm-red-ember');
+  const tint = token('--pm-red-tint');
+
+  return {
+    stage: token('--pm-stage'),
+    onInk: rgbChannels(styles.getPropertyValue('--pm-on-ink-rgb')),
+    red,
+    ember,
+    tint,
+    ramp: [red, ember, tint],
+  };
+}
 
 /** 0-255 css string, for canvas 2D fills. */
 export function css(color: Rgb, alpha = 1): string {

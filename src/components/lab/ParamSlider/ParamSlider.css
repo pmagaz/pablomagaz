@@ -111,7 +111,7 @@
 /* ---------- On the ink stage ---------- */
 
 .pm-stage__controls .pm-param__label {
-  color: rgb(250 250 250 / 0.55);
+  color: rgb(var(--pm-on-ink-rgb) / 0.55);
 }
 
 .pm-stage__controls .pm-param__value {
@@ -119,14 +119,14 @@
 }
 
 .pm-stage__controls .pm-param__hint {
-  color: rgb(250 250 250 / 0.45);
+  color: rgb(var(--pm-on-ink-rgb) / 0.45);
 }
 
 .pm-stage__controls .pm-param__input::-webkit-slider-runnable-track {
   background: linear-gradient(
     to right,
     var(--pm-on-ink) 0 var(--pm-param-fill),
-    rgb(250 250 250 / 0.22) var(--pm-param-fill) 100%
+    rgb(var(--pm-on-ink-rgb) / 0.22) var(--pm-param-fill) 100%
   );
 }
 
@@ -135,7 +135,7 @@
 }
 
 .pm-stage__controls .pm-param__input::-moz-range-track {
-  background: rgb(250 250 250 / 0.22);
+  background: rgb(var(--pm-on-ink-rgb) / 0.22);
 }
 
 .pm-stage__controls .pm-param__input::-moz-range-progress {

@@ -9,7 +9,7 @@
  * and pick up the pointer's own velocity, so you can sweep them around.
  */
 
-import { BRAND_RAMP, css, INK, mix, TINT } from '~/lib/palette';
+import { css, mix, readBrand } from '~/lib/palette';
 
 export interface BallsParams {
   /** Downward acceleration, px/s². */
@@ -57,12 +57,15 @@ export function createBallsSim(
   let dpr = 1;
 
   const balls: Ball[] = [];
-  const inkFill = css(INK);
+  // Colours come from the design tokens, so tokens.css stays the only
+  // place any colour is declared.
+  const brand = readBrand();
+  const inkFill = css(brand.stage);
 
   function randomBall(): Ball {
     const r = MIN_RADIUS + Math.random() * (MAX_RADIUS - MIN_RADIUS);
     // Mostly brand red, with a few lighter ones to give the pile depth.
-    const base = BRAND_RAMP[Math.floor(Math.random() * BRAND_RAMP.length)]!;
+    const base = brand.ramp[Math.floor(Math.random() * brand.ramp.length)]!;
     const lift = Math.random() * 0.25;
     return {
       x: Math.random() * width,
@@ -71,7 +74,7 @@ export function createBallsSim(
       vy: Math.random() * 120,
       r,
       mass: r * r,
-      fill: css(mix(base, TINT, lift)),
+      fill: css(mix(base, brand.tint, lift)),
     };
   }
 

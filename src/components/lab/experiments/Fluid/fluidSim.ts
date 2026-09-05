@@ -11,6 +11,8 @@
  * frame so moving a slider never re-creates anything.
  */
 
+import { readBrand } from '~/lib/palette';
+
 export interface FluidParams {
   /** Vorticity confinement — how much swirl is re-injected. */
   curl: number;
@@ -472,16 +474,11 @@ export function createFluidSim(
   resizeCanvas();
   initFramebuffers();
 
-  /* --- dye colours: the site palette, not arbitrary hues ---
-     Brand red --pm-red #c80015 is the anchor. The other two are a lighter
-     tint of it and a warm ember, so the dye always reads as the brand
-     rather than as a rainbow. Kept in sync with src/styles/tokens.css. */
+  /* --- dye colours ---
+     Read from the design tokens, so tokens.css stays the only place any
+     colour in the project is declared. */
 
-  const PALETTE: ReadonlyArray<readonly [number, number, number]> = [
-    [0.784, 0.0, 0.082], // #c80015 — brand red
-    [0.976, 0.365, 0.475], // lighter tint, for highlights in the swirl
-    [0.85, 0.18, 0.02], // warm ember, adds depth where dye overlaps
-  ];
+  const PALETTE = readBrand().ramp;
 
   function splatColor(): [number, number, number] {
     const base = PALETTE[Math.floor(Math.random() * PALETTE.length)]!;

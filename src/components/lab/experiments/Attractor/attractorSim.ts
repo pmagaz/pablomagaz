@@ -17,7 +17,7 @@
  * Deliberately CPU: it is plain arithmetic over a typed array, no shaders.
  */
 
-import { EMBER, INK, RED, TINT, type Rgb } from '~/lib/palette';
+import { readBrand, type Rgb } from '~/lib/palette';
 
 export interface AttractorParams {
   /** The `a` constant — the dominant fold. */
@@ -54,6 +54,10 @@ export function createAttractorSim(
   const ctx = canvas.getContext('2d', { alpha: false });
   if (!ctx) return null;
 
+  // Colours come from the design tokens, so tokens.css stays the only
+  // place any colour is declared.
+  const brand = readBrand();
+
   /* ---------------------------------------------------- colour lookup */
 
   // 256-entry ramp, built once. Per-pixel mixing would dominate the frame.
@@ -65,9 +69,9 @@ export function createAttractorSim(
       a[1] + (b[1] - a[1]) * k,
       a[2] + (b[2] - a[2]) * k,
     ];
-    if (t < 0.34) return lerp(INK, RED, t / 0.34);
-    if (t < 0.67) return lerp(RED, EMBER, (t - 0.34) / 0.33);
-    return lerp(EMBER, TINT, (t - 0.67) / 0.33);
+    if (t < 0.34) return lerp(brand.stage, brand.red, t / 0.34);
+    if (t < 0.67) return lerp(brand.red, brand.ember, (t - 0.34) / 0.33);
+    return lerp(brand.ember, brand.tint, (t - 0.67) / 0.33);
   }
 
   for (let i = 0; i < 256; i += 1) {

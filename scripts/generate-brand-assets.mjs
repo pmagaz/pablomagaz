@@ -5,7 +5,7 @@
  * Run with `npm run brand:assets` after changing the portrait or tokens.
  * Output is committed, so this is not part of the Netlify build.
  */
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
@@ -13,9 +13,29 @@ import sharp from 'sharp';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const out = resolve(root, 'public');
 
-const INK = '#3a3a42';
-const RED = '#e22c49'; /* keep in sync with --pm-red in src/styles/tokens.css */
-const ON_INK = '#fafafa';
+/**
+ * Colours are read out of the design tokens rather than repeated here, so
+ * src/styles/tokens.css is the single place any colour is declared.
+ */
+const tokens = await readFile(resolve(root, 'src/styles/tokens.css'), 'utf8');
+
+/** Accepts either `#rrggbb` or a `250 250 250` channel triple. */
+function token(name) {
+  const hex = tokens.match(new RegExp(`--${name}:\\s*(#[0-9a-fA-F]{3,8})`));
+  if (hex) return hex[1];
+
+  const channels = tokens.match(new RegExp(`--${name}-rgb:\\s*([\\d\\s]+)`));
+  if (channels) {
+    const [r, g, b] = channels[1].trim().split(/\s+/).map(Number);
+    return `#${[r, g, b].map((c) => c.toString(16).padStart(2, '0')).join('')}`;
+  }
+
+  throw new Error(`token --${name} not found in tokens.css`);
+}
+
+const INK = token('pm-ink');
+const RED = token('pm-red');
+const ON_INK = token('pm-on-ink');
 
 /** Ink tile with the brand dot — the mark used across favicons. */
 const mark = (size, radius, dot) => `

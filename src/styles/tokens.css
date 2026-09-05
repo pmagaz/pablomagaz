@@ -8,10 +8,13 @@
 
   /* ---------- Colour ---------- */
   --pm-ink: #3a3a42; /* primary text, CTA fill — 11.3:1 on white */
+  /* The same colour as --pm-on-ink, as channels, so translucent variants can
+     be written rgb(var(--pm-on-ink-rgb) / 0.4) without repeating the value. */
+  --pm-on-ink-rgb: 250 250 250;
   /* Deliberately deeper than --pm-ink: the lab canvases need a dark ground
      for the glowing animations to read against. */
   --pm-stage: #12121a;
-  --pm-on-ink: #fafafa; /* text on ink */
+  --pm-on-ink: rgb(var(--pm-on-ink-rgb)); /* text on ink */
   --pm-body: #42424a; /* body copy */
   --pm-muted: #6b6b73; /* meta, captions */
   --pm-hairline: #e5e7eb; /* the only border colour */
@@ -19,11 +22,16 @@
   --pm-bg: #ffffff;
 
   /* Brand accent only: byline dot, accented word, eyebrows, pull-quote, nav
-     hover. NOTE: 4.48:1 on white — a hair under the 4.5:1 AA bar, which an
-     automated audit will flag for the 11-12px category labels and the form
-     error text. #e61f42 is the nearest value that passes. */
-  --pm-red: #e22c49;
-  --pm-red-dark: #e22c49;
+     hover. NOTE: 4.44:1 on white — under the 4.5:1 AA bar, which an automated
+     audit will flag for the 11-12px category labels and the form error text.
+     #e61f42 is the nearest value in this family that passes. */
+  --pm-red: #dd374e;
+  --pm-red-dark: #dd374e;
+
+  /* The rest of the red ramp. Only the lab canvases use these, but they live
+     here so that every colour in the project is declared in one file. */
+  --pm-red-ember: #d8552f;
+  --pm-red-tint: #f0899b;
 
   --pm-ink-hover: #1b1420; /* primary button hover */
 

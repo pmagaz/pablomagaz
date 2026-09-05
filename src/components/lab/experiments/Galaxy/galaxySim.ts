@@ -13,7 +13,7 @@
  * rectangle instead, which the compositor does for free.
  */
 
-import { EMBER, INK, RED, TINT, type Rgb } from '~/lib/palette';
+import { css, readBrand, type Rgb } from '~/lib/palette';
 
 export interface GalaxyParams {
   /** How fast the camera travels forward. */
@@ -56,6 +56,10 @@ export function createGalaxySim(
   const suggestedStars = small ? 900 : 2200;
   const maxDpr = small ? 1.5 : 2;
 
+  // Colours come from the design tokens, so tokens.css stays the only
+  // place any colour is declared.
+  const brand = readBrand();
+
   /* ------------------------------------------------- precomputed colours */
 
   // Brightness is quantised into buckets so no colour strings are built
@@ -69,8 +73,8 @@ export function createGalaxySim(
       a[1] + (b[1] - a[1]) * k,
       a[2] + (b[2] - a[2]) * k,
     ];
-    if (t < 0.45) return lerp(RED, EMBER, t / 0.45);
-    return lerp(EMBER, TINT, (t - 0.45) / 0.55);
+    if (t < 0.45) return lerp(brand.red, brand.ember, t / 0.45);
+    return lerp(brand.ember, brand.tint, (t - 0.45) / 0.55);
   }
 
   for (let i = 0; i < BUCKETS; i += 1) {
@@ -80,12 +84,9 @@ export function createGalaxySim(
     );
   }
 
-  const fadeFill = `rgb(${Math.round(INK[0] * 255)} ${Math.round(INK[1] * 255)} ${Math.round(
-    INK[2] * 255,
-  )} / 0.34)`;
-  const inkFill = `rgb(${Math.round(INK[0] * 255)} ${Math.round(INK[1] * 255)} ${Math.round(
-    INK[2] * 255,
-  )})`;
+  // The wash that leaves motion trails, and the opaque clear used on resize.
+  const fadeFill = css(brand.stage, 0.34);
+  const inkFill = css(brand.stage);
 
   /* ------------------------------------------------------------- canvas */
 
@@ -286,7 +287,7 @@ export function createGalaxySim(
       for (const planet of system.planets) {
         const orbit = planet.orbit * scale;
         if (orbit > 1.5) {
-          ctx!.strokeStyle = `rgb(250 250 250 / ${(near * 0.16).toFixed(3)})`;
+          ctx!.strokeStyle = css(brand.onInk, Number((near * 0.16).toFixed(3)));
           ctx!.lineWidth = 1;
           ctx!.beginPath();
           // Tilted, so an orbit reads as a disc seen at an angle.
@@ -304,7 +305,8 @@ export function createGalaxySim(
       }
 
       // Sun: a soft halo under a bright core.
-      ctx!.fillStyle = `rgb(249 138 157 / ${(near * 0.22).toFixed(3)})`;
+      // Halo in the light end of the brand ramp.
+      ctx!.fillStyle = css(brand.tint, Number((near * 0.22).toFixed(3)));
       ctx!.beginPath();
       ctx!.arc(x, y, Math.max(1, sunRadius * 2.6), 0, Math.PI * 2);
       ctx!.fill();
