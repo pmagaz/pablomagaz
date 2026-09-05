@@ -25,8 +25,8 @@
      hover. NOTE: 4.44:1 on white — under the 4.5:1 AA bar, which an automated
      audit will flag for the 11-12px category labels and the form error text.
      #e61f42 is the nearest value in this family that passes. */
-  --pm-red: #dd374e;
-  --pm-red-dark: #dd374e;
+  --pm-red: #d53f54;
+  --pm-red-dark: #d53f54;
 
   /* The rest of the red ramp. Only the lab canvases use these, but they live
      here so that every colour in the project is declared in one file. */
