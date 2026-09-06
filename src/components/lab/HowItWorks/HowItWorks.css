@@ -1,8 +1,10 @@
 /* Plain-language notes under an experiment.
 
-   Single column with a capped measure, not the full canvas width: a 1200px
-   line of 16px text is unreadable, and two columns left a short paragraph
-   stranded beside a long one. It still starts flush with the canvas edge. */
+   Full canvas width, but laid out in columns rather than as one very long
+   line: at 1280px a single column would set ~145 characters, well past
+   readable. auto-fit means empty tracks collapse, so three paragraphs give
+   three even columns on desktop and stack cleanly on a phone. Same treatment
+   as the about page's highlights band. */
 
 .pm-how {
   display: flex;
@@ -12,10 +14,9 @@
 }
 
 .pm-how__body {
-  display: flex;
-  flex-direction: column;
-  gap: var(--pm-space-4);
-  max-width: 820px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--pm-space-5);
 }
 
 .pm-how__paragraph {
@@ -28,6 +29,11 @@
   .pm-how {
     padding-top: var(--pm-space-10);
     gap: var(--pm-space-6);
+  }
+
+  .pm-how__body {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--pm-space-8);
   }
 
   .pm-how__paragraph {

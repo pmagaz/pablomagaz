@@ -60,8 +60,8 @@ export default function SolarStage() {
   return (
     <Stage
       canvasRef={canvasRef}
-      label="The solar system. Click a planet to zoom to it, and change gravity to see the orbits react."
-      hint={`${focused} · click a planet`}
+      label="The solar system. Tap a planet to zoom to it, pinch to zoom freely, and change gravity to see the orbits react."
+      hint={`${focused} · tap a planet · pinch to zoom`}
       unsupported={
         supported ? null : 'This experiment needs a 2D canvas, which this browser did not provide.'
       }

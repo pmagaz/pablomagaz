@@ -66,7 +66,8 @@ const SPIN_SCALE = 1 / 220;
 /** The fitted view: Neptune's orbit just inside the frame. */
 const SYSTEM_ZOOM = 1;
 const FOCUS_ZOOM_MIN = 3;
-const FOCUS_ZOOM_MAX = 14;
+const FOCUS_ZOOM_ON_SELECT = 7;
+const FOCUS_ZOOM_MAX = 18;
 /** How quickly the view eases toward the pointer's zoom. */
 const ZOOM_EASE = 3.2;
 
@@ -250,6 +251,13 @@ export function createSolarSim(
   function setFocus(index: number): void {
     if (index === focusIndex) return;
     focusIndex = index;
+    // Nudge the zoom so selecting something visibly does something, without
+    // taking ownership of it away from the pinch gesture.
+    if (index >= 0) {
+      if (zoomTarget < FOCUS_ZOOM_MIN) zoomTarget = FOCUS_ZOOM_ON_SELECT;
+    } else {
+      zoomTarget = SYSTEM_ZOOM;
+    }
     focusListener?.(index < 0 ? 'The system' : planets[index]!.name);
   }
 
@@ -272,33 +280,77 @@ export function createSolarSim(
 
   /* ------------------------------------------------------- pointer, zoom */
 
-  // Zoom is driven by what you click, not by where the pointer happens to be.
-  // Tying it to pointer height made planets impossible to aim at: moving
-  // across to Saturn changed the zoom on the way, so you never arrived.
+  // Zoom is user-owned: pinch with two fingers, pinch on a trackpad, or
+  // ctrl-scroll. Clicking a planet also zooms in, as a shortcut for a mouse
+  // with no gesture available.
   let zoom = SYSTEM_ZOOM;
   let zoomTarget = SYSTEM_ZOOM;
   /** Where the view is centred, in plane coords. Eased toward its target. */
   const camera = { x: 0, y: 0 };
-  const pointer = { x: 0, y: 0, inside: false };
 
-  function onPointerMove(event: PointerEvent): void {
+  /** Live pointers, so two of them can be recognised as a pinch. */
+  const active = new Map<number, { x: number; y: number }>();
+  /** Set while a pinch is in progress, to suppress the tap it would trigger. */
+  let pinch: { distance: number; zoom: number } | null = null;
+  let press: { x: number; y: number; moved: boolean } | null = null;
+
+  function local(event: PointerEvent): { x: number; y: number } {
     const rect = canvas.getBoundingClientRect();
-    pointer.x = event.clientX - rect.left;
-    pointer.y = event.clientY - rect.top;
-    pointer.inside = true;
+    return { x: event.clientX - rect.left, y: event.clientY - rect.top };
   }
 
-  /** Leaving the canvas returns to the whole system, as it started. */
-  function onPointerLeave(): void {
-    pointer.inside = false;
-    setFocus(-1);
+  function pinchDistance(): number {
+    const points = [...active.values()];
+    if (points.length < 2) return 0;
+    return Math.hypot(points[0]!.x - points[1]!.x, points[0]!.y - points[1]!.y);
+  }
+
+  function setZoom(next: number): void {
+    zoomTarget = Math.min(FOCUS_ZOOM_MAX, Math.max(SYSTEM_ZOOM, next));
   }
 
   function onPointerDown(event: PointerEvent): void {
-    const rect = canvas.getBoundingClientRect();
-    const mx = event.clientX - rect.left;
-    const my = event.clientY - rect.top;
+    const point = local(event);
+    active.set(event.pointerId, point);
 
+    if (active.size === 2) {
+      pinch = { distance: pinchDistance(), zoom: zoomTarget };
+      press = null;
+    } else if (active.size === 1) {
+      press = { x: point.x, y: point.y, moved: false };
+    }
+  }
+
+  function onPointerMove(event: PointerEvent): void {
+    const point = local(event);
+    if (active.has(event.pointerId)) active.set(event.pointerId, point);
+
+    if (pinch && active.size >= 2) {
+      const distance = pinchDistance();
+      if (pinch.distance > 8 && distance > 8) {
+        setZoom(pinch.zoom * (distance / pinch.distance));
+      }
+      return;
+    }
+
+    // A drag is not a tap.
+    if (press && Math.hypot(point.x - press.x, point.y - press.y) > 10) {
+      press.moved = true;
+    }
+  }
+
+  function onPointerUp(event: PointerEvent): void {
+    const point = active.get(event.pointerId) ?? local(event);
+    active.delete(event.pointerId);
+    if (active.size < 2) pinch = null;
+
+    if (!press || press.moved) {
+      press = null;
+      return;
+    }
+    press = null;
+
+    // A clean tap: focus whatever is nearest, or release if that is nothing.
     let nearest = -1;
     // Generous, because a planet at system zoom is only a few pixels across.
     let best = 44 * 44;
@@ -306,7 +358,7 @@ export function createSolarSim(
       const planet = planets[i]!;
       if (!planet.alive) continue;
       const p = toScreen(planet.x, planet.y);
-      const d2 = (p.x - mx) * (p.x - mx) + (p.y - my) * (p.y - my);
+      const d2 = (p.x - point.x) * (p.x - point.x) + (p.y - point.y) * (p.y - point.y);
       if (d2 < best) {
         best = d2;
         nearest = i;
@@ -315,10 +367,37 @@ export function createSolarSim(
     setFocus(nearest);
   }
 
-  canvas.addEventListener('pointermove', onPointerMove);
+  function onPointerCancel(event: PointerEvent): void {
+    active.delete(event.pointerId);
+    if (active.size < 2) pinch = null;
+    press = null;
+  }
+
+  /**
+   * Only a mouse leaving the canvas returns to the system view. A touch
+   * pointer fires pointerleave the instant the finger lifts, which used to
+   * undo the tap that had just selected a planet.
+   */
+  function onPointerLeave(event: PointerEvent): void {
+    if (event.pointerType === 'mouse' && active.size === 0) setFocus(-1);
+  }
+
+  /**
+   * Trackpad pinch and ctrl-scroll arrive as a wheel event with ctrlKey set.
+   * A plain wheel is left alone so the page still scrolls over the canvas.
+   */
+  function onWheel(event: WheelEvent): void {
+    if (!event.ctrlKey) return;
+    event.preventDefault();
+    setZoom(zoomTarget * Math.exp(-event.deltaY * 0.01));
+  }
+
   canvas.addEventListener('pointerdown', onPointerDown);
+  canvas.addEventListener('pointermove', onPointerMove);
+  canvas.addEventListener('pointerup', onPointerUp);
+  canvas.addEventListener('pointercancel', onPointerCancel);
   canvas.addEventListener('pointerleave', onPointerLeave);
-  canvas.addEventListener('pointercancel', onPointerLeave);
+  canvas.addEventListener('wheel', onWheel, { passive: false });
 
   /* ---------------------------------------------------------- projection */
 
@@ -602,12 +681,6 @@ export function createSolarSim(
       const target = plane(planets[focusIndex]!.x, planets[focusIndex]!.y);
       targetX = target.x;
       targetY = target.y;
-      const t = pointer.inside
-        ? 1 - Math.min(1, Math.max(0, pointer.y / Math.max(1, height)))
-        : 0.5;
-      zoomTarget = FOCUS_ZOOM_MIN + t * (FOCUS_ZOOM_MAX - FOCUS_ZOOM_MIN);
-    } else {
-      zoomTarget = SYSTEM_ZOOM;
     }
 
     const k = Math.min(1, ZOOM_EASE * dt);
@@ -662,9 +735,12 @@ export function createSolarSim(
     destroy() {
       destroyed = true;
       window.cancelAnimationFrame(frame);
-      canvas.removeEventListener('pointermove', onPointerMove);
       canvas.removeEventListener('pointerdown', onPointerDown);
+      canvas.removeEventListener('pointermove', onPointerMove);
+      canvas.removeEventListener('pointerup', onPointerUp);
+      canvas.removeEventListener('pointercancel', onPointerCancel);
       canvas.removeEventListener('pointerleave', onPointerLeave);
+      canvas.removeEventListener('wheel', onWheel);
       document.removeEventListener('visibilitychange', onVisibility);
     },
   };
