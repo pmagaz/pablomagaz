@@ -55,8 +55,18 @@ const TRAIL_POINTS = 200;
 const SUN_RADIUS = 0.05;
 const ESCAPE = 90;
 
-const MIN_ZOOM = 1;
-const MAX_ZOOM = 16;
+/**
+ * Real rotation is far too fast to watch: Jupiter turns 890 times a year, so
+ * at any usable orbit speed it would strobe. Scaling all spins by the same
+ * factor keeps the relative rates honest — Jupiter fastest, Venus nearly
+ * still and backwards — while staying legible.
+ */
+const SPIN_SCALE = 1 / 220;
+
+/** The fitted view: Neptune's orbit just inside the frame. */
+const SYSTEM_ZOOM = 1;
+const FOCUS_ZOOM_MIN = 3;
+const FOCUS_ZOOM_MAX = 14;
 /** How quickly the view eases toward the pointer's zoom. */
 const ZOOM_EASE = 3.2;
 
@@ -70,6 +80,13 @@ interface Moon {
   angle: number;
 }
 
+interface Mark {
+  /** Longitude and latitude on the sphere, radians. */
+  lon: number;
+  lat: number;
+  size: number;
+}
+
 interface Planet {
   name: string;
   /** Semi-major axis, AU. */
@@ -80,6 +97,10 @@ interface Planet {
   /** Faint horizontal banding, for the gas giants. */
   banded?: boolean;
   moons: Moon[];
+  /** Radians of axial rotation per simulated year, already scaled. */
+  spin: number;
+  spinAngle: number;
+  marks: Mark[];
   x: number;
   y: number;
   vx: number;
@@ -104,26 +125,41 @@ interface PlanetData {
   readonly name: string;
   readonly a: number;
   readonly size: number;
+  /** Sidereal rotation period in Earth days; negative is retrograde. */
+  readonly day: number;
+  readonly marks?: readonly Mark[];
   readonly rings?: { readonly inner: number; readonly outer: number };
   readonly banded?: boolean;
   readonly moons: readonly Moon[];
 }
 
 const DATA: readonly PlanetData[] = [
-  { name: 'Mercury', a: 0.387, size: 0.383, moons: [] },
-  { name: 'Venus', a: 0.723, size: 0.949, moons: [] },
-  { name: 'Earth', a: 1.0, size: 1.0, moons: [moon('Moon', 2.6, 84, 0.27)] },
+  { name: 'Mercury', a: 0.387, size: 0.383, day: 58.6, moons: [] },
+  { name: 'Venus', a: 0.723, size: 0.949, day: -243, moons: [] },
+  {
+    name: 'Earth',
+    a: 1.0,
+    size: 1.0,
+    day: 1,
+    marks: [{ lon: 0, lat: 0.2, size: 0.42 }, { lon: 2.4, lat: -0.3, size: 0.3 }],
+    moons: [moon('Moon', 2.6, 84, 0.27)],
+  },
   {
     name: 'Mars',
     a: 1.524,
     size: 0.532,
+    day: 1.03,
+    marks: [{ lon: 1.0, lat: -0.1, size: 0.34 }],
     moons: [moon('Phobos', 2.0, 800, 0.12), moon('Deimos', 3.0, 200, 0.1)],
   },
   {
     name: 'Jupiter',
     a: 5.203,
     size: 10.97,
+    day: 0.41,
     banded: true,
+    // The Great Red Spot, which is what makes the rotation legible.
+    marks: [{ lon: 0, lat: -0.28, size: 0.3 }],
     moons: [
       moon('Io', 1.9, 129, 0.29),
       moon('Europa', 2.5, 64, 0.25),
@@ -135,12 +171,14 @@ const DATA: readonly PlanetData[] = [
     name: 'Saturn',
     a: 9.537,
     size: 9.14,
+    day: 0.445,
     banded: true,
+    marks: [{ lon: 1.6, lat: 0.25, size: 0.22 }],
     rings: { inner: 1.5, outer: 2.4 },
     moons: [moon('Titan', 3.4, 23, 0.4)],
   },
-  { name: 'Uranus', a: 19.191, size: 3.98, rings: { inner: 1.6, outer: 2.0 }, moons: [] },
-  { name: 'Neptune', a: 30.07, size: 3.86, moons: [moon('Triton', 2.8, -62, 0.21)] },
+  { name: 'Uranus', a: 19.191, size: 3.98, day: -0.72, rings: { inner: 1.6, outer: 2.0 }, moons: [] },
+  { name: 'Neptune', a: 30.07, size: 3.86, day: 0.67, moons: [moon('Triton', 2.8, -62, 0.21)] },
 ];
 
 export function createSolarSim(
@@ -171,6 +209,10 @@ export function createSolarSim(
       rings: data.rings ? { ...data.rings } : undefined,
       banded: Boolean(data.banded),
       moons: data.moons.map((m) => ({ ...m })),
+      // days -> radians per year, then scaled to something watchable.
+      spin: ((Math.PI * 2) / (data.day / 365.25)) * SPIN_SCALE,
+      spinAngle: Math.random() * Math.PI * 2,
+      marks: (data.marks ?? []).map((m) => ({ ...m })),
       x: 0,
       y: 0,
       vx: 0,
@@ -206,6 +248,7 @@ export function createSolarSim(
   let focusListener: ((name: string) => void) | null = null;
 
   function setFocus(index: number): void {
+    if (index === focusIndex) return;
     focusIndex = index;
     focusListener?.(index < 0 ? 'The system' : planets[index]!.name);
   }
@@ -229,15 +272,26 @@ export function createSolarSim(
 
   /* ------------------------------------------------------- pointer, zoom */
 
-  // Zoom follows the pointer's height: up is closer. Eased, so it glides
-  // rather than snapping about as the cursor moves.
-  let zoom = MIN_ZOOM;
-  let zoomTarget = MIN_ZOOM;
+  // Zoom is driven by what you click, not by where the pointer happens to be.
+  // Tying it to pointer height made planets impossible to aim at: moving
+  // across to Saturn changed the zoom on the way, so you never arrived.
+  let zoom = SYSTEM_ZOOM;
+  let zoomTarget = SYSTEM_ZOOM;
+  /** Where the view is centred, in plane coords. Eased toward its target. */
+  const camera = { x: 0, y: 0 };
+  const pointer = { x: 0, y: 0, inside: false };
 
   function onPointerMove(event: PointerEvent): void {
     const rect = canvas.getBoundingClientRect();
-    const t = 1 - Math.min(1, Math.max(0, (event.clientY - rect.top) / rect.height));
-    zoomTarget = MIN_ZOOM + Math.pow(t, 1.6) * (MAX_ZOOM - MIN_ZOOM);
+    pointer.x = event.clientX - rect.left;
+    pointer.y = event.clientY - rect.top;
+    pointer.inside = true;
+  }
+
+  /** Leaving the canvas returns to the whole system, as it started. */
+  function onPointerLeave(): void {
+    pointer.inside = false;
+    setFocus(-1);
   }
 
   function onPointerDown(event: PointerEvent): void {
@@ -246,7 +300,8 @@ export function createSolarSim(
     const my = event.clientY - rect.top;
 
     let nearest = -1;
-    let best = 36 * 36;
+    // Generous, because a planet at system zoom is only a few pixels across.
+    let best = 44 * 44;
     for (let i = 0; i < planets.length; i += 1) {
       const planet = planets[i]!;
       if (!planet.alive) continue;
@@ -262,6 +317,8 @@ export function createSolarSim(
 
   canvas.addEventListener('pointermove', onPointerMove);
   canvas.addEventListener('pointerdown', onPointerDown);
+  canvas.addEventListener('pointerleave', onPointerLeave);
+  canvas.addEventListener('pointercancel', onPointerLeave);
 
   /* ---------------------------------------------------------- projection */
 
@@ -293,11 +350,11 @@ export function createSolarSim(
     return { x: x * k, y: y * k };
   }
 
+  /** The view always renders from the eased camera, never from the target. */
   function focusPoint(): { x: number; y: number } {
-    if (focusIndex < 0) return { x: 0, y: 0 };
-    const planet = planets[focusIndex]!;
-    return plane(planet.x, planet.y);
+    return camera;
   }
+
 
   function toScreen(x: number, y: number): { x: number; y: number; depth: number } {
     const p = plane(x, y);
@@ -347,6 +404,7 @@ export function createSolarSim(
       planet.trailAt = (planet.trailAt + 1) % TRAIL_POINTS;
       if (planet.trailLen < TRAIL_POINTS) planet.trailLen += 1;
       for (const m of planet.moons) m.angle += m.rate * span;
+      planet.spinAngle += planet.spin * span;
     }
   }
 
@@ -406,6 +464,26 @@ export function createSolarSim(
       // Front half.
       ctx!.ellipse(p.x, p.y, ring.rx, Math.max(0.5, ring.ry), 0, 0, Math.PI);
       ctx!.stroke();
+    }
+
+    // Surface marks, projected onto a sphere: a mark is only drawn while it
+    // faces us, and flattens toward the limb. This is what makes the axial
+    // rotation readable — without it a spinning disc looks identical to a
+    // still one.
+    if (radius > 4 && planet.marks.length > 0) {
+      ctx!.fillStyle = bandStroke;
+      for (const m of planet.marks) {
+        const lon = m.lon + planet.spinAngle;
+        const cosLat = Math.cos(m.lat);
+        const front = Math.cos(lon) * cosLat;
+        if (front <= 0.06) continue; // round the back
+        const sx = p.x + Math.sin(lon) * cosLat * radius;
+        const sy = p.y - Math.sin(m.lat) * radius;
+        ctx!.beginPath();
+        // Squashed horizontally as it approaches the edge of the disc.
+        ctx!.ellipse(sx, sy, radius * m.size * 0.5 * front, radius * m.size * 0.5, 0, 0, Math.PI * 2);
+        ctx!.fill();
+      }
     }
 
     // Moons, once the planet is drawn large enough for them to read.
@@ -499,6 +577,33 @@ export function createSolarSim(
     if (!sunDrawn) drawSun();
   }
 
+  /**
+   * Eases the camera and zoom toward the focused planet, or back to the whole
+   * system when nothing is focused. While focused, pointer height gives fine
+   * control over how close you get.
+   */
+  function ease(dt: number): void {
+    let targetX = 0;
+    let targetY = 0;
+
+    if (focusIndex >= 0 && planets[focusIndex]!.alive) {
+      const target = plane(planets[focusIndex]!.x, planets[focusIndex]!.y);
+      targetX = target.x;
+      targetY = target.y;
+      const t = pointer.inside
+        ? 1 - Math.min(1, Math.max(0, pointer.y / Math.max(1, height)))
+        : 0.5;
+      zoomTarget = FOCUS_ZOOM_MIN + t * (FOCUS_ZOOM_MAX - FOCUS_ZOOM_MIN);
+    } else {
+      zoomTarget = SYSTEM_ZOOM;
+    }
+
+    const k = Math.min(1, ZOOM_EASE * dt);
+    zoom += (zoomTarget - zoom) * k;
+    camera.x += (targetX - camera.x) * k;
+    camera.y += (targetY - camera.y) * k;
+  }
+
   /* ---------------------------------------------------------------- loop */
 
   resize();
@@ -515,7 +620,7 @@ export function createSolarSim(
 
     if (!paused) {
       resize();
-      zoom += (zoomTarget - zoom) * Math.min(1, ZOOM_EASE * dt);
+      ease(dt);
       step(dt);
       render();
     }
@@ -547,6 +652,7 @@ export function createSolarSim(
       window.cancelAnimationFrame(frame);
       canvas.removeEventListener('pointermove', onPointerMove);
       canvas.removeEventListener('pointerdown', onPointerDown);
+      canvas.removeEventListener('pointerleave', onPointerLeave);
       document.removeEventListener('visibilitychange', onVisibility);
     },
   };
