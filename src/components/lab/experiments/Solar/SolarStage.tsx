@@ -6,7 +6,7 @@ import './SolarStage.css';
 
 const DEFAULTS: SolarParams = {
   gravity: 1,
-  speed: 1.6,
+  speed: 0.35,
   tilt: 62,
 };
 
