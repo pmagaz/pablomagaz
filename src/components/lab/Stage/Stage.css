@@ -21,8 +21,16 @@
   display: block;
   width: 100%;
   height: 100%;
-  touch-action: none;
+  /* pan-y so the page still scrolls under a finger on the canvas — it fills
+     most of the screen, and swallowing every gesture traps the reader. */
+  touch-action: pan-y;
   cursor: crosshair;
+}
+
+/* Only for experiments that need a free drag in any direction; those cannot
+   share the vertical axis with the page. */
+.pm-stage--drag .pm-stage__canvas > canvas {
+  touch-action: none;
 }
 
 .pm-stage__hint {

@@ -413,8 +413,11 @@ export function createSolarSim(
   function drawPlanet(planet: Planet, index: number): void {
     const p = toScreen(planet.x, planet.y);
     const k = cosTilt();
-    const zoomBoost = Math.sqrt(Math.min(zoom, 10));
-    const radius = Math.max(1.8, Math.pow(planet.size, 0.4) * 3.1 * zoomBoost);
+    const zoomBoost = Math.sqrt(Math.min(zoom, 12));
+    // A focused planet is drawn larger than its share, so that its moons,
+    // rings and surface are actually inspectable rather than a few pixels.
+    const focusBoost = index === focusIndex ? 1.9 : 1;
+    const radius = Math.max(1.8, Math.pow(planet.size, 0.4) * 3.1 * zoomBoost * focusBoost);
 
     // Rings are drawn in two halves so the planet sits inside them.
     const ring = planet.rings
@@ -487,7 +490,7 @@ export function createSolarSim(
     }
 
     // Moons, once the planet is drawn large enough for them to read.
-    if (radius > 5) {
+    if (radius > 4) {
       for (const m of planet.moons) {
         const orbit = radius * m.orbit;
         ctx!.strokeStyle = moonOrbit;
@@ -498,10 +501,19 @@ export function createSolarSim(
 
         const mx = p.x + Math.cos(m.angle) * orbit;
         const my = p.y + Math.sin(m.angle) * orbit * k;
+        const moonRadius = Math.max(1.7, radius * m.size * 0.62);
         ctx!.fillStyle = moonFill;
         ctx!.beginPath();
-        ctx!.arc(mx, my, Math.max(1, radius * m.size * 0.5), 0, Math.PI * 2);
+        ctx!.arc(mx, my, moonRadius, 0, Math.PI * 2);
         ctx!.fill();
+
+        // Named once there is room, so the Moon and the Galileans are findable.
+        if (radius > 13) {
+          ctx!.fillStyle = labelFill;
+          ctx!.font = '9px Outfit, system-ui, sans-serif';
+          ctx!.fillText(m.name, mx, my - moonRadius - 4);
+          ctx!.font = '11px Outfit, system-ui, sans-serif';
+        }
       }
     }
 

@@ -1,6 +1,7 @@
 ---
 import type { GetStaticPaths } from 'astro';
 import ExperimentHeader from '~/components/lab/ExperimentHeader/ExperimentHeader';
+import HowItWorks from '~/components/lab/HowItWorks/HowItWorks';
 import AttractorStage from '~/components/lab/experiments/Attractor/AttractorStage';
 import BallsStage from '~/components/lab/experiments/Balls/BallsStage';
 import FluidStage from '~/components/lab/experiments/Fluid/FluidStage';
@@ -38,6 +39,8 @@ const { experiment } = Astro.props;
       {experiment.slug === 'fluid' && <FluidStage client:only="react" />}
       {experiment.slug === 'solar-system' && <SolarStage client:only="react" />}
       {experiment.slug === 'attractor' && <AttractorStage client:only="react" />}
+
+      {experiment.howItWorks && <HowItWorks paragraphs={experiment.howItWorks} />}
     </div>
   </article>
 </BaseLayout>

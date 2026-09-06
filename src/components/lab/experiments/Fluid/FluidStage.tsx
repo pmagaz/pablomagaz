@@ -63,6 +63,7 @@ export default function FluidStage() {
       canvasRef={canvasRef}
       label="Fluid simulation. Drag to push dye through the velocity field."
       hint="Drag anywhere"
+      capturesDrag
       unsupported={
         supported
           ? null

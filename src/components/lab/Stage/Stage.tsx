@@ -10,6 +10,12 @@ export interface StageProps {
   hint?: string;
   /** Set when the browser cannot run the experiment; replaces the canvas. */
   unsupported?: string | null;
+  /**
+   * Set when the experiment needs to capture drags in any direction. It stops
+   * the page scrolling over the canvas, so only use it where a drag is the
+   * interaction.
+   */
+  capturesDrag?: boolean;
   /** The parameter sliders. */
   children: ReactNode;
   onReset?: () => void;
