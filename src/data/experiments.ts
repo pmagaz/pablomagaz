@@ -37,13 +37,13 @@ export const experiments: readonly Experiment[] = [
     status: 'live',
   },
   {
-    slug: 'galaxy',
-    title: 'A flight through the galaxy',
+    slug: 'solar-system',
+    title: 'The solar system, off its rails',
     excerpt:
-      'Steer with the pointer, hold to accelerate, and pass suns with planets turning on their orbits.',
-    description: 'Stars projected in three dimensions, streaming past as you steer through them.',
+      'Eight planets on integrated orbits. Change gravity and watch them spiral in or swing wide, and click any of them to follow it.',
+    description: 'Orbits solved with velocity Verlet, not drawn on rails — so changing gravity actually breaks them.',
     category: 'Space',
-    date: '2026-09-05',
+    date: '2026-09-06',
     status: 'live',
   },
   {
