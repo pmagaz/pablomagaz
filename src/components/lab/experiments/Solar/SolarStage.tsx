@@ -7,7 +7,7 @@ import './SolarStage.css';
 const DEFAULTS: SolarParams = {
   gravity: 1,
   speed: 1.6,
-  zoom: 1,
+  tilt: 62,
 };
 
 /** The solar system, integrated. Click a planet to follow it. */
@@ -60,8 +60,8 @@ export default function SolarStage() {
   return (
     <Stage
       canvasRef={canvasRef}
-      label="The solar system. Click a planet to follow it, and change gravity to see the orbits react."
-      hint={`Following: ${focused}`}
+      label="The solar system. Click a planet to follow it, move the pointer up to zoom in, and change gravity to see the orbits react."
+      hint={`${focused} · move up to zoom`}
       unsupported={
         supported ? null : 'This experiment needs a 2D canvas, which this browser did not provide.'
       }
@@ -89,14 +89,14 @@ export default function SolarStage() {
       />
 
       <ParamSlider
-        label="Zoom"
-        min={1}
-        max={14}
-        step={0.1}
-        value={ui.zoom}
-        onChange={(value) => update('zoom', value)}
-        format={(value) => `${value.toFixed(1)}×`}
-        hint="Magnifies around whatever you last clicked."
+        label="Tilt"
+        min={0}
+        max={80}
+        step={1}
+        value={ui.tilt}
+        onChange={(value) => update('tilt', value)}
+        format={(value) => `${Math.round(value)}°`}
+        hint="Viewing angle above the orbital plane. 0 looks straight down; 80 is nearly edge on."
       />
     </Stage>
   );

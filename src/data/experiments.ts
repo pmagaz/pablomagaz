@@ -40,8 +40,8 @@ export const experiments: readonly Experiment[] = [
     slug: 'solar-system',
     title: 'The solar system, off its rails',
     excerpt:
-      'Eight planets on integrated orbits. Change gravity and watch them spiral in or swing wide, and click any of them to follow it.',
-    description: 'Orbits solved with velocity Verlet, not drawn on rails — so changing gravity actually breaks them.',
+      'Eight planets on integrated orbits, with rings and moons. Bend gravity to pull them off course, and click any of them to follow it.',
+    description: 'Eight planets, integrated rather than drawn on rails.',
     category: 'Space',
     date: '2026-09-06',
     status: 'live',
