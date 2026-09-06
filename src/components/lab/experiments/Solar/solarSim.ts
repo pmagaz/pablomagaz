@@ -274,8 +274,16 @@ export function createSolarSim(
     return Math.max(0.12, Math.cos((params.tilt * Math.PI) / 180));
   }
 
+  /**
+   * The largest scale that still fits Neptune's orbit inside the frame.
+   * Both axes are checked, because the tilt foreshortens the vertical one —
+   * fitting to the shorter side alone would waste most of the width.
+   */
   function baseScale(): number {
-    return (Math.min(width, height) / 2 / compress(DATA[DATA.length - 1]!.a)) * 0.9;
+    const outer = compress(DATA[DATA.length - 1]!.a);
+    const byWidth = width / 2 / outer;
+    const byHeight = height / 2 / (outer * cosTilt());
+    return Math.min(byWidth, byHeight) * 0.92;
   }
 
   /** Radial compression, in the orbital plane. */

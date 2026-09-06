@@ -6,8 +6,8 @@ import './SolarStage.css';
 
 const DEFAULTS: SolarParams = {
   gravity: 1,
-  speed: 0.35,
-  tilt: 62,
+  speed: 0.1,
+  tilt: 70,
 };
 
 /** The solar system, integrated. Click a planet to follow it. */
