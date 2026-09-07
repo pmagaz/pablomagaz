@@ -40,3 +40,17 @@
     font-size: 16px;
   }
 }
+
+.pm-how__link {
+  align-self: start;
+  padding-bottom: 2px;
+  border-bottom: 1px solid var(--pm-hairline);
+  color: var(--pm-ink);
+  font-size: 14px;
+  font-weight: var(--pm-fw-medium);
+  transition: border-color var(--pm-transition);
+}
+
+.pm-how__link:hover {
+  border-bottom-color: var(--pm-red);
+}

@@ -20,12 +20,12 @@
 import { readBrand, type Rgb } from '~/lib/palette';
 
 export interface AttractorParams {
-  /** The `a` constant — the dominant fold. */
-  formA: number;
-  /** The `b` constant. */
-  formB: number
-  /** How fast c and d wander. Zero freezes the figure. */
+  /** Index into FIGURES. Whole numbers only. */
+  figure: number;
+  /** How far and fast c and d wander. Zero freezes the figure. */
   drift: number;
+  /** Per-frame retention: longer trails, denser picture. */
+  fade: number;
 }
 
 export interface AttractorHandle {
@@ -33,6 +33,36 @@ export interface AttractorHandle {
   setPaused(paused: boolean): void;
   reseed(): void;
 }
+
+/**
+ * Verified parameter sets, as [a, b, c, d].
+ *
+ * The Clifford map is chaotic in its parameters, not just its state: a and b
+ * have narrow bands that produce a rich figure and dead zones either side
+ * where it collapses to a handful of points. Measured coverage at a = -1.4
+ * swings from 10,000 distinct pixels to four across a change of 0.3. So a
+ * slider over raw a and b is unusable by construction — most of its travel
+ * lands on nothing, and there is no way back once the walkers have converged.
+ *
+ * Instead the slider selects between figures that were each measured to hold
+ * at least 3,500 pixels across the full range the drift can wobble them.
+ */
+const FIGURES: ReadonlyArray<readonly [number, number, number, number]> = [
+  [-1.4, 1.6, 1.0, 0.7],
+  [1.7, 1.7, 0.6, 1.2],
+  [-1.7, 1.8, -1.9, -0.4],
+  [-2.0, -2.0, -1.2, 2.0],
+  [-1.9, 1.7, 1.2, 0.6],
+  [1.8, -1.9, 1.1, 0.9],
+  [-1.5, 1.5, 1.2, 1.1],
+  [2.0, 1.8, -1.0, -1.3],
+  [-1.2, -1.9, 1.4, 0.8],
+  [1.4, -1.4, 1.3, 1.2],
+  [-1.8, 1.5, -1.0, 0.9],
+];
+
+/** How far drift may move c and d. Every figure was verified at this range. */
+const DRIFT_WOBBLE = 0.09;
 
 /** Independent orbits, so coverage is immediate. */
 const WALKERS = 900;
@@ -53,12 +83,6 @@ const BURN_IN = 60;
 const REFRESH_PER_FRAME = 6;
 /** Cap the accumulation buffer so the per-pixel passes stay cheap. */
 const MAX_PIXELS = 900_000;
-/**
- * Per-frame retention. Longer memory means more samples accumulate into the
- * same picture, which is what resolves the filaments instead of leaving a
- * sparse scatter — but it only works if the figure is not drifting quickly.
- */
-const DECAY = 0.965;
 /**
  * Curvature of the density → brightness ramp, applied to density as a
  * fraction of the running peak. Higher lifts the faint filaments further.
@@ -141,6 +165,7 @@ export function createAttractorSim(
 
   const walkers = new Float64Array(WALKERS * 2);
   let refreshAt = 0;
+  let shownFigure = -1;
 
   function seedWalker(index: number, a: number, b: number, c: number, d: number): void {
     let x = (Math.random() - 0.5) * 2;
@@ -169,13 +194,22 @@ export function createAttractorSim(
   // without desynchronising the sliders.
   const pointer = { x: 0, y: 0, active: false };
 
+  function figureIndex(): number {
+    const i = Math.round(params.figure);
+    return i < 0 ? 0 : i >= FIGURES.length ? FIGURES.length - 1 : i;
+  }
+
   function constants(time: number): { a: number; b: number; c: number; d: number } {
+    const [a, b, baseC, baseD] = FIGURES[figureIndex()]!;
     const drift = reducedMotion ? 0 : params.drift;
+    const amp = DRIFT_WOBBLE * drift;
     // Two incommensurate periods, so the pair never cycles.
-    const c = 1.0 + 0.6 * Math.sin(time * 0.11 * drift) + (pointer.active ? pointer.x * 0.35 : 0);
-    const d =
-      0.7 + 0.5 * Math.sin(time * 0.07 * drift + 1.3) + (pointer.active ? pointer.y * 0.3 : 0);
-    return { a: params.formA, b: params.formB, c, d };
+    return {
+      a,
+      b,
+      c: baseC + amp * Math.sin(time * 0.5) + (pointer.active ? pointer.x * amp * 0.5 : 0),
+      d: baseD + amp * Math.sin(time * 0.31 + 1.3) + (pointer.active ? pointer.y * amp * 0.5 : 0),
+    };
   }
 
   /* ------------------------------------------------------------- render */
@@ -265,7 +299,7 @@ export function createAttractorSim(
       pixels[p + 2] = LUT[index + 2]!;
       pixels[p + 3] = 255;
 
-      density[i] = value * DECAY;
+      density[i] = value * params.fade;
     }
 
     // One frame behind, which is imperceptible and avoids a second pass.
@@ -311,6 +345,14 @@ export function createAttractorSim(
 
     if (!paused) {
       if (resize()) seedAll();
+      // A new figure is a new shape: clear, rather than fading one through
+      // the other. Safe because this only fires on a discrete change.
+      if (figureIndex() !== shownFigure) {
+        shownFigure = figureIndex();
+        density.fill(0);
+        peak = PEAK_FLOOR;
+        seedAll();
+      }
       elapsed += dt;
       accumulate(elapsed);
       paint();

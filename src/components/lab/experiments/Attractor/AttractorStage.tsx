@@ -8,10 +8,13 @@ import {
 } from './attractorSim';
 
 const DEFAULTS: AttractorParams = {
-  formA: -1.4,
-  formB: 1.6,
-  drift: 0.12,
+  figure: 0,
+  drift: 0.35,
+  fade: 0.965,
 };
+
+/** Kept in step with FIGURES in the sim. */
+const FIGURE_COUNT = 11;
 
 /** Clifford attractor with drifting constants. */
 export default function AttractorStage() {
@@ -72,33 +75,35 @@ export default function AttractorStage() {
       onReset={reset}
     >
       <ParamSlider
-        label="Form A"
-        min={-1.9}
-        max={-1.15}
-        step={0.005}
-        value={ui.formA}
-        onChange={(value) => update('formA', value)}
-        hint="The dominant fold. Held inside the range where the figure stays filamentary."
-      />
-
-      <ParamSlider
-        label="Form B"
-        min={1.15}
-        max={1.9}
-        step={0.005}
-        value={ui.formB}
-        onChange={(value) => update('formB', value)}
-        hint="The second fold, acting across the first."
+        label="Figure"
+        min={0}
+        max={FIGURE_COUNT - 1}
+        step={1}
+        value={ui.figure}
+        onChange={(value) => update('figure', value)}
+        format={(value) => `${Math.round(value) + 1} of ${FIGURE_COUNT}`}
+        hint="Steps between parameter sets that each produce a rich figure. The map has dead zones between them, so it moves in whole steps."
       />
 
       <ParamSlider
         label="Drift"
         min={0}
-        max={0.5}
+        max={1}
         step={0.01}
         value={ui.drift}
         onChange={(value) => update('drift', value)}
-        hint="How fast the figure morphs. At zero it freezes into a single still."
+        hint="How far the figure wanders from itself. At zero it freezes into a single still."
+      />
+
+      <ParamSlider
+        label="Fade"
+        min={0.9}
+        max={0.99}
+        step={0.005}
+        value={ui.fade}
+        onChange={(value) => update('fade', value)}
+        format={(value) => value.toFixed(3)}
+        hint="How long a visit lingers. Higher accumulates more samples into one picture."
       />
     </Stage>
   );

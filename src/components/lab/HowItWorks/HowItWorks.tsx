@@ -23,6 +23,10 @@ export default function HowItWorks({ paragraphs }: HowItWorksProps) {
           </p>
         ))}
       </div>
+
+      <a className="pm-how__link" href="/lab">
+        All experiments &rarr;
+      </a>
     </section>
   );
 }
