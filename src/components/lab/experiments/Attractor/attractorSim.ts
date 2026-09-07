@@ -39,13 +39,22 @@ const WALKERS = 900;
 /** Steps each walker takes per frame — WALKERS × STEPS points per frame. */
 const STEPS = 70;
 /** Iterations discarded when a walker is seeded, to skip its transient. */
-const BURN_IN = 30;
+const BURN_IN = 60;
 /** Cap the accumulation buffer so the per-pixel passes stay cheap. */
 const MAX_PIXELS = 900_000;
-/** Per-frame retention. Lower follows the drift faster but looks thinner. */
-const DECAY = 0.93;
-/** Brightness of the density → colour curve. */
-const GAIN = 26;
+/**
+ * Per-frame retention. Longer memory means more samples accumulate into the
+ * same picture, which is what resolves the filaments instead of leaving a
+ * sparse scatter — but it only works if the figure is not drifting quickly.
+ */
+const DECAY = 0.965;
+/**
+ * Curvature of the density → brightness ramp, applied to density as a
+ * fraction of the running peak. Higher lifts the faint filaments further.
+ */
+const CURVE = 40;
+/** How quickly the reference peak follows the brightest pixel. */
+const PEAK_EASE = 0.06;
 
 export function createAttractorSim(
   canvas: HTMLCanvasElement,
@@ -176,10 +185,21 @@ export function createAttractorSim(
         x = nx;
         y = ny;
 
-        const px = (centreX + x * scale) | 0;
-        const py = (centreY + y * scale) | 0;
-        if (px >= 0 && px < width && py >= 0 && py < height) {
-          density[py * width + px]! += 1;
+        // Spread each visit across the four pixels it falls between. Binning
+        // to the nearest pixel instead is what makes a density plot look
+        // like salt and pepper rather than a line.
+        const fx = centreX + x * scale;
+        const fy = centreY + y * scale;
+        const ix = Math.floor(fx);
+        const iy = Math.floor(fy);
+        if (ix >= 0 && ix < width - 1 && iy >= 0 && iy < height - 1) {
+          const tx = fx - ix;
+          const ty = fy - iy;
+          const base = iy * width + ix;
+          density[base]! += (1 - tx) * (1 - ty);
+          density[base + 1]! += tx * (1 - ty);
+          density[base + width]! += (1 - tx) * ty;
+          density[base + width + 1]! += tx * ty;
         }
       }
 
@@ -192,17 +212,32 @@ export function createAttractorSim(
     }
   }
 
-  const logGain = Math.log(1 + GAIN);
+  const logCurve = Math.log(1 + CURVE);
+  /**
+   * Reference brightness, eased toward the brightest pixel. Density is mapped
+   * as a fraction of this rather than in absolute counts — the previous
+   * mapping saturated at a single visit, so every pixel the walker touched
+   * came out at full brightness and the plot was a flat mask with no shape
+   * in it at all.
+   */
+  let peak = 24;
 
   function paint(): void {
     if (!image) return;
     const pixels = image.data;
+    const norm = Math.max(1e-6, peak);
+    let frameMax = 0;
 
     for (let i = 0, p = 0; i < density.length; i += 1, p += 4) {
       const value = density[i]!;
-      // Log curve: without it a handful of dense cells swamp everything.
-      const t = value > 0 ? Math.log(1 + value * GAIN) / logGain : 0;
-      const index = (t > 1 ? 255 : (t * 255) | 0) * 3;
+      if (value > frameMax) frameMax = value;
+
+      let index = 0;
+      if (value > 0) {
+        const ratio = value / norm;
+        const t = Math.log(1 + ratio * CURVE) / logCurve;
+        index = (t >= 1 ? 255 : (t * 255) | 0) * 3;
+      }
       pixels[p] = LUT[index]!;
       pixels[p + 1] = LUT[index + 1]!;
       pixels[p + 2] = LUT[index + 2]!;
@@ -211,6 +246,8 @@ export function createAttractorSim(
       density[i] = value * DECAY;
     }
 
+    // One frame behind, which is imperceptible and avoids a second pass.
+    peak += (frameMax - peak) * PEAK_EASE;
     ctx!.putImageData(image, 0, 0);
   }
 
@@ -276,6 +313,7 @@ export function createAttractorSim(
     },
     reseed() {
       density.fill(0);
+      peak = 24;
       seedAll();
     },
     destroy() {

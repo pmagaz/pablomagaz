@@ -10,7 +10,7 @@ import {
 const DEFAULTS: AttractorParams = {
   formA: -1.4,
   formB: 1.6,
-  drift: 0.35,
+  drift: 0.12,
 };
 
 /** Clifford attractor with drifting constants. */
@@ -49,9 +49,10 @@ export default function AttractorStage() {
   function update(key: keyof AttractorParams, value: number): void {
     paramsRef.current[key] = value;
     setUi((previous) => ({ ...previous, [key]: value }));
-    // The old density belongs to the old shape; clear it so the new one
-    // appears immediately rather than fading in through the previous.
-    simRef.current?.reseed();
+    // Deliberately no reseed. Clearing the buffer on every tick of the slider
+    // meant a drag wiped the picture continuously and it never accumulated
+    // into anything — the walkers migrate onto the new attractor by
+    // themselves within a few iterations, and the decay fades the old one.
   }
 
   function reset(): void {
@@ -72,9 +73,9 @@ export default function AttractorStage() {
     >
       <ParamSlider
         label="Form A"
-        min={-3}
-        max={3}
-        step={0.02}
+        min={-2}
+        max={2}
+        step={0.01}
         value={ui.formA}
         onChange={(value) => update('formA', value)}
         hint="The dominant fold. Small moves are the difference between a spiral and a lattice."
@@ -82,9 +83,9 @@ export default function AttractorStage() {
 
       <ParamSlider
         label="Form B"
-        min={-3}
-        max={3}
-        step={0.02}
+        min={-2}
+        max={2}
+        step={0.01}
         value={ui.formB}
         onChange={(value) => update('formB', value)}
         hint="The second fold, acting across the first."
@@ -93,7 +94,7 @@ export default function AttractorStage() {
       <ParamSlider
         label="Drift"
         min={0}
-        max={1}
+        max={0.5}
         step={0.01}
         value={ui.drift}
         onChange={(value) => update('drift', value)}
