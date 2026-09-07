@@ -54,7 +54,9 @@ const DECAY = 0.965;
  */
 const CURVE = 40;
 /** How quickly the reference peak follows the brightest pixel. */
-const PEAK_EASE = 0.06;
+const PEAK_EASE = 0.025;
+/** Floor for the reference peak, so a sparse frame cannot blow the gain up. */
+const PEAK_FLOOR = 10;
 
 export function createAttractorSim(
   canvas: HTMLCanvasElement,
@@ -225,7 +227,7 @@ export function createAttractorSim(
   function paint(): void {
     if (!image) return;
     const pixels = image.data;
-    const norm = Math.max(1e-6, peak);
+    const norm = Math.max(PEAK_FLOOR, peak);
     let frameMax = 0;
 
     for (let i = 0, p = 0; i < density.length; i += 1, p += 4) {

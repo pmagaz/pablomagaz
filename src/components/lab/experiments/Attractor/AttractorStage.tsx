@@ -74,18 +74,18 @@ export default function AttractorStage() {
       <ParamSlider
         label="Form A"
         min={-2}
-        max={2}
-        step={0.01}
+        max={-1}
+        step={0.005}
         value={ui.formA}
         onChange={(value) => update('formA', value)}
-        hint="The dominant fold. Small moves are the difference between a spiral and a lattice."
+        hint="The dominant fold. Held inside the range where the figure stays filamentary."
       />
 
       <ParamSlider
         label="Form B"
-        min={-2}
+        min={1}
         max={2}
-        step={0.01}
+        step={0.005}
         value={ui.formB}
         onChange={(value) => update('formB', value)}
         hint="The second fold, acting across the first."
