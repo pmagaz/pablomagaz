@@ -41,7 +41,7 @@ export const about = {
     {
       label: 'Personally',
       paragraphs: [
-        'I\u2019m a passionate person who loves to learn. Ever since I was a kid I\u2019ve been fascinated by the world around me \u2014 especially technology. I\u2019ve always needed to understand how things work, and that curiosity is what has driven me forward.',
+        'I\u2019m a passionate person who loves to learn. Ever since I was a kid I\u2019ve been fascinated by the world around me \u2014 especially technology. I\u2019ve always needed to understand [how things work](/lab), and that curiosity is what has driven me forward.',
         'When it comes to technology, I won\u2019t pretend otherwise \u2014 I\u2019m a geek at heart. Linux, Rust and Kubernetes are where I feel at home.',
         'Outside of work, I\u2019m an active investor and trader \u2014 an activity built on principles like risk management, probability, discipline and long-term thinking, all of which shape how I make decisions at work.',
       ],

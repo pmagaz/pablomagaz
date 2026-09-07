@@ -55,6 +55,16 @@
   line-height: 1.7;
 }
 
+.pm-about-intro__link {
+  border-bottom: 1px solid var(--pm-hairline);
+  color: var(--pm-ink);
+  transition: border-color var(--pm-transition);
+}
+
+.pm-about-intro__link:hover {
+  border-bottom-color: var(--pm-red);
+}
+
 /* The opening paragraph of each block carries a little more weight. */
 .pm-about-intro__body--lead {
   color: var(--pm-ink);
