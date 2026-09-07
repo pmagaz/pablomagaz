@@ -19,7 +19,7 @@ Starting a blog in 2026 is a little bit old school, and I know it. The writing h
 
 A post has no algorithm to please. It sits at a URL, it can be long when it needs to be, and it is still there in two years when somebody hits the same problem I did. That is the whole appeal.
 
-There is also a selfish reason. I have always needed to understand how things work, and writing something down properly is the fastest way to find out whether I actually do. Most of the opinions I hold loosely fall apart in the second paragraph, which is useful to know before I say them out loud in a meeting.
+There is also a selfish reason. I cannot leave a thing alone until I know why it works, and writing is the cheapest way to find out whether I really do. Most of the opinions I hold loosely fall apart in the second paragraph, which is useful to know before I say them out loud in a meeting.
 
 > If I cannot explain a decision in writing, I have not finished making it.
 
@@ -31,8 +31,8 @@ That is the real education, and it is still going. The same technical problem lo
 
 ## What I'll be writing
 
-Three things, roughly. Managing: the parts of leading engineering nobody puts in the job description, what I got wrong and what it cost, and how the technology decision and the business decision keep turning out to be the same one. Technology, because I am a geek at heart and Linux, Rust and Kubernetes are where I feel at home. And maybe, occasionally, trading.
+Three things, roughly. Managing, which is mostly the parts nobody puts in the job description: what I got wrong, what it cost, and how often the technical call and the commercial one turn out to be the same call in different clothes.
 
-That last one is less of a detour than it sounds. Risk management, probability, discipline and thinking in long horizons are most of what investing is, and they turn out to be most of what deciding anything under uncertainty at work is too.
+Technology, at the level of building it rather than presenting about it — I have earned my opinions on Kubernetes the hard way, and I reach for Rust when I want to stop guessing whether something is correct. And trading, maybe: sizing a position teaches you more about deciding under uncertainty than any planning framework I have been handed, mostly because being wrong there arrives with a price tag.
 
 No frameworks unless I have used them in anger. If something here is useful, argue with me about it — the best version of any of these ideas has come out of a conversation with someone who had seen the same thing from a different angle.
