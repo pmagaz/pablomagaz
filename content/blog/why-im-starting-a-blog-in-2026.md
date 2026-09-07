@@ -5,7 +5,7 @@ slug: "why-im-starting-a-blog-in-2026"
 author: "Pablo Magaz"
 excerpt: 'Nobody starts a blog any more. After enough years, cities and cultures, I have things worth writing down properly — and a feed is not the place for them.'
 category: "me"
-keywords: ["engineering leadership blog", "cto blog", "why start a blog", "technology leadership writing", "working across cultures", "engineering lessons learned"]
+keywords: ["engineering leadership blog", "cto blog", "why start a blog", "engineering management", "linux rust kubernetes", "risk management decision making", "working across cultures"]
 ---
 
 Starting a blog in 2026 is a little bit old school, and I know it. The writing happens in feeds now — short, fast, and gone by the afternoon. I have tried that, and it turns out the things I actually want to say do not survive the format.
@@ -19,7 +19,7 @@ Starting a blog in 2026 is a little bit old school, and I know it. The writing h
 
 A post has no algorithm to please. It sits at a URL, it can be long when it needs to be, and it is still there in two years when somebody hits the same problem I did. That is the whole appeal.
 
-There is also a selfish reason. Writing something down properly is the fastest way to find out whether I actually understand it. Most of the opinions I hold loosely fall apart in the second paragraph, which is useful to know before I say them out loud in a meeting.
+There is also a selfish reason. I have always needed to understand how things work, and writing something down properly is the fastest way to find out whether I actually do. Most of the opinions I hold loosely fall apart in the second paragraph, which is useful to know before I say them out loud in a meeting.
 
 > If I cannot explain a decision in writing, I have not finished making it.
 
@@ -31,6 +31,8 @@ That is the real education, and it is still going. The same technical problem lo
 
 ## What I'll be writing
 
-The parts of the job nobody puts in the job description: what I got wrong and what it cost, how the technology decision and the business decision keep turning out to be the same decision, and what the transition to agentic AI actually looks like from inside an organisation rather than from a keynote.
+Three things, roughly. Managing: the parts of leading engineering nobody puts in the job description, what I got wrong and what it cost, and how the technology decision and the business decision keep turning out to be the same one. Technology, because I am a geek at heart and Linux, Rust and Kubernetes are where I feel at home. And maybe, occasionally, trading.
+
+That last one is less of a detour than it sounds. Risk management, probability, discipline and thinking in long horizons are most of what investing is, and they turn out to be most of what deciding anything under uncertainty at work is too.
 
 No frameworks unless I have used them in anger. If something here is useful, argue with me about it — the best version of any of these ideas has come out of a conversation with someone who had seen the same thing from a different angle.
