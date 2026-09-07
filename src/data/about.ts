@@ -34,7 +34,7 @@ export const about = {
     {
       label: 'Professionally',
       paragraphs: [
-        'Chief Technology & AI Officer with a strong technical background and 10+ years in senior leadership roles spanning fast-paced startups and large organizations across multiple countries and international environments, with deep experience delivering platforms in regulated financial and critical-infrastructure environments.',
+        'Chief Technology & AI Officer with a strong technical background and 10+ years in senior leadership roles from fast-paced startups to large organizations across multiple countries and international environments, with deep expertise delivering software in regulated and critical-infrastructure sectors.',
         'Specializes in building and scaling top talented, distributed and cross-cultural engineering teams of all sizes, fostering a culture of high standards, and guiding organizations through the transition to the Agentic AI era under solid governance to turn innovation into growth.',
       ],
     },
