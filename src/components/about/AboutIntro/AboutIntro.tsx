@@ -9,7 +9,10 @@ export interface AboutIntroProps {
   headingLevel?: 'h1' | 'h2';
 }
 
-/** Narrative bio. The portrait only appears in the hero now. */
+/**
+ * Narrative bio in two blocks — the professional record and the person —
+ * side by side on desktop, stacked on a phone.
+ */
 export default function AboutIntro({ headingLevel = 'h2' }: AboutIntroProps) {
   return (
     <section className="pm-about-intro">
@@ -24,16 +27,22 @@ export default function AboutIntro({ headingLevel = 'h2' }: AboutIntroProps) {
           data-reveal-from="left"
         />
 
-        <p className="pm-about-intro__lede">{about.lede}</p>
+        <div className="pm-about-intro__blocks">
+          {about.blocks.map((block) => (
+            <div className="pm-about-intro__block" key={block.label}>
+              <h3 className="pm-about-intro__block-label">{block.label}</h3>
 
-        {about.paragraphs.map((paragraph, index) => (
-          <p
-            className={`pm-about-intro__body${index > 0 ? ' pm-about-intro__body--secondary' : ''}`}
-            key={index}
-          >
-            {paragraph}
-          </p>
-        ))}
+              {block.paragraphs.map((paragraph, index) => (
+                <p
+                  className={`pm-about-intro__body${index === 0 ? ' pm-about-intro__body--lead' : ''}`}
+                  key={index}
+                >
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+          ))}
+        </div>
 
         <Button href="/#contact" className="pm-about-intro__cta">
           Get in touch

@@ -73,8 +73,8 @@ export default function AttractorStage() {
     >
       <ParamSlider
         label="Form A"
-        min={-2}
-        max={-1}
+        min={-1.9}
+        max={-1.15}
         step={0.005}
         value={ui.formA}
         onChange={(value) => update('formA', value)}
@@ -83,8 +83,8 @@ export default function AttractorStage() {
 
       <ParamSlider
         label="Form B"
-        min={1}
-        max={2}
+        min={1.15}
+        max={1.9}
         step={0.005}
         value={ui.formB}
         onChange={(value) => update('formB', value)}

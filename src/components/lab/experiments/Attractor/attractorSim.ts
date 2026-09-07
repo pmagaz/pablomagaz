@@ -40,6 +40,17 @@ const WALKERS = 900;
 const STEPS = 70;
 /** Iterations discarded when a walker is seeded, to skip its transient. */
 const BURN_IN = 60;
+/**
+ * Walkers refreshed with new random starts each frame.
+ *
+ * At the degenerate end of the parameter range the attractor collapses to a
+ * single fixed point, and every walker converges onto the identical position.
+ * The map is deterministic, so identical walkers stay identical forever —
+ * moving the slider back then gave one orbit's worth of coverage instead of
+ * nine hundred, and the figure never came back. Continuously reseeding a few
+ * keeps the population diverse and makes recovery certain.
+ */
+const REFRESH_PER_FRAME = 6;
 /** Cap the accumulation buffer so the per-pixel passes stay cheap. */
 const MAX_PIXELS = 900_000;
 /**
@@ -54,7 +65,8 @@ const DECAY = 0.965;
  */
 const CURVE = 40;
 /** How quickly the reference peak follows the brightest pixel. */
-const PEAK_EASE = 0.025;
+const PEAK_EASE_UP = 0.025;
+const PEAK_EASE_DOWN = 0.12;
 /** Floor for the reference peak, so a sparse frame cannot blow the gain up. */
 const PEAK_FLOOR = 10;
 
@@ -128,6 +140,7 @@ export function createAttractorSim(
   /* ------------------------------------------------------------ walkers */
 
   const walkers = new Float64Array(WALKERS * 2);
+  let refreshAt = 0;
 
   function seedWalker(index: number, a: number, b: number, c: number, d: number): void {
     let x = (Math.random() - 0.5) * 2;
@@ -212,6 +225,13 @@ export function createAttractorSim(
         seedWalker(w, a, b, c, d);
       }
     }
+
+    // Roll a few fresh walkers in, so the population can never become one
+    // walker duplicated nine hundred times.
+    for (let n = 0; n < REFRESH_PER_FRAME; n += 1) {
+      seedWalker(refreshAt, a, b, c, d);
+      refreshAt = (refreshAt + 1) % WALKERS;
+    }
   }
 
   const logCurve = Math.log(1 + CURVE);
@@ -249,7 +269,7 @@ export function createAttractorSim(
     }
 
     // One frame behind, which is imperceptible and avoids a second pass.
-    peak += (frameMax - peak) * PEAK_EASE;
+    peak += (frameMax - peak) * (frameMax > peak ? PEAK_EASE_UP : PEAK_EASE_DOWN);
     ctx!.putImageData(image, 0, 0);
   }
 

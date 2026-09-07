@@ -9,6 +9,11 @@ export interface CareerRow {
   readonly location: string;
 }
 
+export interface AboutBlock {
+  readonly label: string;
+  readonly paragraphs: readonly string[];
+}
+
 export interface Highlight {
   readonly label: string;
   readonly text: string;
@@ -25,11 +30,24 @@ export const about = {
       { text: ' software.' },
     ],
   ] as const satisfies HeadlineLines,
-  lede: 'Chief Technology & AI Officer with a strong technical background and 10+ years in senior leadership roles spanning fast-paced startups and large organizations across multiple countries and international environments, with deep experience delivering platforms in regulated financial and critical-infrastructure environments.',
-  paragraphs: [
-    'Specializes in building engineering teams that deliver and guiding organizations through the transition to the Agentic AI era to unlock efficiency and growth.',
-    'Draws on experience leading distributed, cross-cultural teams, balancing long-term technology vision with delivery through efficient resource management.',
-  ],
+  blocks: [
+    {
+      label: 'Professionally',
+      paragraphs: [
+        'Chief Technology & AI Officer with a strong technical background and 10+ years in senior leadership roles spanning fast-paced startups and large organizations across multiple countries and international environments, with deep experience delivering platforms in regulated financial and critical-infrastructure environments.',
+        'Specializes in building engineering teams that deliver and guiding organizations through the transition to the Agentic AI era to unlock efficiency and growth.',
+        'Draws on experience leading distributed, cross-cultural teams, balancing long-term technology vision with delivery through efficient resource management.',
+      ],
+    },
+    {
+      label: 'Personally',
+      paragraphs: [
+        'I\u2019m a curious person who loves to learn. Ever since I was a kid I\u2019ve been fascinated by the world around me \u2014 especially technology. I\u2019ve always needed to understand how things work, and that curiosity is what has driven me forward.',
+        'I won\u2019t pretend otherwise \u2014 I\u2019m a geek at heart. Linux, Rust and Kubernetes are where I feel at home.',
+        'Outside of work, I\u2019m an active investor and trader \u2014 an activity built on principles like risk management, probability, discipline and long-term thinking, all of which shape how I make decisions at work.',
+      ],
+    },
+  ] as const satisfies readonly AboutBlock[],
   /** Only the three most recent roles are listed, hence "recent". */
   careerEyebrow: 'Recent career',
   career: [

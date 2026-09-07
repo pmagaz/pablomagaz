@@ -25,18 +25,39 @@
   letter-spacing: -0.035em;
 }
 
-.pm-about-intro__lede {
-  max-width: 620px;
-  color: var(--pm-ink);
-  font-size: 17px;
-  line-height: 1.6;
+/* Two blocks: the professional record and the person. */
+.pm-about-intro__blocks {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--pm-space-8);
+}
+
+.pm-about-intro__block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pm-space-4);
+  padding-top: var(--pm-space-4);
+  border-top: 1px solid var(--pm-hairline);
+}
+
+.pm-about-intro__block-label {
+  color: var(--pm-red);
+  font-size: 11px;
+  font-weight: var(--pm-fw-regular);
+  letter-spacing: 0.18em;
+  line-height: 1.4;
+  text-transform: uppercase;
 }
 
 .pm-about-intro__body {
-  max-width: 620px;
   color: var(--pm-body);
   font-size: 16px;
   line-height: 1.7;
+}
+
+/* The opening paragraph of each block carries a little more weight. */
+.pm-about-intro__body--lead {
+  color: var(--pm-ink);
 }
 
 .pm-about-intro__cta {
@@ -61,8 +82,9 @@
     letter-spacing: -0.04em;
   }
 
-  .pm-about-intro__lede {
-    font-size: 19px;
+  .pm-about-intro__blocks {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--pm-space-12);
   }
 
   .pm-about-intro__body {
