@@ -56,13 +56,16 @@
 }
 
 .pm-about-intro__link {
-  border-bottom: 1px solid var(--pm-hairline);
-  color: var(--pm-ink);
-  transition: border-color var(--pm-transition);
+  border-bottom: 1px solid var(--pm-red);
+  color: var(--pm-red);
+  transition:
+    border-color var(--pm-transition),
+    color var(--pm-transition);
 }
 
 .pm-about-intro__link:hover {
-  border-bottom-color: var(--pm-red);
+  border-bottom-color: var(--pm-ink);
+  color: var(--pm-ink);
 }
 
 /* The opening paragraph of each block carries a little more weight. */
