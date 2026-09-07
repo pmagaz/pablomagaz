@@ -53,7 +53,7 @@ export const about = {
     {
       stage: 'Now',
       role: 'Chief Technology & AI Officer',
-      summary: 'MIO Group — SaaS, AI, media and CX',
+      summary: 'MIO Group — SaaS, AI, Media and CX',
       location: 'Madrid',
     },
     {
