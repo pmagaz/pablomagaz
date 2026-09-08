@@ -45,7 +45,7 @@ export const site = {
   /** Used in <title> on the home page and as the OG site name. */
   title: 'Pablo Magaz — Chief Technology Officer',
   description:
-    'Pablo Magaz is a Chief Technology & AI Officer building engineering teams that deliver and guiding organizations through the transition to the Agentic AI era.',
+    'Pablo Magaz is a Chief Technology Officer building engineering teams that deliver and guiding organizations through the transition to the Agentic AI era.',
   email: 'hola@pablomagaz.com',
   authorBio: 'Chief Technology Officer',
   /** GA4 measurement id. Only loaded in production builds. */
