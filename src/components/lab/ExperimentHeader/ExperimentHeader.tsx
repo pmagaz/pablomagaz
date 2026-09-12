@@ -33,6 +33,14 @@ export default function ExperimentHeader({ experiment }: ExperimentHeaderProps) 
         {experiment.description && (
           <p className="pm-experiment-header__description">{experiment.description}</p>
         )}
+
+        <time className="pm-experiment-header__date" dateTime={experiment.date}>
+          {new Date(experiment.date).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          })}
+        </time>
       </div>
     </header>
   );

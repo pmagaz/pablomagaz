@@ -88,6 +88,21 @@ export const experiments: readonly Experiment[] = [
     date: '2026-09-04',
     status: 'live',
   },
+  {
+    slug: 'pendulum',
+    title: 'A double pendulum that will not repeat',
+    excerpt:
+      'Two rods, two bobs, and sensitivity to initial conditions. Reset to see how tiny differences lead to wildly different paths.',
+    description: 'A canonical example of deterministic chaos: simple rules, unpredictable motion.',
+    howItWorks: [
+      'A single pendulum swings back and forth forever in a predictable arc. Hang a second pendulum from the end of the first and everything changes. The motion is still governed by Newton\u2019s laws, still entirely deterministic, but it becomes chaotic: two runs that start almost identically will diverge until they share nothing in common.',
+      'The equations come from Lagrangian mechanics, the same formalism behind modern physics. Energy sloshes between the two bobs as gravity pulls them down and centrifugal force flings them outward. The interplay produces loops, flips, and sudden reversals that no simple formula can predict \u2014 you have to simulate it step by step to see where it goes.',
+      'Press reset and watch closely. The starting angle changes by a tiny amount each time, far too small to see, yet after a few swings the paths are completely different. That is the hallmark of chaos: not randomness, but extreme sensitivity. The trail fades over a few seconds so you can watch the history unspool behind it.',
+    ],
+    category: 'Chaos',
+    date: '2026-09-10',
+    status: 'live',
+  },
 ];
 
 export function liveExperiments(): readonly Experiment[] {

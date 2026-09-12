@@ -53,6 +53,11 @@
   line-height: 1.7;
 }
 
+.pm-experiment-header__date {
+  color: var(--pm-muted);
+  font-size: 14px;
+}
+
 @media (min-width: 769px) {
   .pm-experiment-header__inner {
     gap: var(--pm-space-6);

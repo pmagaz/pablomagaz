@@ -1,0 +1,26 @@
+---
+import ExperimentHeader from '~/components/lab/ExperimentHeader/ExperimentHeader';
+import HowItWorks from '~/components/lab/HowItWorks/HowItWorks';
+import PendulumStage from '~/components/lab/experiments/Pendulum/PendulumStage';
+import { findExperiment } from '~/data/experiments';
+import BaseLayout from '~/layouts/BaseLayout/BaseLayout.astro';
+
+const experiment = findExperiment('pendulum')!;
+---
+
+<BaseLayout title={experiment.title} description={experiment.excerpt}>
+  <article class="pm-experiment">
+    <ExperimentHeader experiment={experiment} />
+
+    <div class="pm-container pm-experiment__stage">
+      <PendulumStage client:only="react" />
+      {experiment.howItWorks && <HowItWorks paragraphs={experiment.howItWorks} />}
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .pm-experiment__stage {
+    padding-bottom: var(--pm-space-14);
+  }
+</style>
