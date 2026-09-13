@@ -94,8 +94,10 @@ export function createPendulumSim(
     canvas.height = Math.floor(height * dpr);
     ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-    // Scale pendulum — smaller for more intricate trail patterns
-    const maxExtent = Math.min(width, height) * 0.22;
+    // Scale pendulum — smaller on mobile for better fit
+    const isMobile = width < 600;
+    const scale = isMobile ? 0.16 : 0.22;
+    const maxExtent = Math.min(width, height) * scale;
     L1 = maxExtent;
 
     // Pivot at center of canvas

@@ -40,7 +40,7 @@ export const experiments: readonly Experiment[] = [
       'Checking every pair would mean forty thousand comparisons a frame at this count, so the balls are sorted into a grid of cells and each one only consults its nine neighbours. Your cursor is not a pointer but an obstacle with a radius: balls inside it are pushed out and pick up whatever speed it is carrying, so a fast sweep throws them and a slow one just parts the pile.',
     ],
     category: 'Physics',
-    date: '2026-09-04',
+    date: '2026-09-01',
     status: 'live',
   },
   {
@@ -55,7 +55,7 @@ export const experiments: readonly Experiment[] = [
       'Because the orbits emerge rather than being scripted, the gravity slider genuinely breaks them. Turn it up and the planets are suddenly moving too slowly for the pull, so they spiral inward; turn it down and they carry too much speed and swing out into long ellipses. The faint circles show where each one began, and the brighter trail shows where it has actually been.',
     ],
     category: 'Space',
-    date: '2026-09-06',
+    date: '2026-09-15',
     status: 'live',
   },
   {
@@ -70,7 +70,7 @@ export const experiments: readonly Experiment[] = [
       'Then comes the step that makes it read as liquid rather than smoke. Real fluid cannot be compressed, so anywhere the flow is piling up has to be cancelled out: the solver measures that pile-up, solves for a pressure that exactly opposes it over twenty passes, and subtracts it back out. All of it runs as one small program per pixel on the graphics card, thousands at a time.',
     ],
     category: 'Fluids',
-    date: '2026-09-04',
+    date: '2026-09-29',
     status: 'live',
   },
   {
@@ -85,7 +85,7 @@ export const experiments: readonly Experiment[] = [
       'For any fixed set of constants the figure is a still image, which is why two of the four drift on slow waves of different lengths. Because those lengths never come back into step, the form folds and reopens without ever quite repeating itself. Set drift to zero and it freezes into a single figure you can sit and study.',
     ],
     category: 'Fractals',
-    date: '2026-09-04',
+    date: '2026-10-13',
     status: 'live',
   },
   {
@@ -100,7 +100,22 @@ export const experiments: readonly Experiment[] = [
       'Press reset and watch closely. The starting angle changes by a tiny amount each time, far too small to see, yet after a few swings the paths are completely different. That is the hallmark of chaos: not randomness, but extreme sensitivity. The trail fades over a few seconds so you can watch the history unspool behind it.',
     ],
     category: 'Chaos',
-    date: '2026-09-10',
+    date: '2026-10-27',
+    status: 'live',
+  },
+  {
+    slug: 'boids',
+    title: 'A flock that nobody leads',
+    excerpt:
+      'Separation, alignment, cohesion: three simple rules and emergent swarm behavior. Move the cursor to scatter them.',
+    description: 'Craig Reynolds\u2019 boids algorithm: local rules, global patterns.',
+    howItWorks: [
+      'Each boid follows three rules and nothing else. Separation: steer away from anything too close. Alignment: turn toward the average heading of nearby neighbors. Cohesion: drift toward the center of the local group. No boid knows where the flock is going; the flock itself is just a side effect.',
+      'The result is emergent behavior \u2014 complex, organic motion arising from simple local interactions. The flock splits around obstacles, reforms on the other side, swirls into temporary vortices, and streams in ribbons across the canvas. None of this is programmed; it simply happens.',
+      'Your cursor is a predator. Boids within range feel a repulsive force and scatter outward, then gradually regroup once the threat passes. Adjust the sliders to shift the balance: more separation produces a loose cloud, more cohesion a tight ball, more alignment a smooth stream.',
+    ],
+    category: 'Chaos',
+    date: '2026-11-10',
     status: 'live',
   },
 ];
