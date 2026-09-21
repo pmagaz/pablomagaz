@@ -24,6 +24,8 @@ const blog = defineCollection({
   schema: z.object({
     title: z.string(),
     date: z.coerce.date(),
+    /** Set when a published post is revised, so `dateModified` means something. */
+    updated: z.coerce.date().optional(),
     /** Canonical URL segment for the post. */
     slug: z.string(),
     author: z.string().default('Pablo Magaz'),

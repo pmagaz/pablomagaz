@@ -9,7 +9,7 @@ import portraitSource from '~/assets/images/pablo-hero.png';
 import BaseLayout from '~/layouts/BaseLayout/BaseLayout.astro';
 import { responsiveImage } from '~/lib/images';
 import { getSortedPosts, relatedPosts, toSummary, type PostEntry } from '~/lib/posts';
-import { articleSchema } from '~/lib/seo';
+import { articleSchema, resolveImage } from '~/lib/seo';
 
 // One static page per post — every detail page is generated at build time.
 export const getStaticPaths = (async () => {
@@ -36,12 +36,18 @@ const avatar = await responsiveImage(portraitSource, {
   widths: [88, 132],
 });
 
+// Resolved once and shared, so the card image and the schema image agree.
+const base = Astro.site ?? Astro.url;
+const image = resolveImage(post.data.featuredImage, base);
+
 const schema = articleSchema(
   {
     title: summary.title,
     description: summary.excerpt,
     publishedAt: post.data.date,
-    url: new URL(summary.href, Astro.site ?? Astro.url).href,
+    modifiedAt: post.data.updated,
+    url: new URL(`${summary.href}/`, base).href,
+    image,
     author: summary.author,
     keywords: summary.keywords,
   },
@@ -53,6 +59,7 @@ const schema = articleSchema(
   title={summary.title}
   description={summary.excerpt}
   keywords={summary.keywords}
+  image={image}
   type="article"
   publishedAt={post.data.date}
   schema={schema}
