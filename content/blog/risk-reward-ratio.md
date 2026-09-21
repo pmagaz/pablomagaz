@@ -1,5 +1,5 @@
 ---
-title: "The risk reward ratio, and how to win more than you risk"
+title: "The risk reward ratio in every decision you make"
 date: "2026-09-21"
 slug: "risk-reward-ratio"
 author: "Pablo Magaz"
