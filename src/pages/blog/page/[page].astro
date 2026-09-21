@@ -15,7 +15,7 @@ const listProps = await buildBlogPage(page);
 
 <BaseLayout
   title={`Blog — page ${page}`}
-  description="Notes on platform strategy, applied AI and engineering organisation design."
+  description={`Notes on platform strategy, applied AI and engineering organisation design. Page ${page} of the archive.`}
 >
   <BlogList {...listProps} />
 </BaseLayout>
