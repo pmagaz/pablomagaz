@@ -48,6 +48,6 @@ Most good engineering practice is the same question in working clothes. A handfu
 
 Exercise, sleep, putting a bit aside each month. Small, boring, repeated costs against a payoff a long way off. Skipping one on any given day costs nothing anyone would notice, which is exactly why it's so easy. Over ten years it's the best deal available to almost anybody.
 
-Then the one that matters more than every other line here: the bet you can't come back from. Not a bad outcome. A final one. The risk reward ratio only means anything if we're still around for the next decision.
+Then the one that matters more than every other line here: the bet there's no coming back from. Not a bad outcome. A final one. The risk reward ratio only means anything if we're still around for the next decision.
 
 So I ask two questions before anything that matters. What do I get if this works? What does it take from me if it doesn't? If the second answer is everything, I don't take it, whatever the first one promises. It hasn't made me right more often. It's made being wrong cheap enough that it stopped deciding how things turn out.
