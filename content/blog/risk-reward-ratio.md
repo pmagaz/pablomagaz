@@ -1,9 +1,9 @@
 ---
-title: "The risk reward ratio in every decision you make"
+title: "The risk reward ratio in every decision we make"
 date: "2026-09-21"
 slug: "risk-reward-ratio"
 author: "Pablo Magaz"
-excerpt: 'Being right is the wrong target. The risk reward ratio is the better question, and it shapes far more than trades: careers, roadmaps and how you spend a decade.'
+excerpt: 'Being right is the wrong target. The risk reward ratio is the better question, and it shapes far more than trades: careers, roadmaps and how we spend a decade.'
 category: "leadership"
 keywords: ["risk reward ratio", "risk management", "asymmetric bets", "decision making", "how to make better decisions", "reversible decisions", "taking smart risks"]
 ---
