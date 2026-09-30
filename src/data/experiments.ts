@@ -118,6 +118,21 @@ export const experiments: readonly Experiment[] = [
     date: '2026-11-10',
     status: 'live',
   },
+  {
+    slug: 'shatter',
+    title: 'An image that falls apart and comes back',
+    excerpt:
+      'A picture broken into thousands of sprung particles, and the six colours it boils down to. Press to blow it apart.',
+    description: 'Every pixel on a spring, and a median-cut palette from the same samples.',
+    howItWorks: [
+      'The picture is not drawn; it is rebuilt every frame from thousands of small squares. Each one is a single sample of the image, taken on a coarse grid, and it remembers the spot it came from. A spring pulls it back towards that spot, friction takes a little of its speed away, and between the two it settles into place, which is why a scattered image always finds its way home.',
+      'Pressing adds a push that grows sharply towards the centre of the blast, so the squares nearest the cursor are thrown hardest and the ones at the edge barely stir. Each square has a slightly different spring and a slightly different friction, which is why the image does not snap back in one piece but reassembles from the loose, lagging edges. Set the spring to zero and nothing is pulled home at all: the squares stay wherever they were thrown.',
+      'The same samples feed the palette. Median cut puts every colour in one pile, finds the channel, red, green or blue, where the pile is most spread out, and splits it in half there. It keeps splitting whichever pile is most varied until there are six, and each pile’s average becomes one colour. Load your own image and it is sampled here in the browser; nothing is uploaded anywhere.',
+    ],
+    category: 'Particles',
+    date: '2026-11-24',
+    status: 'live',
+  },
 ];
 
 export function liveExperiments(): readonly Experiment[] {

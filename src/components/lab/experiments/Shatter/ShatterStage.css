@@ -1,0 +1,79 @@
+/* Shatter — the extracted palette, full width under the sliders. */
+
+.pm-shatter__palette {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pm-space-5);
+  grid-column: 1 / -1;
+}
+
+.pm-shatter__swatches {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--pm-space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pm-shatter__swatch {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--pm-space-3);
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--pm-on-ink);
+  font-size: 12px;
+  text-align: left;
+  cursor: copy;
+}
+
+.pm-shatter__chip {
+  width: 28px;
+  height: 28px;
+  border: 1px solid rgb(var(--pm-on-ink-rgb) / 0.14);
+  border-radius: var(--pm-radius-sm);
+}
+
+.pm-shatter__share {
+  color: rgb(var(--pm-on-ink-rgb) / 0.5);
+}
+
+.pm-shatter__swatch:hover .pm-shatter__chip {
+  border-color: var(--pm-on-ink);
+}
+
+.pm-shatter__upload {
+  align-self: start;
+  padding: 8px 16px;
+  border: 1px solid rgb(var(--pm-on-ink-rgb) / 0.24);
+  border-radius: var(--pm-radius-sm);
+  color: var(--pm-on-ink);
+  font-size: 13px;
+  font-weight: var(--pm-fw-medium);
+  cursor: pointer;
+  transition: border-color var(--pm-transition);
+}
+
+.pm-shatter__upload:hover,
+.pm-shatter__upload:focus-within {
+  border-color: var(--pm-on-ink);
+}
+
+/* Visually hidden but still focusable, so the label is the keyboard target */
+.pm-shatter__upload input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+@media (min-width: 641px) {
+  .pm-shatter__swatches {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
