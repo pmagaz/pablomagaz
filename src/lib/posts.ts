@@ -20,9 +20,11 @@ export interface PostSummary {
   readingTime: number;
 }
 
-/** Newest first, drafts dropped from production builds. */
+/** Newest first, drafts and archived posts dropped from listings. */
 export async function getSortedPosts(): Promise<PostEntry[]> {
-  const posts = await getCollection('blog', ({ data }) => import.meta.env.DEV || !data.draft);
+  const posts = await getCollection('blog', ({ data }) =>
+    (import.meta.env.DEV || !data.draft) && !data.archived
+  );
   return posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 }
 

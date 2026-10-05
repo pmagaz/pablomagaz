@@ -37,6 +37,8 @@ const blog = defineCollection({
     /** Overrides the computed reading time when set. */
     readingTime: z.number().int().positive().optional(),
     draft: z.boolean().default(false),
+    /** Archived posts are accessible via URL but excluded from blog listings. */
+    archived: z.boolean().default(false),
   }),
 });
 

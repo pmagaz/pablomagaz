@@ -1,6 +1,6 @@
 ---
 import type { GetStaticPaths } from 'astro';
-import { render } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import KeepReading from '~/components/blog/KeepReading/KeepReading';
 import PostHeader from '~/components/blog/PostHeader/PostHeader';
 import Prose from '~/components/blog/Prose/Prose.astro';
@@ -12,9 +12,10 @@ import { getSortedPosts, relatedPosts, toSummary, type PostEntry } from '~/lib/p
 import { articleSchema, resolveImage } from '~/lib/seo';
 
 // One static page per post — every detail page is generated at build time.
+// Includes archived posts so old URLs remain accessible.
 export const getStaticPaths = (async () => {
-  const posts = await getSortedPosts();
-  return posts.map((post) => ({
+  const allPosts = await getCollection('blog', ({ data }) => import.meta.env.DEV || !data.draft);
+  return allPosts.map((post) => ({
     params: { slug: post.id },
     props: { post },
   }));
