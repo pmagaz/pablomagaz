@@ -1,6 +1,6 @@
 ---
 title: "Accept the loss, then let it go"
-date: "2026-10-05"
+date: "2026-10-19"
 slug: "accept-the-loss"
 author: "Pablo Magaz"
 excerpt: 'The hard part of losing is rarely the loss. It is accepting it while it is still small. Why we hold on too long, and how deciding the exit in advance changes careers, projects and the way we live.'

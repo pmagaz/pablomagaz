@@ -1,6 +1,6 @@
 ---
 title: "FOMO costs more than missing out"
-date: "2026-11-02"
+date: "2026-11-16"
 slug: "fomo-costs-more-than-missing-out"
 author: "Pablo Magaz"
 excerpt: 'By the time everyone is talking about something, most of the value is gone and the price is at its highest. Why the fear of missing out costs more than missing out, from launch-day phones to hyped frameworks and the trips everyone else is taking.'
